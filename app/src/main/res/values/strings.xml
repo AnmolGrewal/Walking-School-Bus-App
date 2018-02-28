@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Walking Group App</string>
+    <string name="gerry_password_login">Password</string>
+    <string name="gerry_email_login">Email</string>
+    <string name="gerry_forgot_password_login">Forgot Your Password?</string>
+    <string name="gerry_login_login">Login</string>
+    <string name="gerry_register_login">Register</string>
 </resources>
