@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //go to ForgotPassword Activity
-                Toast.makeText(LoginActivity.this,"click succes",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(LoginActivity.this,"click succes",Toast.LENGTH_SHORT).show();
             }
         });
 

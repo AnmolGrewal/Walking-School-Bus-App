@@ -5,4 +5,6 @@
     <string name="gerry_forgot_password_login">Forgot Your Password?</string>
     <string name="gerry_login_login">Login</string>
     <string name="gerry_register_login">Register</string>
+    <string name="gerry_start_welcome">Start</string>
+    <string name="gerry_welcome_screen_welcome">WELCOME SCREEN</string>
 </resources>
