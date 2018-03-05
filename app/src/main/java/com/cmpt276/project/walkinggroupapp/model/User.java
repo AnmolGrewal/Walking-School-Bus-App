@@ -9,17 +9,17 @@ import java.util.List;
 public class User {
 
     // TODO: type of id -> int, long, unsigned int?
-    private int id;
+    private Integer id = null;
 
-    private String name;
-    private String emailAddress;
+    private String name = null;
+    private String emailAddress = null;
 
     // TODO: is password needed here?
     //private String password;
 
     // TODO: list of User, or String (emailAddress), a user reference (very likely);
-    private List<UserReference> monitoredByUsers;
-    private List<UserReference> monitorsUsers;
+    private List<UserReference> monitoredByUsers = null;
+    private List<UserReference> monitorsUsers = null;
 
     private List<Group> walkingGroups;
 
@@ -64,7 +64,7 @@ public class User {
                 "Internal problem occurs, target user reference not found in monitoredByUsers list");
     }
 
-    public void removeUserFromMonitoringList() throws UserReferenceNotFoundException {
+    public void removeUserFromMonitoringList(Integer id) throws UserReferenceNotFoundException {
         for (int i = 0; i < monitorsUsers.size(); i++) {
             if (monitorsUsers.get(i).equals(id)) {
                 monitorsUsers.remove(i);
@@ -83,6 +83,16 @@ public class User {
         return false;
     }
 
+    /**
+     * This method is used to check if the deserialization from json is valid.
+     */
+    public boolean isValid() {
+        return !(id == null ||
+                name == null ||
+                emailAddress == null ||
+                monitoredByUsers == null ||
+                monitorsUsers == null);
+    }
 
 
 

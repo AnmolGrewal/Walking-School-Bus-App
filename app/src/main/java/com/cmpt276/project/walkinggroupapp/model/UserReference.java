@@ -5,7 +5,7 @@ package com.cmpt276.project.walkinggroupapp.model;
  */
 
 public class UserReference {
-    private int id;
+    private Integer id;
     private String href;
 
 
@@ -17,7 +17,7 @@ public class UserReference {
         return href;
     }
 
-    public boolean equals(int id) {
-        return this.id == id;
+    public boolean equals(Integer id) {
+        return this.id.equals(id);
     }
 }
