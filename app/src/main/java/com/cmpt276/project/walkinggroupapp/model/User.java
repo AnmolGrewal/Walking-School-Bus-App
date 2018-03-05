@@ -37,12 +37,32 @@ public class User {
 //        monitoredByUsers = new ArrayList<>();
 //    }
 
+
+    /**
+     * This method is used to check if the deserialization from json is valid.
+     */
+    public boolean isValid() {
+        return !(id == null ||
+                name == null ||
+                emailAddress == null ||
+                monitoredByUsers == null ||
+                monitorsUsers == null);
+    }
+
     public String getName() {
         return name;
     }
 
     public String getEmailAddress() {
         return emailAddress;
+    }
+
+    public List<UserReference> getMonitoredByUsersList() {
+        return monitoredByUsers;
+    }
+
+    public List<UserReference> getMonitorsUsersList() {
+        return monitorsUsers;
     }
 
     public void addNewMonitoredByUser(UserReference userReference) {
@@ -81,17 +101,6 @@ public class User {
 
     public boolean hasUserInMonitoringList() {
         return false;
-    }
-
-    /**
-     * This method is used to check if the deserialization from json is valid.
-     */
-    public boolean isValid() {
-        return !(id == null ||
-                name == null ||
-                emailAddress == null ||
-                monitoredByUsers == null ||
-                monitorsUsers == null);
     }
 
 

@@ -1,9 +1,9 @@
 package com.cmpt276.project.walkinggroupapp.model;
 
 /**
- * Created by zherenx on 2018-03-03.
+ * This class stores information to find a user in server.
+ * It contains a user id and a hypertext reference.
  */
-
 public class UserReference {
     private Integer id;
     private String href;
