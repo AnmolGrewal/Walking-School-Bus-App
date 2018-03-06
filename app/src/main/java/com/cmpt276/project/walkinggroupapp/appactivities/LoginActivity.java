@@ -1,4 +1,4 @@
-package com.cmpt276.project.walkinggroupapp;
+package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.cmpt276.project.walkinggroupapp.R;
+
 
 public class LoginActivity extends AppCompatActivity {
 
