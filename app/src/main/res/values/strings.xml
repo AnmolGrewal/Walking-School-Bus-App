@@ -7,5 +7,6 @@
     <string name="gerry_register_login">Register</string>
     <string name="gerry_start_welcome">Start</string>
     <string name="gerry_welcome_screen_welcome">WELCOME SCREEN</string>
-    <string name="gerry_apikey">D71A0AC3&#8211;1AD3&#8211;42BE&#8211;87C1&#8211;83345D63B4D9</string>
+    <string name="gerry_apikey">D71A0AC3-1AD3-42BE-87C1-83345D63B4D9</string>
+
 </resources>
