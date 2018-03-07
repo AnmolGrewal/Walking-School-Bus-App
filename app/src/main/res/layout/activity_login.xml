@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingEnd="50dp"
+            android:paddingStart="50dp"
+            android:layout_marginTop="75dp">
+
+
+            <EditText
+                android:id="@+id/gerry_Email_EditText_login"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/gerry_email_login"
+                android:inputType="textWebEmailAddress" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingEnd="50dp"
+            android:paddingStart="50dp"
+            android:layout_marginTop="10dp">
+
+
+            <EditText
+                android:id="@+id/gerry_Password_EditText_login"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/gerry_password_login"
+                android:inputType="textWebPassword"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/gerry_Login_Button_login"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="@string/gerry_login_login"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/gerry_ForgotPassword_TextView_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/gerry_forgot_password_login"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:textColor="@drawable/custom_text_color"/>
+
+
+            <Button
+                android:id="@+id/gerry_Register_Button_login"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="@string/gerry_register_login"
+                android:layout_marginTop="50dp"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
