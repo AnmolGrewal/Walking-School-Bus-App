@@ -29,7 +29,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/gerry_email_login"
-                android:inputType="textEmailAddress" />
+                android:inputType="textWebEmailAddress" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,7 +47,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/gerry_password_login"
-                android:inputType="textPassword" />
+                android:inputType="textWebPassword"/>
         </LinearLayout>
 
 
@@ -76,18 +76,13 @@
                 android:focusable="true"
                 android:textColor="@drawable/custom_text_color"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/black"
-                android:layout_marginTop="30dp"/>
 
             <Button
                 android:id="@+id/gerry_Register_Button_login"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/gerry_register_login"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="50dp"
                 android:layout_gravity="center"/>
         </LinearLayout>
     </LinearLayout>

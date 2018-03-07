@@ -15,8 +15,6 @@ import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 import com.cmpt276.project.walkinggroupapp.proxy.WGServerProxy;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import com.cmpt276.project.walkinggroupapp.R;
 
@@ -33,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private String mPassword;
     private String mEmail;
     private long userId = 0;
+    private Boolean mLoginSuccess = false;
 
     private WGServerProxy proxy;
 
@@ -48,20 +47,38 @@ public class LoginActivity extends AppCompatActivity {
         RegisterViews();
 
         //test creating user
-        CreateUser();
+        CreateUserTest();
     }
 
 
 
     private void response(User user) {
         Log.w(TAG, "Server replied with user: " + user.toString());
-        userId = user.getId();
+    }
+
+    private void loginResponse(Void returnedNothing) {
+        Log.w(TAG, "Server replied to login request (no content was expected).");
+        mLoginSuccess = true;
+        //go to Main Menu
+        if(mLoginSuccess) {
+            Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+    private void response(Void returnedNothing) {
+        Log.w(TAG, "Server replied to login request (no content was expected).");
+    }
+
+    private void onReceiveToken(String token) {
+        // Replace the current proxy with one that uses the token!
+        Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
+        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
     }
 
 
     private void RegisterViews() {
-
-
 
         //login button
         mLoginButton = findViewById(R.id.gerry_Login_Button_login);
@@ -69,7 +86,26 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //validate provided email and password
+
+            // Build new user
+            User user = new User();
+            user.setEmail(mEmail);
+            user.setPassword(mPassword);
+
+            // Register for token received:
+            ProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
+
+            // Make call
+            Call<Void> caller = proxy.login(user);
+            ProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> loginResponse(returnedNothing));
+                                                                        //sets mLoginSuccess to true if successful
+                                                                        //goes to mainMenu as well
+
+
+
+
+
+
 
             }
         });
@@ -93,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //go to ForgotPassword Activity
-                //Toast.makeText(LoginActivity.this,"click succes",Toast.LENGTH_SHORT).show();
+                //go to Main Menu
             }
         });
 
@@ -151,10 +187,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void ValidateUser(String email, String password) {
 
-        //obtain list of all users in server
+
     }
 
-    private void CreateUser() {
+
+    private void CreateUserTest() {
         // Build new user
         User user = new User();
         user.setEmail("gerry1@test.com");

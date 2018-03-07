@@ -27,7 +27,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  */
 public class ProxyBuilder {
     // Select a server (top one is production one; others are for testing)
-    private static final String SERVER_URL = "https://cmpt276-1177-bf.cmpt.sfu.ca:8443/";
+      private static final String SERVER_URL = "https://cmpt276-1177-bf.cmpt.sfu.ca:8443/";
 //    private static final String SERVER_URL = "https://cmpt276-1177-bf.cmpt.sfu.ca:9443/";
 //    private static final String SERVER_URL = "https://localhost:8443/";
 
