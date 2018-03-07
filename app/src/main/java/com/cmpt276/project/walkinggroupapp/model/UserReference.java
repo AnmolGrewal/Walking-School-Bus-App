@@ -5,11 +5,11 @@ package com.cmpt276.project.walkinggroupapp.model;
  * It contains a user id and a hypertext reference.
  */
 public class UserReference {
-    private Integer id;
+    private Long id;
     private String href;
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -17,7 +17,7 @@ public class UserReference {
         return href;
     }
 
-    public boolean equals(Integer id) {
+    public boolean equals(Long id) {
         return this.id.equals(id);
     }
 }

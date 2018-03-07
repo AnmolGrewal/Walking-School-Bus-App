@@ -1,6 +1,5 @@
 package com.cmpt276.project.walkinggroupapp.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +20,7 @@ public class User {
     private List<UserReference> monitoredByUsers = null;
     private List<UserReference> monitorsUsers = null;
 
-    private List<Group> walkingGroups;
+    private List<WalkingGroup> walkingGroups;
 
     // TODO: need a new name;
     private String href;
