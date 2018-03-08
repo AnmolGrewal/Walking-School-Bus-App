@@ -5,6 +5,7 @@ import java.util.List;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -32,6 +33,21 @@ public interface WGServerProxy {
 
     @GET("/users/byEmail")
     Call<User> getUserByEmail(@Query("email") String email);
+
+    @POST("/users/{id}/monitorsUsers")
+    Call<List<User>> addNewMonitorsUser(@Path("id") Long userId);
+
+    @GET("/users/{id}/monitorsUsers")
+    Call<List<User>> getMonitorsUsersById(@Path("id") Long userId);
+
+    @DELETE("/users/{idA}/monitorsUsers/{idB}")
+    Call<Void> romoveMonitorsUser(@Path("idA") Long userId, Long monitoredUserId);
+
+//    @POST("/users/{id}/monitoredByUsers")
+//    Call<List<User>> addNewMonitoredByUser(@Path("id") Long userId);
+
+    @GET("/users/{id}/monitoredByUsers")
+    Call<List<User>> getMonitoredByUsersById(@Path("id") Long userId);
 
     /**
      * MORE GOES HERE:
