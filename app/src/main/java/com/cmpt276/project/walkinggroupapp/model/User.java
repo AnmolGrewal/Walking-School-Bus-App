@@ -59,6 +59,22 @@ public class User {
         this.monitoredByUsers = monitoredByUsers;
     }
 
+    public User getUserBy(int index) {
+        validateIndexWithException(index);
+        return monitoredByUsers.get(index);
+    }
+
+    private void validateIndexWithException(int index) {
+        if (index < 0 || index >= monitoredByUsers.size()) {
+            throw new IllegalArgumentException();
+        }
+
+    }
+
+    public void addUser(User user){
+        monitoredByUsers.add(user);
+    }
+
     public List<User> getMonitorsUsers() {
         return monitorsUsers;
     }

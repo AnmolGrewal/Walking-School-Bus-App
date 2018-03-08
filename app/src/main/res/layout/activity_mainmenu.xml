@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cmpt276.project.walkinggroupapp.appactivities.MainMenu_Activity">
+
+    <Button
+        android:id="@+id/jacky_add_monitoring_you"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="190dp"
+        android:text="Add"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="@+id/jacky_you_are_monitoring_by"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/jacky_you_are_monitoring_by"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.153" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="0dp"
+        android:layout_height="248dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/jacky_monitoring_you_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="People who are monitoring you"
+            android:textSize="18sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="10dp" />
+
+        <ListView
+            android:id="@+id/jacky_monitoring_by_list"
+            android:layout_width="330dp"
+            android:layout_height="190dp"
+            tools:layout_editor_absoluteX="15dp"
+            tools:layout_editor_absoluteY="35dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="People who you are monitoring"
+            android:textSize="18sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="240dp" />
+
+        <ListView
+            android:id="@+id/jacky_monitoing_list"
+            android:layout_width="330dp"
+            android:layout_height="190dp"
+            tools:layout_editor_absoluteX="15dp"
+            tools:layout_editor_absoluteY="265dp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/jacky_you_are_monitoring_by"
+        android:layout_width="78dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="227dp"
+        android:layout_marginTop="220dp"
+        android:text="Add"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+</android.support.constraint.ConstraintLayout>

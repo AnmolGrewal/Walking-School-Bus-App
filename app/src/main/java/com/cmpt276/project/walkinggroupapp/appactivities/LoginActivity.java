@@ -1,5 +1,6 @@
 package com.cmpt276.project.walkinggroupapp.appactivities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -34,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     private Boolean mLoginSuccess = false;
 
     private WGServerProxy proxy;
+
+    private  Intent intent;     ////Remove Jacky Testing ONLY
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +78,9 @@ public class LoginActivity extends AppCompatActivity {
         // Replace the current proxy with one that uses the token!
         Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
         proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
+        intent =  MainMenu_Activity.makeIntnet(getApplicationContext(), token);
+        startActivity(intent);
+
     }
 
 
@@ -100,10 +106,6 @@ public class LoginActivity extends AppCompatActivity {
             ProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> loginResponse(returnedNothing));
                                                                         //sets mLoginSuccess to true if successful
                                                                         //goes to mainMenu as well
-
-
-
-
 
 
 
@@ -201,5 +203,6 @@ public class LoginActivity extends AppCompatActivity {
         // Make call
         Call<User> caller = proxy.createNewUser(user);
         ProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> response(returnedUser));
+
     }
 }
