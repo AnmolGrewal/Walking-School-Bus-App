@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by zherenx on 2018-03-03.
+ * This class model a walking group.
  */
 public class WalkingGroup {
 

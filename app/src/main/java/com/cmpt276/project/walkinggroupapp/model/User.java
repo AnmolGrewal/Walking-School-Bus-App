@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Simple User class to store the data the server expects and returns.
- * (Incomplete: Needs support for monitoring and groups).
+ * This class model a user.
  */
 public class User {
     private Long id;
