@@ -15,7 +15,7 @@ public class User {
 
     private List<User> monitoredByUsers = new ArrayList<>();
     private List<User> monitorsUsers = new ArrayList<>();
-    private List<Void> walkingGroups = new ArrayList<>();   // <-- TO BE IMPLEMENTED
+    private List<WalkingGroup> walkingGroups = new ArrayList<>();
 
     private String href;
 
@@ -67,11 +67,11 @@ public class User {
         this.monitorsUsers = monitorsUsers;
     }
 
-    public List<Void> getWalkingGroups() {
+    public List<WalkingGroup> getWalkingGroups() {
         return walkingGroups;
     }
 
-    public void setWalkingGroups(List<Void> walkingGroups) {
+    public void setWalkingGroups(List<WalkingGroup> walkingGroups) {
         this.walkingGroups = walkingGroups;
     }
 
