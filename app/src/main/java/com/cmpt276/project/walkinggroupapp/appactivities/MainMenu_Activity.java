@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.User;
@@ -40,18 +41,22 @@ public class MainMenu_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_mainmenu);
 
         extractDataFromIntent();
+        Log.i("MyApp", "After extract");
         createUser();
-        populateListView();
     }
 
     private void populateListView()
     {
         //Create a List of Items already done with listCollection
-
+        Log.i("MyApp", "Before ArrayAdapter");
         ArrayAdapter<User> adapter = new myListAdapter();
+        Log.i("MyApp", "After ArrayAdapter");
         //Configure ListView
         monitorYouList = findViewById(R.id.jacky_monitoring_by_list);
+        Log.i("MyApp", "After FindView");
         monitorYouList.setAdapter(adapter);
+        Log.i("MyApp", "After afterSetAdapter");
+        Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
 
     private class myListAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
@@ -62,13 +67,14 @@ public class MainMenu_Activity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             //Make sure We are given a view
+            Log.i("MyApp", "Inside getView");
             View itemView = convertView;
             if(itemView == null)
             {
                 itemView = getLayoutInflater().inflate(R.layout.list_layout, parent, false);
             }
 
-            //Find the pot to work with
+            //Find a user to add
             User currentUser = user_local.getUserBy(position);
 
             //Fill the view
@@ -81,8 +87,8 @@ public class MainMenu_Activity extends AppCompatActivity {
             makeName.setText(currentUser.getName());
 
             //Email
-            TextView makeWeight = itemView.findViewById(R.id.jacky_user_email_dynamic);
-            makeWeight.setText(currentUser.getEmail());
+            TextView makeEmail = itemView.findViewById(R.id.jacky_user_email_dynamic);
+            makeEmail.setText(currentUser.getEmail());
 
 
             return itemView;
@@ -90,15 +96,20 @@ public class MainMenu_Activity extends AppCompatActivity {
     }
 
     private void response(User user) {
-        Log.w("MyApp", "Server replied with user: " + user.toString());
+        Log.i("MyApp", "Server replied with user: " );
         user_local = user;
+        Log.i("MyApp", "Name:" + user_local.getName() + " Email: " + user_local.getEmail());                        //It is here because it is a critical section, we need the server response before making the list
+        populateListView();
     }
 
     private void createUser() {
         proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
+        Log.i("MyApp", "After getproxy" );
 
-        Call<User> caller = proxy.getUserByEmail("testuser1@test.com");
+        Call<User> caller = proxy.getUserByEmail("1");                     //For now since the email is not being passed i will use a standard one
+        Log.i("MyApp", "After Call" );
         ProxyBuilder.callProxy(MainMenu_Activity.this, caller, returnedUser -> response(returnedUser));
+        Log.i("MyApp", "After callProxy" );
     }
 
     public static Intent makeIntnet(Context context, String token){
