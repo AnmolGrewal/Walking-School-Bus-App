@@ -1,6 +1,5 @@
 package com.cmpt276.project.walkinggroupapp.appactivities;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -34,8 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     private long userId = 0;
     private Boolean mLoginSuccess = false;
 
-    private Intent intent;
-
     private WGServerProxy proxy;
 
     @Override
@@ -65,7 +62,6 @@ public class LoginActivity extends AppCompatActivity {
         //go to Main Menu
         if(mLoginSuccess) {
             Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
-            startActivity(intent);
         }
 
     }
@@ -79,8 +75,6 @@ public class LoginActivity extends AppCompatActivity {
         // Replace the current proxy with one that uses the token!
         Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
         proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
-        intent =  MainMenu_Activity.makeIntnet(getApplicationContext(), token);
-
     }
 
 
@@ -106,6 +100,10 @@ public class LoginActivity extends AppCompatActivity {
             ProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> loginResponse(returnedNothing));
                                                                         //sets mLoginSuccess to true if successful
                                                                         //goes to mainMenu as well
+
+
+
+
 
 
 
@@ -196,13 +194,12 @@ public class LoginActivity extends AppCompatActivity {
     private void CreateUserTest() {
         // Build new user
         User user = new User();
-        user.setEmail("2");
-        user.setName("Test3");
-        user.setPassword("1");
+        user.setEmail("gerry1@test.com");
+        user.setName("Gerry Test1");
+        user.setPassword("justtesting");
 
         // Make call
         Call<User> caller = proxy.createNewUser(user);
         ProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> response(returnedUser));
-
     }
 }
