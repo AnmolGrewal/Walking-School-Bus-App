@@ -45,12 +45,4 @@
         android:text="User Email Here"
         android:textSize="18sp" />
 
-    <ImageView
-        android:id="@+id/jacky_temp_pic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/jacky_user_email_dynamic"
-        android:layout_alignParentEnd="true"
-        app:srcCompat="@drawable/temp_pic" />
-
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.cmpt276.project.walkinggroupapp.appactivities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +37,8 @@ public class LoginActivity extends AppCompatActivity {
     private String mEmail;
     private long userId = 0;
 
+    private Intent intent;
+
     private WGServerProxy proxy;
 
     @Override
@@ -50,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         RegisterViews();
 
         //test creating user
-        //CreateUserTest();
+        CreateUserTest();
 
         //If user did not logout -- auto login
         //Load Saved data from preferences
@@ -81,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //go to Main Menu
         Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
+        startActivity(intent);
 
 
     }
@@ -89,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         // Replace the current proxy with one that uses the token!--to enable server data access
         Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
         proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
+        intent = MainMenu_Activity.makeIntnet(this, token);
     }
 
 
@@ -205,9 +210,9 @@ public class LoginActivity extends AppCompatActivity {
     private void CreateUserTest() {
         // Build new user
         User user = new User();
-        user.setEmail("gerry1@test.com");
+        user.setEmail("3");
         user.setName("Gerry Test1");
-        user.setPassword("justtesting");
+        user.setPassword("3");
 
         // Make call
         Call<User> caller = proxy.createNewUser(user);

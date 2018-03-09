@@ -2,6 +2,7 @@ package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,18 +25,23 @@ import retrofit2.Call;
 
 public class MainMenu_Activity extends AppCompatActivity {
 
+    private static final String PREFERENCE_EMAIL = "saved.email.key";
     public static final String INTENT_TOKEN = "com.cmpt276.project.walkinggroupapp.intentToken";
-    private Button addYouMonitorButton;
-    private Button addMonitorYouButton;
+
+    private Button youMonitorBtn;
+    private Button monitorsYouBtn;
 
     private ListView youMonitorList;
-    private ListView monitorYouList;
+    private ListView monitorsYouList;
+
+    private List<User> youMonitor_tempList;
+    private List<User> monitorBy_tempList;
 
     private WGServerProxy proxy;
 
+
     private User user_local;
-    private User temp_user;
-    private Boolean flag = false;
+
     private String token;
 
     @Override
@@ -45,164 +50,132 @@ public class MainMenu_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_mainmenu);
 
         extractDataFromIntent();
-        Log.i("MyApp", "After extract");
         createUser();
         setupButton();
     }
 
     private void setupButton() {
         //register button
-        addMonitorYouButton = findViewById(R.id.jacky_add_monitoring_you);
-        addMonitorYouButton.setOnClickListener(new View.OnClickListener() {
+        youMonitorBtn = findViewById(R.id.jacky_add_monitoring_button);
+        youMonitorBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //To add user activity
-                //Temp fix we add here but later in a different page
-                long temp = 111;
-                newOne(temp);
-                Log.i("MyApp", "Data sent in is " + temp);
+                Intent intent = AddMonitoringUser.createAddIntent(getApplicationContext(), token);
+                startActivity(intent);
+            }
+        });
 
+        monitorsYouBtn = findViewById(R.id.jacky_add_monitoring_by_button);
+        monitorsYouBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Add intent
             }
         });
     }
 
-    private void newOne(Long id)
-    {
-        Call<User> caller = proxy.getUserById(id);
-        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, newUser -> waitNew(newUser));
+    private void createUser() {
+        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
+        String email = getSavedEmail();
+        Call<User> caller = proxy.getUserByEmail(email);
+        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, returnedUser -> response(returnedUser));
     }
 
-    private void waitNew(User user)
-    {
-        Log.i("MyApp", "    User: " + user.toString());
-        temp_user = user;
-        Call<List<User>> caller = proxy.addNewMonitorsUser(user_local.getId(),temp_user);                    //Since only the id is provided
-        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, monitoringList -> AddUser(monitoringList));
+    private void response(User user) {
+        Log.i("MyApp", "Server replied with user: " + user.toString());
+        user_local = user;
+
+        Call<List<User>> caller = proxy.getMonitorsUsersById(user_local.getId());
+        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, monitorUserList -> updateYouMonitor(monitorUserList));
+
+        Call<List<User>> newCaller = proxy.getMonitoredByUsersById(user_local.getId());
+        ProxyBuilder.callProxy(MainMenu_Activity.this, newCaller, monitorByUserList -> updateMonitorBy(monitorByUserList));
     }
 
-    private void AddUser(List <User> monitoringList)
-    {
-        Log.i("MyApp", "ADDED user");
-        for (User user : monitoringList) {
-            Log.w("MyApp", "    User: " + user.toString());
-        }
-        user_local.addUser(temp_user);
-        populateListView();
+    private void updateYouMonitor(List<User> monitorUserList) {
+        Log.i("MyApp","Inside update you");
+        youMonitor_tempList = monitorUserList;
+        populateMonitorUser();
     }
 
-    private void populateListView()
-    {
-        //Create a List of Items already done with listCollection
-        Log.i("MyApp", "Before ArrayAdapter");
-        ArrayAdapter<User> adapter = new myListAdapter();
-        Log.i("MyApp", "After ArrayAdapter");
+    private void populateMonitorUser() {
+        ArrayAdapter<User> adapter = new monitorUserAdapter();
         //Configure ListView
-        monitorYouList = findViewById(R.id.jacky_monitoring_by_list);
-        Log.i("MyApp", "After FindView");
-        monitorYouList.setAdapter(adapter);
-        Log.i("MyApp", "After afterSetAdapter");
+        youMonitorList = findViewById(R.id.jacky_monitoring_list);
+        youMonitorList.setAdapter(adapter);
         Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
-    
-    private class myListAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
-        public myListAdapter() {
-            super(MainMenu_Activity.this, R.layout.list_layout, user_local.getMonitoredByUsers());
+
+    private class monitorUserAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
+        public monitorUserAdapter() {
+            super(MainMenu_Activity.this, R.layout.list_layout, user_local.getMonitorsUsers());
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             //Make sure We are given a view
-            Log.i("MyApp", "Inside getView");
             View itemView = convertView;
-            if(itemView == null)
-            {
+            if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.list_layout, parent, false);
             }
-
             //Find a user to add
-            User currentUser = user_local.getUserBy(position);
-            //Since Only Id is provided
-            Call<User> caller = proxy.getUserById(currentUser.getId());                    //Since only the id is provided
-            ProxyBuilder.callProxy(MainMenu_Activity.this, caller, returnedUser -> getUser(returnedUser));
-
-            while(flag == false);
-            flag = false;
-
-            //Fill the view
-            ImageView imageView =itemView.findViewById(R.id.jacky_temp_pic);
-            //Done to set icon
-            imageView.setImageResource(R.drawable.temp_pic);
+            User currentUser = youMonitor_tempList.get(position);
 
             //Name:
-            TextView makeName =itemView.findViewById(R.id.jacky_user_name_dynamic);
-            makeName.setText(temp_user.getName());
+            TextView makeName = itemView.findViewById(R.id.jacky_user_name_dynamic);
+            makeName.setText(currentUser.getName());
 
             //Email
             TextView makeEmail = itemView.findViewById(R.id.jacky_user_email_dynamic);
-            makeEmail.setText(temp_user.getEmail());
+            makeEmail.setText(currentUser.getEmail());
 
 
             return itemView;
         }
     }
 
-    private void getUser(User user)
-    {
-        Log.i("MyApp", "Server replied with user: " + user.toString());
-        temp_user = user;
-        flag = true;
+    private void updateMonitorBy(List<User> monitorByUserList) {
+        Log.i("MyApp", "How many times CALLED???");
+        monitorBy_tempList = monitorByUserList;
+        populateMonitorByUser();
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private void response(User user) {
-        Log.i("MyApp", "Server replied with user: " + user.toString() );
-        user_local = user;
-        Log.i("MyApp", "Name:" + user_local.getName() + " Email: " + user_local.getEmail());                        //It is here because it is a critical section, we need the server response before making the list
-        populateListView();
-
-        Call<List<User>> caller = proxy.getUsers();
-        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, returnedUsers -> list(returnedUsers));
+    private void populateMonitorByUser() {
+        ArrayAdapter<User> adapter = new monitorByUserAdapter();
+        //Configure ListView
+        monitorsYouList = findViewById(R.id.jacky_monitoing_by_list);
+        monitorsYouList.setAdapter(adapter);
+        Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
 
+    private class monitorByUserAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
+        public monitorByUserAdapter() {
+            super(MainMenu_Activity.this, R.layout.list_layout, user_local.getMonitorByUsers());
+        }
 
-    private void list(List<User> returnedUsers) {
-        Log.w("MyApp", "All Users:");
-        for (User user : returnedUsers) {
-            Log.w("MyApp", "    User: " + user.toString());
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            //Make sure We are given a view
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = getLayoutInflater().inflate(R.layout.list_layout, parent, false);
+            }
+            //Find a user to add
+            Log.i("MyApp", "Inside Monitoring By");
+            User currentUser = monitorBy_tempList.get(position);
+
+            //Name:
+            TextView makeName = itemView.findViewById(R.id.jacky_user_name_dynamic);
+            makeName.setText(currentUser.getName());
+
+            //Email
+            TextView makeEmail = itemView.findViewById(R.id.jacky_user_email_dynamic);
+            makeEmail.setText(currentUser.getEmail());
+
+            return itemView;
         }
     }
 
-    private void createUser() {
-        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
-        Log.i("MyApp", "After getproxy" );
-
-        Call<User> caller = proxy.getUserByEmail("1");                     //For now since the email is not being passed i will use a standard one
-        Log.i("MyApp", "After Call" );
-        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, returnedUser -> response(returnedUser));
-        Log.i("MyApp", "After callProxy" );
-    }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     public static Intent makeIntnet(Context context, String token){
         Intent intent = new Intent(context, MainMenu_Activity.class);
         intent.putExtra(INTENT_TOKEN, token);
@@ -212,6 +185,12 @@ public class MainMenu_Activity extends AppCompatActivity {
     private void extractDataFromIntent(){
         Intent intent = getIntent();
         token = intent.getStringExtra(INTENT_TOKEN);
+    }
+
+    private String getSavedEmail()
+    {
+        SharedPreferences saveEmail= getSharedPreferences("MyData", MODE_PRIVATE);
+        return saveEmail.getString(PREFERENCE_EMAIL, "0");
     }
 
 }
