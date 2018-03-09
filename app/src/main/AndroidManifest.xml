@@ -16,8 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".appactivities.MainMenu_Activity"></activity>
-        <activity android:name=".appactivities.LoginActivity"></activity>
+        <activity android:name=".appactivities.MainMenu_Activity" />
+        <activity android:name=".appactivities.LoginActivity" />
         <activity android:name=".appactivities.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +26,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CheckMonitoringUsers" />
-        <activity android:name=".appactivities.AddMonitoringUser"></activity>
+        <activity android:name=".appactivities.AddMonitoringUser" />
+        <activity android:name=".appactivities.AddMonitoingByUser"></activity>
     </application>
 
 </manifest>

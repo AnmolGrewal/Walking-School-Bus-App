@@ -43,8 +43,8 @@ public interface WGServerProxy {
     @DELETE("/users/{idA}/monitorsUsers/{idB}")
     Call<Void> removeMonitorsUser(@Path("idA") Long userId, Long monitoredUserId);
 
-//    @POST("/users/{id}/monitoredByUsers")
-//    Call<List<User>> addNewMonitoredByUser(@Path("id") Long userId);
+    @POST("/users/{id}/monitoredByUsers")
+    Call<List<User>> addNewMonitoredByUser(@Path("id") Long userId, @Body User monitorUser);
 
     @GET("/users/{id}/monitoredByUsers")
     Call<List<User>> getMonitoredByUsersById(@Path("id") Long userId);

@@ -19,7 +19,7 @@ import java.util.List;
 
 import retrofit2.Call;
 
-public class AddMonitoringUser extends AppCompatActivity {
+public class AddMonitoingByUser extends AppCompatActivity {
 
     private static final String PREFERENCE_EMAIL= "saved.email.key";
     public static final String INTENT_TOKEN = "com.cmpt276.project.walkinggroupapp.intentToken";
@@ -37,7 +37,7 @@ public class AddMonitoringUser extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_monitoring_user);
+        setContentView(R.layout.activity_add_monitoing_by_user);
 
         //Extract data from intent
         extractDataFromIntent();
@@ -62,17 +62,17 @@ public class AddMonitoringUser extends AppCompatActivity {
         });
     }
 
-    private void response(User user) {
-        Log.i("MyApp", "Server replied with user: " + user.toString() );
-        user_local = user;
-    }
-
     private void createUser() {
         proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
         String email = getSavedEmail();
         Log.i("MyApp", "Email is: " + email);
-        Call<User> caller = proxy.getUserByEmail(email);                     //For now since the email is not being passed i will use a standard one
-        ProxyBuilder.callProxy(AddMonitoringUser.this, caller, returnedUser -> response(returnedUser));
+        Call<User> caller = proxy.getUserByEmail(email);
+        ProxyBuilder.callProxy(AddMonitoingByUser.this, caller, returnedUser -> response(returnedUser));
+    }
+
+    private void response(User user) {
+        Log.i("MyApp", "Server replied with user: " + user.toString() );
+        user_local = user;
     }
 
     private String getSavedEmail()
@@ -85,15 +85,15 @@ public class AddMonitoringUser extends AppCompatActivity {
     private void findUser(Long id)
     {
         Call<User> caller = proxy.getUserById(id);
-        ProxyBuilder.callProxy(AddMonitoringUser.this, caller, newUser -> waitNew(newUser));
+        ProxyBuilder.callProxy(AddMonitoingByUser.this, caller, newUser -> waitNew(newUser));
     }
 
     private void waitNew(User user)
     {
         Log.i("MyApp", "    User: " + user.toString());
         User temp_user = user;
-        Call<List<User>> caller = proxy.addNewMonitorsUser(user_local.getId(),temp_user);                    //Since only the id is provided
-        ProxyBuilder.callProxy(AddMonitoringUser.this, caller, monitoringList -> AddUser(monitoringList));
+        Call<List<User>> caller = proxy.addNewMonitoredByUser(user_local.getId(), temp_user);
+        ProxyBuilder.callProxy(AddMonitoingByUser.this, caller, monitoringList -> AddUser(monitoringList));
     }
 
     private void AddUser(List <User> monitoringList)
@@ -106,7 +106,7 @@ public class AddMonitoringUser extends AppCompatActivity {
     }
 
 
-    public static Intent createAddIntent(Context context, String token){
+    public static Intent createAddByIntent(Context context, String token){
         Intent intent = new Intent(context, AddMonitoringUser.class);
         intent.putExtra(INTENT_TOKEN, token);
         return intent;
