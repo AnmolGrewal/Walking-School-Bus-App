@@ -35,7 +35,7 @@ public interface WGServerProxy {
     Call<User> getUserByEmail(@Query("email") String email);
 
     @POST("/users/{id}/monitorsUsers")
-    Call<List<User>> addNewMonitorsUser(@Path("id") Long userId);
+    Call<List<User>> addNewMonitorsUser(@Path("id") Long userId, @Body User monitorUser);
 
     @GET("/users/{id}/monitorsUsers")
     Call<List<User>> getMonitorsUsersById(@Path("id") Long userId);

@@ -19,6 +19,8 @@ import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 import com.cmpt276.project.walkinggroupapp.proxy.WGServerProxy;
 
+import java.util.List;
+
 import retrofit2.Call;
 
 public class MainMenu_Activity extends AppCompatActivity {
@@ -33,6 +35,8 @@ public class MainMenu_Activity extends AppCompatActivity {
     private WGServerProxy proxy;
 
     private User user_local;
+    private User temp_user;
+    private Boolean flag = false;
     private String token;
 
     @Override
@@ -43,6 +47,47 @@ public class MainMenu_Activity extends AppCompatActivity {
         extractDataFromIntent();
         Log.i("MyApp", "After extract");
         createUser();
+        setupButton();
+    }
+
+    private void setupButton() {
+        //register button
+        addMonitorYouButton = findViewById(R.id.jacky_add_monitoring_you);
+        addMonitorYouButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //To add user activity
+                //Temp fix we add here but later in a different page
+                long temp = 111;
+                newOne(temp);
+                Log.i("MyApp", "Data sent in is " + temp);
+
+            }
+        });
+    }
+
+    private void newOne(Long id)
+    {
+        Call<User> caller = proxy.getUserById(id);
+        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, newUser -> waitNew(newUser));
+    }
+
+    private void waitNew(User user)
+    {
+        Log.i("MyApp", "    User: " + user.toString());
+        temp_user = user;
+        Call<List<User>> caller = proxy.addNewMonitorsUser(user_local.getId(),temp_user);                    //Since only the id is provided
+        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, monitoringList -> AddUser(monitoringList));
+    }
+
+    private void AddUser(List <User> monitoringList)
+    {
+        Log.i("MyApp", "ADDED user");
+        for (User user : monitoringList) {
+            Log.w("MyApp", "    User: " + user.toString());
+        }
+        user_local.addUser(temp_user);
+        populateListView();
     }
 
     private void populateListView()
@@ -58,7 +103,7 @@ public class MainMenu_Activity extends AppCompatActivity {
         Log.i("MyApp", "After afterSetAdapter");
         Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
-
+    
     private class myListAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
         public myListAdapter() {
             super(MainMenu_Activity.this, R.layout.list_layout, user_local.getMonitoredByUsers());
@@ -76,6 +121,12 @@ public class MainMenu_Activity extends AppCompatActivity {
 
             //Find a user to add
             User currentUser = user_local.getUserBy(position);
+            //Since Only Id is provided
+            Call<User> caller = proxy.getUserById(currentUser.getId());                    //Since only the id is provided
+            ProxyBuilder.callProxy(MainMenu_Activity.this, caller, returnedUser -> getUser(returnedUser));
+
+            while(flag == false);
+            flag = false;
 
             //Fill the view
             ImageView imageView =itemView.findViewById(R.id.jacky_temp_pic);
@@ -84,22 +135,51 @@ public class MainMenu_Activity extends AppCompatActivity {
 
             //Name:
             TextView makeName =itemView.findViewById(R.id.jacky_user_name_dynamic);
-            makeName.setText(currentUser.getName());
+            makeName.setText(temp_user.getName());
 
             //Email
             TextView makeEmail = itemView.findViewById(R.id.jacky_user_email_dynamic);
-            makeEmail.setText(currentUser.getEmail());
+            makeEmail.setText(temp_user.getEmail());
 
 
             return itemView;
         }
     }
 
+    private void getUser(User user)
+    {
+        Log.i("MyApp", "Server replied with user: " + user.toString());
+        temp_user = user;
+        flag = true;
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     private void response(User user) {
-        Log.i("MyApp", "Server replied with user: " );
+        Log.i("MyApp", "Server replied with user: " + user.toString() );
         user_local = user;
         Log.i("MyApp", "Name:" + user_local.getName() + " Email: " + user_local.getEmail());                        //It is here because it is a critical section, we need the server response before making the list
         populateListView();
+
+        Call<List<User>> caller = proxy.getUsers();
+        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, returnedUsers -> list(returnedUsers));
+    }
+
+
+    private void list(List<User> returnedUsers) {
+        Log.w("MyApp", "All Users:");
+        for (User user : returnedUsers) {
+            Log.w("MyApp", "    User: " + user.toString());
+        }
     }
 
     private void createUser() {
@@ -112,6 +192,17 @@ public class MainMenu_Activity extends AppCompatActivity {
         Log.i("MyApp", "After callProxy" );
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public static Intent makeIntnet(Context context, String token){
         Intent intent = new Intent(context, MainMenu_Activity.class);
         intent.putExtra(INTENT_TOKEN, token);

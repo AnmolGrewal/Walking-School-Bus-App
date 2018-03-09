@@ -34,9 +34,9 @@ public class LoginActivity extends AppCompatActivity {
     private long userId = 0;
     private Boolean mLoginSuccess = false;
 
-    private WGServerProxy proxy;
+    private Intent intent;
 
-    private  Intent intent;     ////Remove Jacky Testing ONLY
+    private WGServerProxy proxy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         //go to Main Menu
         if(mLoginSuccess) {
             Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
+            startActivity(intent);
         }
 
     }
@@ -79,7 +80,6 @@ public class LoginActivity extends AppCompatActivity {
         Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
         proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
         intent =  MainMenu_Activity.makeIntnet(getApplicationContext(), token);
-        startActivity(intent);
 
     }
 
@@ -196,9 +196,9 @@ public class LoginActivity extends AppCompatActivity {
     private void CreateUserTest() {
         // Build new user
         User user = new User();
-        user.setEmail("gerry1@test.com");
-        user.setName("Gerry Test1");
-        user.setPassword("justtesting");
+        user.setEmail("2");
+        user.setName("Test3");
+        user.setPassword("1");
 
         // Make call
         Call<User> caller = proxy.createNewUser(user);
