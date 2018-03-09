@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         RegisterViews();
 
         //test creating user
-        CreateUserTest();
+        //CreateUserTest();
 
         //If user did not logout -- auto login
         //Load Saved data from preferences
@@ -210,9 +210,9 @@ public class LoginActivity extends AppCompatActivity {
     private void CreateUserTest() {
         // Build new user
         User user = new User();
-        user.setEmail("3");
+        user.setEmail("gerry1@test.com");
         user.setName("Gerry Test1");
-        user.setPassword("3");
+        user.setPassword("justtesting");
 
         // Make call
         Call<User> caller = proxy.createNewUser(user);
