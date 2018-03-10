@@ -85,7 +85,7 @@ public class MainMenu_Activity extends AppCompatActivity {
         monitorsYouBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = AddMonitoingByUser.createAddByIntent(getApplicationContext(), token);
+                Intent intent = AddMonitoringByUser.createAddByIntent(getApplicationContext(), token);
                 startActivity(intent);
             }
         });
