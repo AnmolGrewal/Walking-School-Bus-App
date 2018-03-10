@@ -7,6 +7,8 @@ import android.widget.Toast;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 import com.cmpt276.project.walkinggroupapp.proxy.WGServerProxy;
 
+import java.util.List;
+
 import retrofit2.Call;
 
 /**
@@ -38,6 +40,7 @@ public class ModelManager {
 //
 //    }
 
+
     public void setApiKey(String apiKey) {
         this.apiKey = apiKey;
         proxy = ProxyBuilder.getProxy(apiKey, token);
@@ -66,5 +69,32 @@ public class ModelManager {
     private void loginResponse(Void returnedNothing) {
         // TODO: do something?
     }
+
+
+
+
+
+    public User getUser() {
+
+        return user;
+    }
+
+    public List<User> getMonitorsUsers() {
+        return null;
+    }
+
+    public List<User> getMonitoredByUsers() {
+        return null;
+    }
+
+    public void addNewMonitorsUser() {
+
+    }
+
+    public void addNewMonitoredByUser() {
+
+    }
+
+
 
 }
