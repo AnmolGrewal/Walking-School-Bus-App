@@ -32,13 +32,14 @@ public class AddMonitoingByUser extends AppCompatActivity {
 
     private Button addBtn;
 
-    private EditText userid;
+    private EditText userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_monitoing_by_user);
 
+        Log.i("MyApp", "INSIDE MONITOREDBY");
         //Extract data from intent
         extractDataFromIntent();
         //Need to recreate the user
@@ -49,15 +50,17 @@ public class AddMonitoingByUser extends AppCompatActivity {
 
     private void setUpButton()
     {
-        addBtn = findViewById(R.id.jacky_add_user_button);
+        Log.i("MyApp", "Inside set btn");
+        addBtn = findViewById(R.id.jacky_add_by_user_button);
+        Log.i("MyApp", "After find btton");
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Once clicked we get data from user input, find user, if found add else tell user error
-                userid = findViewById(R.id.jacky_add_user);
-                String strId = userid.getText().toString();
+                userId = findViewById(R.id.jacky_add_by_user);
+                String strId = userId.getText().toString();
                 Long longUserId = Long.parseLong(strId);
                 findUser(longUserId);
+
             }
         });
     }
@@ -66,11 +69,13 @@ public class AddMonitoingByUser extends AppCompatActivity {
         proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
         String email = getSavedEmail();
         Log.i("MyApp", "Email is: " + email);
-        Call<User> caller = proxy.getUserByEmail(email);
+        Call<User> caller = proxy.getUserByEmail("1");
+        Log.i("MyApp", "After caller");
         ProxyBuilder.callProxy(AddMonitoingByUser.this, caller, returnedUser -> response(returnedUser));
     }
 
     private void response(User user) {
+        Log.i("MyApp", "User invalid?");
         Log.i("MyApp", "Server replied with user: " + user.toString() );
         user_local = user;
     }
@@ -107,7 +112,7 @@ public class AddMonitoingByUser extends AppCompatActivity {
 
 
     public static Intent createAddByIntent(Context context, String token){
-        Intent intent = new Intent(context, AddMonitoringUser.class);
+        Intent intent = new Intent(context, AddMonitoingByUser.class);
         intent.putExtra(INTENT_TOKEN, token);
         return intent;
     }

@@ -6,11 +6,14 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +42,7 @@ public class MainMenu_Activity extends AppCompatActivity {
 
     private WGServerProxy proxy;
 
+    private int position_global;
 
     private User user_local;
 
@@ -51,10 +55,20 @@ public class MainMenu_Activity extends AppCompatActivity {
 
         extractDataFromIntent();
         createUser();
-        setupButton();
+        setupMonitorButton();
+        setupMontiorByButton();
+        registerClickMonitorUser();
+        registerClickMonitorByUser();
     }
 
-    private void setupButton() {
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        createUser();
+    }
+
+    private void setupMonitorButton() {
         //register button
         youMonitorBtn = findViewById(R.id.jacky_add_monitoring_button);
         youMonitorBtn.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +78,9 @@ public class MainMenu_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
+    private void setupMontiorByButton(){
         monitorsYouBtn = findViewById(R.id.jacky_add_monitoring_by_button);
         monitorsYouBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,6 +208,109 @@ public class MainMenu_Activity extends AppCompatActivity {
     {
         SharedPreferences saveEmail= getSharedPreferences("MyData", MODE_PRIVATE);
         return saveEmail.getString(PREFERENCE_EMAIL, "0");
+    }
+
+    private void registerClickMonitorUser()                                                                                    //For clicking on list object
+    {
+        final ListView list = findViewById(R.id.jacky_monitoring_list);
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View viewClicked, int position, long id)
+            {
+                //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
+                Log.i("MyApp", "Pressed Long" + position);
+                position_global = position;
+                PopupMenu popupMenu = new PopupMenu(MainMenu_Activity.this, viewClicked);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        switch(menuItem.getItemId())
+                        {
+                            case R.id.cancel:
+                                doCancel();
+                                break;
+                            case R.id.delete:
+                                doDelete();
+                                break;
+                        }
+                        return true;
+                    }
+
+                });
+
+                popupMenu.show();
+                return true;
+            }
+        });
+    }
+
+    private void registerClickMonitorByUser()                                                                                    //For clicking on list object
+    {
+        final ListView list = findViewById(R.id.jacky_monitoing_by_list);
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View viewClicked, int position, long id)
+            {
+                //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
+                Log.i("MyApp", "Pressed Long" + position);
+                position_global = position;
+                PopupMenu popupMenu = new PopupMenu(MainMenu_Activity.this, viewClicked);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        switch(menuItem.getItemId())
+                        {
+                            case R.id.cancel:
+                                doCancel();
+                                break;
+                            case R.id.delete:
+                                doDeleteBy();
+                                break;
+                        }
+                        return true;
+                    }
+
+                });
+
+                popupMenu.show();
+                return true;
+            }
+        });
+    }
+
+    private void doCancel()
+    {
+        //Do nothing XD
+    }
+
+    private void doDelete()
+    {
+        User tempUser = youMonitor_tempList.get(position_global);
+        Call<Void> caller = proxy.removeMonitorsUser(user_local.getId(), tempUser.getId());
+        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, noResponse -> redrawMonitorUser(noResponse));
+    }
+
+    private void doDeleteBy()
+    {
+        User tempUser = monitorBy_tempList.get(position_global);
+        Call<Void> caller = proxy.removeMonitoredByUser(user_local.getId(), tempUser.getId());
+        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, noResponse -> redrawMonitorUser(noResponse));
+    }
+
+    private void redrawMonitorUser(Void nothing)
+    {
+        Log.i("MyApp", "Removed USER");
+        createUser();
     }
 
 }
