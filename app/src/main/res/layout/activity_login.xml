@@ -84,6 +84,14 @@
                 android:text="@string/gerry_register_login"
                 android:layout_marginTop="50dp"
                 android:layout_gravity="center"/>
+
+            <Button
+                android:id="@+id/gerry_Map_Button_login"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="@string/gerry_test_map_welcome"
+                android:layout_marginTop="50dp"
+                android:layout_gravity="center"/>
         </LinearLayout>
     </LinearLayout>
 

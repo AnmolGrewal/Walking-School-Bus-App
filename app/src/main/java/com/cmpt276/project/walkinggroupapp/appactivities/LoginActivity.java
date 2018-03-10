@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button mLoginButton;
     private Button mRegisterButton;
+    private Button mMapTestButton;
     private TextView mForgotPasswordTextView;
     private EditText mPasswordEditText;
     private EditText mEmailEditText;
@@ -183,6 +184,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
+        //test map Button
+        mMapTestButton = findViewById(R.id.gerry_Map_Button_login);
+        mMapTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //go to test map activity
+                Intent intentMap = new Intent(LoginActivity.this, MapActivity.class);
+                startActivity(intentMap);
+            }
+        });
     }
 
 
