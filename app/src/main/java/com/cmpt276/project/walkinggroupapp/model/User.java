@@ -1,11 +1,16 @@
 package com.cmpt276.project.walkinggroupapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * This class model a user.
  */
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
     private Long id;
     private String name;
@@ -58,9 +63,23 @@ public class User {
         this.monitoredByUsers = monitoredByUsers;
     }
 
+
+    public void addUser(User user){
+        monitoredByUsers.add(user);
+    }
+
     public List<User> getMonitorsUsers() {
         return monitorsUsers;
     }
+
+    public List<User> getMonitorByUsers(){
+        return monitoredByUsers;
+    }
+
+    public int countList(){
+        return monitorsUsers.size();
+    }
+
 
     public void setMonitorsUsers(List<User> monitorsUsers) {
         this.monitorsUsers = monitorsUsers;
@@ -76,6 +95,13 @@ public class User {
 
     public String getHref() {
         return href;
+    }
+
+    private void validateIndexWithExceptionMonitorUsers(int index) {
+        if (index < 0 || index >= countList()) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     public void setHref(String href) {

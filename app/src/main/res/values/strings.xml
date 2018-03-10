@@ -8,5 +8,19 @@
     <string name="gerry_start_welcome">Start</string>
     <string name="gerry_welcome_screen_welcome">WELCOME SCREEN</string>
     <string name="gerry_apikey">D71A0AC3-1AD3-42BE-87C1-83345D63B4D9</string>
+    <string name="jacky_enter_user_id_hint">Enter User ID</string>
+    <string name="jacky_enter_user_id">Enter User Id</string>
+    <string name="jacky_cancel_popup">Cancel</string>
+    <string name="jacky_delete_popup">Delete</string>
+    <string name="jacky_people_who_you_are_monitoring_text">People who you are monitoring</string>
+    <string name="jacky_people_who_are_monitoring_you_text">People who are monitoring you</string>
+    <string name="jacky_name_complex_list">Name:</string>
+    <string name="jacky_username_here_complex_list">UserName Here</string>
+    <string name="jacky_email_complex_list">Email:</string>
+    <string name="jacky_user_email_here_complex_list">User Email Here</string>
+    <string name="jacky_add_button_mainmenu">Add</string>
+    <string name="jacky_add_mainmenu_top">Add</string>
+    <string name="jacky_add_monitoring_by">Add</string>
+    <string name="jacky_add_monitoing">Add</string>
 
 </resources>
