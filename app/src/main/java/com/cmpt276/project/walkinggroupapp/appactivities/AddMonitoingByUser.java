@@ -24,7 +24,7 @@ public class AddMonitoingByUser extends AppCompatActivity {
     private static final String PREFERENCE_EMAIL= "saved.email.key";
     public static final String INTENT_TOKEN = "com.cmpt276.project.walkinggroupapp.intentToken";
 
-    private User user_local;
+    private User UserLocal;
 
     private String token;
 
@@ -77,7 +77,7 @@ public class AddMonitoingByUser extends AppCompatActivity {
     private void response(User user) {
         Log.i("MyApp", "User invalid?");
         Log.i("MyApp", "Server replied with user: " + user.toString() );
-        user_local = user;
+        UserLocal = user;
     }
 
     private String getSavedEmail()
@@ -96,8 +96,8 @@ public class AddMonitoingByUser extends AppCompatActivity {
     private void waitNew(User user)
     {
         Log.i("MyApp", "    User: " + user.toString());
-        User temp_user = user;
-        Call<List<User>> caller = proxy.addNewMonitoredByUser(user_local.getId(), temp_user);
+        User tempUser = user;
+        Call<List<User>> caller = proxy.addNewMonitoredByUser(UserLocal.getId(), tempUser);
         ProxyBuilder.callProxy(AddMonitoingByUser.this, caller, monitoringList -> AddUser(monitoringList));
     }
 

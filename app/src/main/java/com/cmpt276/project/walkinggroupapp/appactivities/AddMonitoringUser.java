@@ -24,7 +24,7 @@ public class AddMonitoringUser extends AppCompatActivity {
     private static final String PREFERENCE_EMAIL= "saved.email.key";
     public static final String INTENT_TOKEN = "com.cmpt276.project.walkinggroupapp.intentToken";
 
-    private User user_local;
+    private User userLocal;
 
     private String token;
 
@@ -64,7 +64,7 @@ public class AddMonitoringUser extends AppCompatActivity {
 
     private void response(User user) {
         Log.i("MyApp", "Server replied with user: " + user.toString() );
-        user_local = user;
+        userLocal = user;
     }
 
     private void createUser() {
@@ -91,8 +91,8 @@ public class AddMonitoringUser extends AppCompatActivity {
     private void waitNew(User user)
     {
         Log.i("MyApp", "    User: " + user.toString());
-        User temp_user = user;
-        Call<List<User>> caller = proxy.addNewMonitorsUser(user_local.getId(),temp_user);                    //Since only the id is provided
+        User tempUser = user;
+        Call<List<User>> caller = proxy.addNewMonitorsUser(userLocal.getId(),tempUser);                    //Since only the id is provided
         ProxyBuilder.callProxy(AddMonitoringUser.this, caller, monitoringList -> AddUser(monitoringList));
     }
 

@@ -37,14 +37,14 @@ public class MainMenu_Activity extends AppCompatActivity {
     private ListView youMonitorList;
     private ListView monitorsYouList;
 
-    private List<User> youMonitor_tempList;
-    private List<User> monitorBy_tempList;
+    private List<User> youMonitorTempList;
+    private List<User> monitorByTempList;
 
     private WGServerProxy proxy;
 
-    private int position_global;
+    private int positionGlobal;
 
-    private User user_local;
+    private User userLocal;
 
     private String token;
 
@@ -100,18 +100,18 @@ public class MainMenu_Activity extends AppCompatActivity {
 
     private void response(User user) {
         Log.i("MyApp", "Server replied with user: " + user.toString());
-        user_local = user;
+        userLocal = user;
 
-        Call<List<User>> caller = proxy.getMonitorsUsersById(user_local.getId());
+        Call<List<User>> caller = proxy.getMonitorsUsersById(userLocal.getId());
         ProxyBuilder.callProxy(MainMenu_Activity.this, caller, monitorUserList -> updateYouMonitor(monitorUserList));
 
-        Call<List<User>> newCaller = proxy.getMonitoredByUsersById(user_local.getId());
+        Call<List<User>> newCaller = proxy.getMonitoredByUsersById(userLocal.getId());
         ProxyBuilder.callProxy(MainMenu_Activity.this, newCaller, monitorByUserList -> updateMonitorBy(monitorByUserList));
     }
 
     private void updateYouMonitor(List<User> monitorUserList) {
         Log.i("MyApp","Inside update you");
-        youMonitor_tempList = monitorUserList;
+        youMonitorTempList = monitorUserList;
         populateMonitorUser();
     }
 
@@ -125,7 +125,7 @@ public class MainMenu_Activity extends AppCompatActivity {
 
     private class monitorUserAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
         public monitorUserAdapter() {
-            super(MainMenu_Activity.this, R.layout.list_layout, user_local.getMonitorsUsers());
+            super(MainMenu_Activity.this, R.layout.list_layout, userLocal.getMonitorsUsers());
         }
 
         @Override
@@ -136,7 +136,7 @@ public class MainMenu_Activity extends AppCompatActivity {
                 itemView = getLayoutInflater().inflate(R.layout.list_layout, parent, false);
             }
             //Find a user to add
-            User currentUser = youMonitor_tempList.get(position);
+            User currentUser = youMonitorTempList.get(position);
 
             //Name:
             TextView makeName = itemView.findViewById(R.id.jacky_user_name_dynamic);
@@ -153,7 +153,7 @@ public class MainMenu_Activity extends AppCompatActivity {
 
     private void updateMonitorBy(List<User> monitorByUserList) {
         Log.i("MyApp", "How many times CALLED???");
-        monitorBy_tempList = monitorByUserList;
+        monitorByTempList = monitorByUserList;
         populateMonitorByUser();
     }
 
@@ -167,7 +167,7 @@ public class MainMenu_Activity extends AppCompatActivity {
 
     private class monitorByUserAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
         public monitorByUserAdapter() {
-            super(MainMenu_Activity.this, R.layout.list_layout, user_local.getMonitorByUsers());
+            super(MainMenu_Activity.this, R.layout.list_layout, userLocal.getMonitorByUsers());
         }
 
         @Override
@@ -179,7 +179,7 @@ public class MainMenu_Activity extends AppCompatActivity {
             }
             //Find a user to add
             Log.i("MyApp", "Inside Monitoring By");
-            User currentUser = monitorBy_tempList.get(position);
+            User currentUser = monitorByTempList.get(position);
 
             //Name:
             TextView makeName = itemView.findViewById(R.id.jacky_user_name_dynamic);
@@ -221,7 +221,7 @@ public class MainMenu_Activity extends AppCompatActivity {
             {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
                 Log.i("MyApp", "Pressed Long" + position);
-                position_global = position;
+                positionGlobal = position;
                 PopupMenu popupMenu = new PopupMenu(MainMenu_Activity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
 
@@ -260,7 +260,7 @@ public class MainMenu_Activity extends AppCompatActivity {
             {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
                 Log.i("MyApp", "Pressed Long" + position);
-                position_global = position;
+                positionGlobal = position;
                 PopupMenu popupMenu = new PopupMenu(MainMenu_Activity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
 
@@ -295,15 +295,15 @@ public class MainMenu_Activity extends AppCompatActivity {
 
     private void doDelete()
     {
-        User tempUser = youMonitor_tempList.get(position_global);
-        Call<Void> caller = proxy.removeMonitorsUser(user_local.getId(), tempUser.getId());
+        User tempUser = youMonitorTempList.get(positionGlobal);
+        Call<Void> caller = proxy.removeMonitorsUser(userLocal.getId(), tempUser.getId());
         ProxyBuilder.callProxy(MainMenu_Activity.this, caller, noResponse -> redrawMonitorUser(noResponse));
     }
 
     private void doDeleteBy()
     {
-        User tempUser = monitorBy_tempList.get(position_global);
-        Call<Void> caller = proxy.removeMonitoredByUser(user_local.getId(), tempUser.getId());
+        User tempUser = monitorByTempList.get(positionGlobal);
+        Call<Void> caller = proxy.removeMonitoredByUser(userLocal.getId(), tempUser.getId());
         ProxyBuilder.callProxy(MainMenu_Activity.this, caller, noResponse -> redrawMonitorUser(noResponse));
     }
 
