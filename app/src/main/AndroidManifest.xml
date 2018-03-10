@@ -52,7 +52,7 @@
         </activity>
         <activity android:name=".CheckMonitoringUsers" />
         <activity android:name=".appactivities.AddMonitoringUser" />
-        <activity android:name=".appactivities.AddMonitoingByUser" />
+        <activity android:name=".appactivities.AddMonitoringByUser" />
         <activity android:name=".appactivities.MapActivity"></activity>
     </application>
 
