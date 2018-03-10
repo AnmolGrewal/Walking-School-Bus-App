@@ -19,7 +19,7 @@ import java.util.List;
 
 import retrofit2.Call;
 
-public class AddMonitoingByUser extends AppCompatActivity {
+public class AddMonitoringByUser extends AppCompatActivity {
 
     private static final String PREFERENCE_EMAIL= "saved.email.key";
     public static final String INTENT_TOKEN = "com.cmpt276.project.walkinggroupapp.intentToken";
@@ -71,7 +71,7 @@ public class AddMonitoingByUser extends AppCompatActivity {
         Log.i("MyApp", "Email is: " + email);
         Call<User> caller = proxy.getUserByEmail("1");
         Log.i("MyApp", "After caller");
-        ProxyBuilder.callProxy(AddMonitoingByUser.this, caller, returnedUser -> response(returnedUser));
+        ProxyBuilder.callProxy(AddMonitoringByUser.this, caller, returnedUser -> response(returnedUser));
     }
 
     private void response(User user) {
@@ -90,7 +90,7 @@ public class AddMonitoingByUser extends AppCompatActivity {
     private void findUser(Long id)
     {
         Call<User> caller = proxy.getUserById(id);
-        ProxyBuilder.callProxy(AddMonitoingByUser.this, caller, newUser -> waitNew(newUser));
+        ProxyBuilder.callProxy(AddMonitoringByUser.this, caller, newUser -> waitNew(newUser));
     }
 
     private void waitNew(User user)
@@ -98,7 +98,7 @@ public class AddMonitoingByUser extends AppCompatActivity {
         Log.i("MyApp", "    User: " + user.toString());
         User tempUser = user;
         Call<List<User>> caller = proxy.addNewMonitoredByUser(UserLocal.getId(), tempUser);
-        ProxyBuilder.callProxy(AddMonitoingByUser.this, caller, monitoringList -> AddUser(monitoringList));
+        ProxyBuilder.callProxy(AddMonitoringByUser.this, caller, monitoringList -> AddUser(monitoringList));
     }
 
     private void AddUser(List <User> monitoringList)
@@ -112,7 +112,7 @@ public class AddMonitoingByUser extends AppCompatActivity {
 
 
     public static Intent createAddByIntent(Context context, String token){
-        Intent intent = new Intent(context, AddMonitoingByUser.class);
+        Intent intent = new Intent(context, AddMonitoringByUser.class);
         intent.putExtra(INTENT_TOKEN, token);
         return intent;
     }

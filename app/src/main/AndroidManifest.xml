@@ -27,7 +27,7 @@
         </activity>
         <activity android:name=".CheckMonitoringUsers" />
         <activity android:name=".appactivities.AddMonitoringUser" />
-        <activity android:name=".appactivities.AddMonitoingByUser"></activity>
+        <activity android:name=".appactivities.AddMonitoringByUser"></activity>
     </application>
 
 </manifest>
