@@ -26,8 +26,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CheckMonitoringUsers" />
-        <activity android:name=".appactivities.AddMonitoringUser" />
-        <activity android:name=".appactivities.AddMonitoringByUser"></activity>
+        <activity android:name=".appactivities.AddMonitorsUser" />
+        <activity android:name=".appactivities.AddMonitoredByUser"></activity>
     </application>
 
 </manifest>
