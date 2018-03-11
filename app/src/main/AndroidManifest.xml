@@ -53,6 +53,7 @@
         <activity android:name=".CheckMonitoringUsers" />
         <activity android:name=".appactivities.AddMonitorsUser" />
         <activity android:name=".appactivities.AddMonitoredByUser"></activity>
+        <activity android:name=".appactivities.MapActivity"></activity>
     </application>
 
 </manifest>
