@@ -7,6 +7,7 @@
     <string name="gerry_register_login">Register</string>
     <string name="gerry_start_welcome">Start</string>
     <string name="gerry_welcome_screen_welcome">WELCOME SCREEN</string>
+    <string name="gerry_test_map_welcome">TEST MAP</string>
     <string name="gerry_apikey">D71A0AC3-1AD3-42BE-87C1-83345D63B4D9</string>
     <string name="jacky_enter_user_id_hint">Enter User ID</string>
     <string name="jacky_enter_user_id">Enter User Id</string>
@@ -22,5 +23,6 @@
     <string name="jacky_add_mainmenu_top">Add</string>
     <string name="jacky_add_monitoring_by">Add</string>
     <string name="jacky_add_monitoing">Add</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
