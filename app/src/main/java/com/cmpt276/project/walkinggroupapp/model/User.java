@@ -72,13 +72,13 @@ public class User {
         return monitorsUsers;
     }
 
-    public List<User> getMonitorByUsers(){
-        return monitoredByUsers;
-    }
+//    public List<User> getMonitorByUsers(){
+//        return monitoredByUsers;
+//    }
 
-    public int countList(){
-        return monitorsUsers.size();
-    }
+//    public int countList(){
+//        return monitorsUsers.size();
+//    }
 
 
     public void setMonitorsUsers(List<User> monitorsUsers) {
@@ -97,12 +97,12 @@ public class User {
         return href;
     }
 
-    private void validateIndexWithExceptionMonitorUsers(int index) {
-        if (index < 0 || index >= countList()) {
-            throw new IllegalArgumentException();
-        }
-
-    }
+//    private void validateIndexWithExceptionMonitorUsers(int index) {
+//        if (index < 0 || index >= countList()) {
+//            throw new IllegalArgumentException();
+//        }
+//
+//    }
 
     public void setHref(String href) {
         this.href = href;

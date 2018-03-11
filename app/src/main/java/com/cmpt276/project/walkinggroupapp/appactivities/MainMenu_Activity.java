@@ -167,7 +167,7 @@ public class MainMenu_Activity extends AppCompatActivity {
 
     private class monitorByUserAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
         public monitorByUserAdapter() {
-            super(MainMenu_Activity.this, R.layout.list_layout, userLocal.getMonitorByUsers());
+            super(MainMenu_Activity.this, R.layout.list_layout, userLocal.getMonitoredByUsers());
         }
 
         @Override
