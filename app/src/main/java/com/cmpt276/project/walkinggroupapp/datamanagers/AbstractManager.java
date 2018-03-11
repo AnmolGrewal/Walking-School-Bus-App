@@ -1,7 +1,7 @@
 package com.cmpt276.project.walkinggroupapp.datamanagers;
 
 //import com.android.volley.VolleyError;
-//Fixed Spelling
+
 /**
  * Abstract base class for other data managers to factor out the code for being observable.
  * To use with an Android activity:
