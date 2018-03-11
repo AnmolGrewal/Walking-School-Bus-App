@@ -45,29 +45,23 @@ public class ModelManager {
         proxy = ProxyBuilder.getProxy(apiKey, token);
     }
 
-    public void login(Context context, String emailAddress, String password) {
+    public void login(Context context, ProxyBuilder.SimpleCallback<Void> callback, String emailAddress, String password) {
         user = new User();
         user.setEmail(emailAddress);
         user.setPassword(password);
-
         ProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
-
         Call<Void> caller = proxy.login(user);
-        ProxyBuilder.callProxy(context, caller, returnedNothing -> loginResponse(returnedNothing));
+        ProxyBuilder.callProxy(context, caller, callback);
+//        ProxyBuilder.callProxy(context, caller, returnedNothing -> loginResponse(returnedNothing));
     }
-
-
-//    private void buildProxy() {
-//        proxy = ProxyBuilder.getProxy(apiKey, token);
-//    }
 
     private void onReceiveToken(String token) {
         proxy = ProxyBuilder.getProxy(apiKey, token);
     }
 
-    private void loginResponse(Void returnedNothing) {
-        // TODO: do something?
-    }
+//    private void loginResponse(Void returnedNothing) {
+//        // TODO: do something?
+//    }
 
 
 
@@ -78,18 +72,20 @@ public class ModelManager {
         return user;
     }
 
-    public List<User> getMonitorsUsers(Context context) {
+    public void getMonitorsUsers(Context context, ProxyBuilder.SimpleCallback<List<User>> callback) {
         updateUser();
         Call<List<User>> caller = proxy.getMonitorsUsersById(user.getId());
-        ProxyBuilder.callProxy(context, caller, monitorsUsers -> getMonitorsUsersResponse(monitorsUsers));
-        return user.getMonitorsUsers();
+        ProxyBuilder.callProxy(context, caller, callback);
+//        ProxyBuilder.callProxy(context, caller, monitorsUsers -> getMonitorsUsersResponse(monitorsUsers));
+//        return user.getMonitorsUsers();
     }
 
-    public List<User> getMonitoredByUsers(Context context) {
+    public void getMonitoredByUsers(Context context, ProxyBuilder.SimpleCallback<List<User>> callback) {
         updateUser();
         Call<List<User>> caller = proxy.getMonitoredByUsersById(user.getId());
-        ProxyBuilder.callProxy(context, caller, monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers));
-        return user.getMonitoredByUsers();
+        ProxyBuilder.callProxy(context, caller, callback);
+//        ProxyBuilder.callProxy(context, caller, monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers));
+//        return user.getMonitoredByUsers();
     }
 
     public void addNewMonitorsUser(Context context, long idOfTarget) {
