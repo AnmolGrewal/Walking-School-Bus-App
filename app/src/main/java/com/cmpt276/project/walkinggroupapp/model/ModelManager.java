@@ -1,8 +1,6 @@
 package com.cmpt276.project.walkinggroupapp.model;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 import com.cmpt276.project.walkinggroupapp.proxy.WGServerProxy;
@@ -26,6 +24,7 @@ public class ModelManager {
     private String token = null;
 
     private User user = null;
+
 
 
 
@@ -75,26 +74,66 @@ public class ModelManager {
 
 
     public User getUser() {
-
+        updateUser();
         return user;
     }
 
-    public List<User> getMonitorsUsers() {
-        return null;
+    public List<User> getMonitorsUsers(Context context) {
+        updateUser();
+        Call<List<User>> caller = proxy.getMonitorsUsersById(user.getId());
+        ProxyBuilder.callProxy(context, caller, monitorsUsers -> getMonitorsUsersResponse(monitorsUsers));
+        return user.getMonitorsUsers();
     }
 
-    public List<User> getMonitoredByUsers() {
-        return null;
+    public List<User> getMonitoredByUsers(Context context) {
+        updateUser();
+        Call<List<User>> caller = proxy.getMonitoredByUsersById(user.getId());
+        ProxyBuilder.callProxy(context, caller, monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers));
+        return user.getMonitoredByUsers();
     }
 
-    public void addNewMonitorsUser() {
+    public void addNewMonitorsUser(Context context, long idOfTarget) {
+        updateUser();
+        User newUser = new User();
+        newUser.setId(idOfTarget);
+        Call<List<User>> caller = proxy.addNewMonitorsUser(user.getId(), newUser);
+        ProxyBuilder.callProxy(context, caller, monitorsUsers -> getMonitorsUsersResponse(monitorsUsers));
+    }
+
+    public void addNewMonitoredByUser(Context context, long idOfTarget) {
+        updateUser();
+        User newUser = new User();
+        newUser.setId(idOfTarget);
+        Call<List<User>> caller = proxy.addNewMonitoredByUser(user.getId(), newUser);
+        ProxyBuilder.callProxy(context, caller, monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers));
+    }
+
+
+
+
+    private void updateUser() {
+        if (user.getId() != null) {
+            Call<User> caller = proxy.getUserById(user.getId());
+            ProxyBuilder.callProxy(caller, returnedUser -> getUserResponse(returnedUser));
+        } else if (user.getEmail() != null){
+            Call<User> caller = proxy.getUserByEmail(user.getEmail());
+            ProxyBuilder.callProxy(caller, returnedUser -> getUserResponse(returnedUser));
+        } else {
+            // TODO: throw exception
+        }
 
     }
 
-    public void addNewMonitoredByUser() {
-
+    private void getUserResponse(User returnedUser) {
+        user = returnedUser;
     }
 
+    private void getMonitorsUsersResponse(List<User> monitorsUsers) {
+        user.setMonitorsUsers(monitorsUsers);
+    }
 
+    private void getMonitoredByUsersResponse(List<User> monitoredByUsers) {
+        user.setMonitoredByUsers(monitoredByUsers);
+    }
 
 }
