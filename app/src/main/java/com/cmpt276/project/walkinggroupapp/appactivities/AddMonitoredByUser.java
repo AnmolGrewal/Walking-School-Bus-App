@@ -19,12 +19,12 @@ import java.util.List;
 
 import retrofit2.Call;
 
-public class AddMonitoringUser extends AppCompatActivity {
+public class AddMonitoredByUser extends AppCompatActivity {
 
     private static final String PREFERENCE_EMAIL= "saved.email.key";
     public static final String INTENT_TOKEN = "com.cmpt276.project.walkinggroupapp.intentToken";
 
-    private User userLocal;
+    private User UserLocal;
 
     private String token;
 
@@ -32,13 +32,14 @@ public class AddMonitoringUser extends AppCompatActivity {
 
     private Button addBtn;
 
-    private EditText userid;
+    private EditText userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_monitoring_user);
+        setContentView(R.layout.activity_add_monitoing_by_user);
 
+        Log.i("MyApp", "INSIDE MONITOREDBY");
         //Extract data from intent
         extractDataFromIntent();
         //Need to recreate the user
@@ -49,30 +50,34 @@ public class AddMonitoringUser extends AppCompatActivity {
 
     private void setUpButton()
     {
-        addBtn = findViewById(R.id.jacky_add_user_button);
+        Log.i("MyApp", "Inside set btn");
+        addBtn = findViewById(R.id.jacky_add_by_user_button);
+        Log.i("MyApp", "After find btton");
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Once clicked we get data from user input, find user, if found add else tell user error
-                userid = findViewById(R.id.jacky_add_user);
-                String strId = userid.getText().toString();
+                userId = findViewById(R.id.jacky_add_by_user);
+                String strId = userId.getText().toString();
                 Long longUserId = Long.parseLong(strId);
                 findUser(longUserId);
+
             }
         });
-    }
-
-    private void response(User user) {
-        Log.i("MyApp", "Server replied with user: " + user.toString() );
-        userLocal = user;
     }
 
     private void createUser() {
         proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
         String email = getSavedEmail();
         Log.i("MyApp", "Email is: " + email);
-        Call<User> caller = proxy.getUserByEmail(email);                     //For now since the email is not being passed i will use a standard one
-        ProxyBuilder.callProxy(AddMonitoringUser.this, caller, returnedUser -> response(returnedUser));
+        Call<User> caller = proxy.getUserByEmail("1");
+        Log.i("MyApp", "After caller");
+        ProxyBuilder.callProxy(AddMonitoredByUser.this, caller, returnedUser -> response(returnedUser));
+    }
+
+    private void response(User user) {
+        Log.i("MyApp", "User invalid?");
+        Log.i("MyApp", "Server replied with user: " + user.toString() );
+        UserLocal = user;
     }
 
     private String getSavedEmail()
@@ -85,15 +90,15 @@ public class AddMonitoringUser extends AppCompatActivity {
     private void findUser(Long id)
     {
         Call<User> caller = proxy.getUserById(id);
-        ProxyBuilder.callProxy(AddMonitoringUser.this, caller, newUser -> waitNew(newUser));
+        ProxyBuilder.callProxy(AddMonitoredByUser.this, caller, newUser -> waitNew(newUser));
     }
 
     private void waitNew(User user)
     {
         Log.i("MyApp", "    User: " + user.toString());
         User tempUser = user;
-        Call<List<User>> caller = proxy.addNewMonitorsUser(userLocal.getId(),tempUser);                    //Since only the id is provided
-        ProxyBuilder.callProxy(AddMonitoringUser.this, caller, monitoringList -> AddUser(monitoringList));
+        Call<List<User>> caller = proxy.addNewMonitoredByUser(UserLocal.getId(), tempUser);
+        ProxyBuilder.callProxy(AddMonitoredByUser.this, caller, monitoringList -> AddUser(monitoringList));
     }
 
     private void AddUser(List <User> monitoringList)
@@ -106,8 +111,8 @@ public class AddMonitoringUser extends AppCompatActivity {
     }
 
 
-    public static Intent createAddIntent(Context context, String token){
-        Intent intent = new Intent(context, AddMonitoringUser.class);
+    public static Intent createAddByIntent(Context context, String token){
+        Intent intent = new Intent(context, AddMonitoredByUser.class);
         intent.putExtra(INTENT_TOKEN, token);
         return intent;
     }
