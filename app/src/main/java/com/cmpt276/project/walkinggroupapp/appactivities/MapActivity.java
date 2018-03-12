@@ -1,6 +1,8 @@
 package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,9 +21,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -59,6 +65,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     .addApi(LocationServices.API)
                     .build();
         }
+
+
     }
 
 
@@ -72,6 +80,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         Log.i("App", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> onMapReady");
         mMap = googleMap;
 
+        //create map listener
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                placeMarkerOnMap(latLng);
+            }
+        });
+
 
         //add zoom buttons
         mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -80,12 +96,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
         // Add a marker from
-        LatLng randomPlace = new LatLng(60.323013, -123);
-        placeMarkerOnMap(randomPlace, "Random");
+        LatLng randomPlace = new LatLng(37.35,-122.1);
+        placeMarkerOnMap(randomPlace);
 
         // Add a marker in Ney York and move camera to it
         LatLng myPlace = new LatLng(40.73, -73.99);  // this is New York
-        placeMarkerOnMap(myPlace, "New York");
+        placeMarkerOnMap(myPlace);
 
 
     }
@@ -152,20 +168,46 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             //gives you the most recent location currently available
             if (mLastLocation != null) {
                 LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                placeMarkerOnMap(currentLocation, "My Location");
+                placeMarkerOnMap(currentLocation);
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, DEFAULT_ZOOM));
             }
         }
     }
 
+
+
     protected void placeMarkerOnMap(LatLng location) {
-        MarkerOptions markerOptions = new MarkerOptions().position(location);
+        MarkerOptions markerOptions = new MarkerOptions().position(location)
+
+                                                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_user_location));
+        String titleStr = getAddressOfMarker(location);
+        markerOptions.title(titleStr);
+
         mMap.addMarker(markerOptions);
+
     }
 
-    protected void placeMarkerOnMap(LatLng location, String title) {
-        MarkerOptions markerOptions = (new MarkerOptions().position(location).title(title));
-        mMap.addMarker(markerOptions);
+
+
+    private String getAddressOfMarker(LatLng latLng ) {
+        //Creates a geoCoder object to turn a latitude and longitude coordinate into an address and vice versa
+        Geocoder geocoder = new Geocoder( this );
+        String addressText = "";
+        List<Address> addresses = null;
+        Address address = null;
+        try {
+            //Asks the geoCoder to get the address from the location passed to the method.
+            addresses = geocoder.getFromLocation( latLng.latitude, latLng.longitude, 1 );
+            //If the response contains any address, then append it to a string and return.
+            if (null != addresses && !addresses.isEmpty()) {
+                address = addresses.get(0);
+                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+                    addressText += (i == 0)?address.getAddressLine(i):("\n" + address.getAddressLine(i));
+                }
+            }
+        } catch (IOException e ) {
+        }
+        return addressText;
     }
 
 }
