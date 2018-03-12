@@ -14,10 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
-import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
-
-import retrofit2.Call;
 
 import com.cmpt276.project.walkinggroupapp.R;
 
@@ -97,6 +94,8 @@ public class LoginActivity extends AppCompatActivity {
 
         //go to Main Menu
         Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
+
+        intent = MainMenu_Activity.makeIntent(this, "");
         startActivity(intent);
 
 
@@ -106,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
 //        // Replace the current proxy with one that uses the token!--to enable server data access
 //        Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
 //        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
-//        intent = MainMenu_Activity.makeIntnet(this, token);
+//        intent = MainMenu_Activity.makeIntent(this, token);
 //    }
 
 

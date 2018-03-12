@@ -193,7 +193,7 @@ public class MainMenu_Activity extends AppCompatActivity {
         }
     }
 
-    public static Intent makeIntnet(Context context, String token){
+    public static Intent makeIntent(Context context, String token){
         Intent intent = new Intent(context, MainMenu_Activity.class);
         intent.putExtra(INTENT_TOKEN, token);
         return intent;
