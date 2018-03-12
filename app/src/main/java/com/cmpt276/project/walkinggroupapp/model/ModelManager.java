@@ -25,6 +25,9 @@ public class ModelManager {
 
     private User user = null;
 
+//    private long userId = -1;
+
+
 
 
 
@@ -51,9 +54,21 @@ public class ModelManager {
         user.setPassword(password);
         ProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
         Call<Void> caller = proxy.login(user);
-        ProxyBuilder.callProxy(context, caller, callback);
+//        ProxyBuilder.callProxy(context, caller, callback);
+        ProxyBuilder.callProxy(context, caller, returnNothing -> {
+            Call<User> getUserCaller = proxy.getUserByEmail(user.getEmail());
+            ProxyBuilder.callProxy(getUserCaller, returnedUser -> {
+                user = returnedUser;
+                callback.callback(null);
+            });
+        });
 //        ProxyBuilder.callProxy(context, caller, returnedNothing -> loginResponse(returnedNothing));
+
+
     }
+
+
+
 
     private void onReceiveToken(String token) {
         proxy = ProxyBuilder.getProxy(apiKey, token);
@@ -63,17 +78,43 @@ public class ModelManager {
 //        // TODO: do something?
 //    }
 
+    public void updateUser() {
+//        if (user.getId() != null) {
+//            Call<User> caller = proxy.getUserById(user.getId());
+//            ProxyBuilder.callProxy(caller, returnedUser -> getUserResponse(returnedUser));
+//        } else if (user.getEmail() != null){
+//            Call<User> caller = proxy.getUserByEmail(user.getEmail());
+//            ProxyBuilder.callProxy(caller, returnedUser -> getUserResponse(returnedUser));
+//        } else {
+//            // TODO: throw exception
+//        }
 
+        Call<User> caller = proxy.getUserByEmail(user.getEmail());
+        ProxyBuilder.callProxy(caller, returnedUser -> getUserResponse(returnedUser));
+
+//        while (true) {
+//            if (user.getId() == null) {
+//                try {
+//                    Thread.sleep(100);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            } else {
+//                break;
+//            }
+//        }
+
+    }
 
 
 
     public User getUser() {
-        updateUser();
+//        updateUser();
         return user;
     }
 
     public void getMonitorsUsers(Context context, ProxyBuilder.SimpleCallback<List<User>> callback) {
-        updateUser();
+//        updateUser();
         Call<List<User>> caller = proxy.getMonitorsUsersById(user.getId());
         ProxyBuilder.callProxy(context, caller, callback);
 //        ProxyBuilder.callProxy(context, caller, monitorsUsers -> getMonitorsUsersResponse(monitorsUsers));
@@ -81,7 +122,7 @@ public class ModelManager {
     }
 
     public void getMonitoredByUsers(Context context, ProxyBuilder.SimpleCallback<List<User>> callback) {
-        updateUser();
+//        updateUser();
         Call<List<User>> caller = proxy.getMonitoredByUsersById(user.getId());
         ProxyBuilder.callProxy(context, caller, callback);
 //        ProxyBuilder.callProxy(context, caller, monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers));
@@ -89,7 +130,7 @@ public class ModelManager {
     }
 
     public void addNewMonitorsUser(Context context, long idOfTarget) {
-        updateUser();
+//        updateUser();
         User newUser = new User();
         newUser.setId(idOfTarget);
         Call<List<User>> caller = proxy.addNewMonitorsUser(user.getId(), newUser);
@@ -97,7 +138,7 @@ public class ModelManager {
     }
 
     public void addNewMonitoredByUser(Context context, long idOfTarget) {
-        updateUser();
+//        updateUser();
         User newUser = new User();
         newUser.setId(idOfTarget);
         Call<List<User>> caller = proxy.addNewMonitoredByUser(user.getId(), newUser);
@@ -107,21 +148,22 @@ public class ModelManager {
 
 
 
-    private void updateUser() {
-        if (user.getId() != null) {
-            Call<User> caller = proxy.getUserById(user.getId());
-            ProxyBuilder.callProxy(caller, returnedUser -> getUserResponse(returnedUser));
-        } else if (user.getEmail() != null){
-            Call<User> caller = proxy.getUserByEmail(user.getEmail());
-            ProxyBuilder.callProxy(caller, returnedUser -> getUserResponse(returnedUser));
-        } else {
-            // TODO: throw exception
-        }
 
-    }
 
     private void getUserResponse(User returnedUser) {
-        user = returnedUser;
+//        user = returnedUser;
+
+//        userId = returnedUser.getId();
+//        user.setId(userId);
+
+        user.setId(returnedUser.getId());
+        user.setId(returnedUser.getId());
+        user.setName(returnedUser.getName());
+        user.setEmail(returnedUser.getEmail());
+        user.setMonitoredByUsers(returnedUser.getMonitoredByUsers());
+        user.setMonitorsUsers(returnedUser.getMonitorsUsers());
+        user.setWalkingGroups(returnedUser.getWalkingGroups());
+        user.setHref(returnedUser.getHref());
     }
 
     private void getMonitorsUsersResponse(List<User> monitorsUsers) {

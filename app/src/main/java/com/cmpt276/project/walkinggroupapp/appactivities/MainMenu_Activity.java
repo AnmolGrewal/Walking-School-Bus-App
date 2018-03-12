@@ -61,8 +61,15 @@ public class MainMenu_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainmenu);
 
-
         modelManager = ModelManager.getInstance();
+
+
+//        // TODO: delete this.
+//        while (modelManager.getUser().getId() == null) {
+//            Log.w("Error", "!!!!!!!!!!!!!!!!");
+//        }
+
+
 
         ProxyBuilder.SimpleCallback<List<User>> getMonitorsUsersCallback = monitorsUsers -> updateMonitorsUsersList(monitorsUsers);
         modelManager.getMonitorsUsers(MainMenu_Activity.this, getMonitorsUsersCallback);

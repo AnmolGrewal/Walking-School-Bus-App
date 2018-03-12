@@ -95,11 +95,27 @@ public class LoginActivity extends AppCompatActivity {
         //go to Main Menu
         Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
 
+//        ProxyBuilder.SimpleCallback<Void> callback = nothing -> updateUserResponse(nothing);
+//        modelManager.updateUser(callback);
+
+//        modelManager.updateUser();
+
+//        Log.w(TAG, modelManager.getUser().toString());
+
+
+//        while (modelManager.getUser().getId() == null) {
+//            Log.w(TAG, "Retrieving user data from server...");
+//            // busy waiting.
+//        }
+
         intent = MainMenu_Activity.makeIntent(LoginActivity.this);
         startActivity(intent);
-
-
     }
+
+//    private void updateUserResponse(Void nothing) {
+//        intent = MainMenu_Activity.makeIntent(LoginActivity.this);
+//        startActivity(intent);
+//    }
 
 //    private void onReceiveToken(String token) {
 //        // Replace the current proxy with one that uses the token!--to enable server data access

@@ -32,7 +32,7 @@ public class AddMonitorsUser extends AppCompatActivity {
 
     private Button addBtn;
 
-    private EditText userid;
+    private EditText userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +54,8 @@ public class AddMonitorsUser extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Once clicked we get data from user input, find user, if found add else tell user error
-                userid = findViewById(R.id.jacky_add_user);
-                String strId = userid.getText().toString();
+                userId = findViewById(R.id.jacky_add_user);
+                String strId = userId.getText().toString();
                 Long longUserId = Long.parseLong(strId);
                 findUser(longUserId);
             }
