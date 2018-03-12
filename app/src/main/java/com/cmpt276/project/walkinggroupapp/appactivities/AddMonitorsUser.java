@@ -106,7 +106,7 @@ public class AddMonitorsUser extends AppCompatActivity {
     }
 
 
-    public static Intent createAddIntent(Context context, String token){
+    public static Intent makeIntent(Context context, String token){
         Intent intent = new Intent(context, AddMonitorsUser.class);
         intent.putExtra(INTENT_TOKEN, token);
         return intent;

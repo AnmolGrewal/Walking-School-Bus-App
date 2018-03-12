@@ -64,11 +64,17 @@ public class MainMenu_Activity extends AppCompatActivity {
 
         modelManager = ModelManager.getInstance();
 
+        ProxyBuilder.SimpleCallback<List<User>> getMonitorsUsersCallback = monitorsUsers -> updateMonitorsUsersList(monitorsUsers);
+        modelManager.getMonitorsUsers(MainMenu_Activity.this, getMonitorsUsersCallback);
+
+        ProxyBuilder.SimpleCallback<List<User>> getMonitoredByUsersCallback = monitoredByUsers -> updateMonitoredByUsersList(monitoredByUsers);
+        modelManager.getMonitoredByUsers(MainMenu_Activity.this, getMonitoredByUsersCallback);
+
 
 //        extractDataFromIntent();
 //        createUser();
         setupAddNewMonitorsUserButton();
-        setupAddNewMontioredByUserButton();
+        setupAddNewMonitoredByUserButton();
         registerClickMonitorsUsers();
         registerClickMonitoredByUsers();
     }
@@ -79,6 +85,11 @@ public class MainMenu_Activity extends AppCompatActivity {
         super.onResume();
         // TODO
 //        createUser();
+        ProxyBuilder.SimpleCallback<List<User>> getMonitorsUsersCallback = monitorsUsers -> updateMonitorsUsersList(monitorsUsers);
+        modelManager.getMonitorsUsers(MainMenu_Activity.this, getMonitorsUsersCallback);
+
+        ProxyBuilder.SimpleCallback<List<User>> getMonitoredByUsersCallback = monitoredByUsers -> updateMonitoredByUsersList(monitoredByUsers);
+        modelManager.getMonitoredByUsers(MainMenu_Activity.this, getMonitoredByUsersCallback);
     }
 
     private void setupAddNewMonitorsUserButton() {
@@ -87,18 +98,18 @@ public class MainMenu_Activity extends AppCompatActivity {
         btnAddNewMonitorsUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = AddMonitorsUser.createAddIntent(getApplicationContext(), token);
+                Intent intent = AddMonitorsUser.makeIntent(getApplicationContext(), token);
                 startActivity(intent);
             }
         });
     }
 
-    private void setupAddNewMontioredByUserButton(){
+    private void setupAddNewMonitoredByUserButton(){
         btnAddNewMonitoredByUser = findViewById(R.id.jacky_add_monitoring_by_button);
         btnAddNewMonitoredByUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = AddMonitoredByUser.createAddByIntent(getApplicationContext(), token);
+                Intent intent = AddMonitoredByUser.makeIntent(getApplicationContext(), token);
                 startActivity(intent);
             }
         });
@@ -111,33 +122,33 @@ public class MainMenu_Activity extends AppCompatActivity {
 //        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, returnedUser -> response(returnedUser));
 //    }
 
-    private void response(User user) {
-        Log.i("MyApp", "Server replied with user: " + user.toString());
-        userLocal = user;
+//    private void response(User user) {
+//        Log.i("MyApp", "Server replied with user: " + user.toString());
+//        userLocal = user;
+//
+//        Call<List<User>> caller = proxy.getMonitorsUsersById(userLocal.getId());
+//        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, monitorsUsers -> updateMonitorsUsersList(monitorsUsers));
+//
+//        Call<List<User>> newCaller = proxy.getMonitoredByUsersById(userLocal.getId());
+//        ProxyBuilder.callProxy(MainMenu_Activity.this, newCaller, monitoredByUsers -> updateMonitoredByUsersList(monitoredByUsers));
+//    }
 
-        Call<List<User>> caller = proxy.getMonitorsUsersById(userLocal.getId());
-        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, monitorUserList -> updateYouMonitor(monitorUserList));
-
-        Call<List<User>> newCaller = proxy.getMonitoredByUsersById(userLocal.getId());
-        ProxyBuilder.callProxy(MainMenu_Activity.this, newCaller, monitorByUserList -> updateMonitorBy(monitorByUserList));
-    }
-
-    private void updateYouMonitor(List<User> monitorUserList) {
+    private void updateMonitorsUsersList(List<User> monitorsUsers) {
         Log.i("MyApp","Inside update you");
-        youMonitorTempList = monitorUserList;
-        populateMonitorUser();
+        youMonitorTempList = monitorsUsers;
+        populateMonitorsUsersList();
     }
 
-    private void populateMonitorUser() {
-        ArrayAdapter<User> adapter = new monitorUserAdapter();
+    private void populateMonitorsUsersList() {
+        ArrayAdapter<User> adapter = new monitorsUsersAdapter();
         //Configure ListView
         monitorsUsersList = findViewById(R.id.jacky_monitoring_list);
         monitorsUsersList.setAdapter(adapter);
         Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
 
-    private class monitorUserAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
-        public monitorUserAdapter() {
+    private class monitorsUsersAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
+        public monitorsUsersAdapter() {
             super(MainMenu_Activity.this, R.layout.list_layout, userLocal.getMonitorsUsers());
         }
 
@@ -164,22 +175,22 @@ public class MainMenu_Activity extends AppCompatActivity {
         }
     }
 
-    private void updateMonitorBy(List<User> monitorByUserList) {
+    private void updateMonitoredByUsersList(List<User> monitoredByUsers) {
         Log.i("MyApp", "How many times CALLED???");
-        monitorByTempList = monitorByUserList;
-        populateMonitorByUser();
+        monitorByTempList = monitoredByUsers;
+        populateMonitoredByUsersList();
     }
 
-    private void populateMonitorByUser() {
-        ArrayAdapter<User> adapter = new monitorByUserAdapter();
+    private void populateMonitoredByUsersList() {
+        ArrayAdapter<User> adapter = new monitoredByUsersAdapter();
         //Configure ListView
         monitoredByUsersList = findViewById(R.id.jacky_monitoing_by_list);
         monitoredByUsersList.setAdapter(adapter);
         Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
 
-    private class monitorByUserAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
-        public monitorByUserAdapter() {
+    private class monitoredByUsersAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
+        public monitoredByUsersAdapter() {
             super(MainMenu_Activity.this, R.layout.list_layout, userLocal.getMonitoredByUsers());
         }
 
