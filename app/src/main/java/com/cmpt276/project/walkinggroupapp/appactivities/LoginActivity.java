@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
         //go to Main Menu
         Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
 
-        intent = MainMenu_Activity.makeIntent(this, "");
+        intent = MainMenu_Activity.makeIntent(LoginActivity.this);
         startActivity(intent);
 
 

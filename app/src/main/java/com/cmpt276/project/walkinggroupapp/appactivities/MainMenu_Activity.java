@@ -2,7 +2,6 @@ package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
+import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 import com.cmpt276.project.walkinggroupapp.proxy.WGServerProxy;
@@ -31,11 +31,11 @@ public class MainMenu_Activity extends AppCompatActivity {
     private static final String PREFERENCE_EMAIL = "saved.email.key";
     public static final String INTENT_TOKEN = "com.cmpt276.project.walkinggroupapp.intentToken";
 
-    private Button youMonitorBtn;
-    private Button monitorsYouBtn;
+    private Button btnAddNewMonitorsUser;
+    private Button btnAddNewMonitoredByUser;
 
-    private ListView youMonitorList;
-    private ListView monitorsYouList;
+    private ListView monitorsUsersList;
+    private ListView monitoredByUsersList;
 
     private List<User> youMonitorTempList;
     private List<User> monitorByTempList;
@@ -48,30 +48,43 @@ public class MainMenu_Activity extends AppCompatActivity {
 
     private String token;
 
+
+
+
+    private ModelManager modelManager;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainmenu);
 
-        extractDataFromIntent();
-        createUser();
-        setupMonitorButton();
-        setupMontiorByButton();
-        registerClickMonitorUser();
-        registerClickMonitorByUser();
+
+        modelManager = ModelManager.getInstance();
+
+
+//        extractDataFromIntent();
+//        createUser();
+        setupAddNewMonitorsUserButton();
+        setupAddNewMontioredByUserButton();
+        registerClickMonitorsUsers();
+        registerClickMonitoredByUsers();
     }
 
     @Override
     public void onResume()
     {
         super.onResume();
-        createUser();
+        // TODO
+//        createUser();
     }
 
-    private void setupMonitorButton() {
+    private void setupAddNewMonitorsUserButton() {
         //register button
-        youMonitorBtn = findViewById(R.id.jacky_add_monitoring_button);
-        youMonitorBtn.setOnClickListener(new View.OnClickListener() {
+        btnAddNewMonitorsUser = findViewById(R.id.jacky_add_monitoring_button);
+        btnAddNewMonitorsUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = AddMonitorsUser.createAddIntent(getApplicationContext(), token);
@@ -80,9 +93,9 @@ public class MainMenu_Activity extends AppCompatActivity {
         });
     }
 
-    private void setupMontiorByButton(){
-        monitorsYouBtn = findViewById(R.id.jacky_add_monitoring_by_button);
-        monitorsYouBtn.setOnClickListener(new View.OnClickListener() {
+    private void setupAddNewMontioredByUserButton(){
+        btnAddNewMonitoredByUser = findViewById(R.id.jacky_add_monitoring_by_button);
+        btnAddNewMonitoredByUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = AddMonitoredByUser.createAddByIntent(getApplicationContext(), token);
@@ -91,12 +104,12 @@ public class MainMenu_Activity extends AppCompatActivity {
         });
     }
 
-    private void createUser() {
-        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
-        String email = getSavedEmail();
-        Call<User> caller = proxy.getUserByEmail(email);
-        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, returnedUser -> response(returnedUser));
-    }
+//    private void createUser() {
+//        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
+//        String email = getSavedEmail();
+//        Call<User> caller = proxy.getUserByEmail(email);
+//        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, returnedUser -> response(returnedUser));
+//    }
 
     private void response(User user) {
         Log.i("MyApp", "Server replied with user: " + user.toString());
@@ -118,8 +131,8 @@ public class MainMenu_Activity extends AppCompatActivity {
     private void populateMonitorUser() {
         ArrayAdapter<User> adapter = new monitorUserAdapter();
         //Configure ListView
-        youMonitorList = findViewById(R.id.jacky_monitoring_list);
-        youMonitorList.setAdapter(adapter);
+        monitorsUsersList = findViewById(R.id.jacky_monitoring_list);
+        monitorsUsersList.setAdapter(adapter);
         Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
 
@@ -160,8 +173,8 @@ public class MainMenu_Activity extends AppCompatActivity {
     private void populateMonitorByUser() {
         ArrayAdapter<User> adapter = new monitorByUserAdapter();
         //Configure ListView
-        monitorsYouList = findViewById(R.id.jacky_monitoing_by_list);
-        monitorsYouList.setAdapter(adapter);
+        monitoredByUsersList = findViewById(R.id.jacky_monitoing_by_list);
+        monitoredByUsersList.setAdapter(adapter);
         Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
 
@@ -193,24 +206,28 @@ public class MainMenu_Activity extends AppCompatActivity {
         }
     }
 
-    public static Intent makeIntent(Context context, String token){
-        Intent intent = new Intent(context, MainMenu_Activity.class);
-        intent.putExtra(INTENT_TOKEN, token);
-        return intent;
+    public static Intent makeIntent(Context context){
+        return new Intent(context, MainMenu_Activity.class);
     }
 
-    private void extractDataFromIntent(){
-        Intent intent = getIntent();
-        token = intent.getStringExtra(INTENT_TOKEN);
-    }
+//    public static Intent makeIntent(Context context, String token){
+//        Intent intent = new Intent(context, MainMenu_Activity.class);
+//        intent.putExtra(INTENT_TOKEN, token);
+//        return intent;
+//    }
 
-    private String getSavedEmail()
-    {
-        SharedPreferences saveEmail= getSharedPreferences("MyData", MODE_PRIVATE);
-        return saveEmail.getString(PREFERENCE_EMAIL, "0");
-    }
+//    private void extractDataFromIntent(){
+//        Intent intent = getIntent();
+//        token = intent.getStringExtra(INTENT_TOKEN);
+//    }
 
-    private void registerClickMonitorUser()                                                                                    //For clicking on list object
+//    private String getSavedEmail()
+//    {
+//        SharedPreferences saveEmail= getSharedPreferences("MyData", MODE_PRIVATE);
+//        return saveEmail.getString(PREFERENCE_EMAIL, "0");
+//    }
+
+    private void registerClickMonitorsUsers()                                                                                    //For clicking on list object
     {
         final ListView list = findViewById(R.id.jacky_monitoring_list);
 
@@ -249,7 +266,7 @@ public class MainMenu_Activity extends AppCompatActivity {
         });
     }
 
-    private void registerClickMonitorByUser()                                                                                    //For clicking on list object
+    private void registerClickMonitoredByUsers()                                                                                    //For clicking on list object
     {
         final ListView list = findViewById(R.id.jacky_monitoing_by_list);
 
@@ -310,7 +327,7 @@ public class MainMenu_Activity extends AppCompatActivity {
     private void redrawMonitorUser(Void nothing)
     {
         Log.i("MyApp", "Removed USER");
-        createUser();
+//        createUser();
     }
 
 }
