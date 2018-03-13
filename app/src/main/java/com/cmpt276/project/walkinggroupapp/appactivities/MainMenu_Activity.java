@@ -34,18 +34,16 @@ public class MainMenu_Activity extends AppCompatActivity {
     private Button btnAddNewMonitorsUser;
     private Button btnAddNewMonitoredByUser;
 
-    private ListView monitorsUsersList;
-    private ListView monitoredByUsersList;
+    private ListView monitorsUsersListView;
+    private ListView monitoredByUsersListView;
 
-    private List<User> youMonitorTempList;
-    private List<User> monitorByTempList;
+    private List<User> monitorsUsers;
+    private List<User> monitoredByUsers;
 
+
+//    private int selectedPosition;
     private WGServerProxy proxy;
-
-    private int positionGlobal;
-
     private User userLocal;
-
     private String token;
 
 
@@ -71,10 +69,10 @@ public class MainMenu_Activity extends AppCompatActivity {
 
 
 
-        ProxyBuilder.SimpleCallback<List<User>> getMonitorsUsersCallback = monitorsUsers -> updateMonitorsUsersList(monitorsUsers);
+        ProxyBuilder.SimpleCallback<List<User>> getMonitorsUsersCallback = monitorsUsers -> getMonitorsUsersResponse(monitorsUsers);
         modelManager.getMonitorsUsers(MainMenu_Activity.this, getMonitorsUsersCallback);
 
-        ProxyBuilder.SimpleCallback<List<User>> getMonitoredByUsersCallback = monitoredByUsers -> updateMonitoredByUsersList(monitoredByUsers);
+        ProxyBuilder.SimpleCallback<List<User>> getMonitoredByUsersCallback = monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers);
         modelManager.getMonitoredByUsers(MainMenu_Activity.this, getMonitoredByUsersCallback);
 
 
@@ -82,8 +80,8 @@ public class MainMenu_Activity extends AppCompatActivity {
 //        createUser();
         setupAddNewMonitorsUserButton();
         setupAddNewMonitoredByUserButton();
-        registerClickMonitorsUsers();
-        registerClickMonitoredByUsers();
+//        registerMonitorsUsersOnItemClick();
+//        registerMonitoredByUsersOnItemClick();
     }
 
     @Override
@@ -92,10 +90,10 @@ public class MainMenu_Activity extends AppCompatActivity {
         super.onResume();
         // TODO
 //        createUser();
-        ProxyBuilder.SimpleCallback<List<User>> getMonitorsUsersCallback = monitorsUsers -> updateMonitorsUsersList(monitorsUsers);
+        ProxyBuilder.SimpleCallback<List<User>> getMonitorsUsersCallback = monitorsUsers -> getMonitorsUsersResponse(monitorsUsers);
         modelManager.getMonitorsUsers(MainMenu_Activity.this, getMonitorsUsersCallback);
 
-        ProxyBuilder.SimpleCallback<List<User>> getMonitoredByUsersCallback = monitoredByUsers -> updateMonitoredByUsersList(monitoredByUsers);
+        ProxyBuilder.SimpleCallback<List<User>> getMonitoredByUsersCallback = monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers);
         modelManager.getMonitoredByUsers(MainMenu_Activity.this, getMonitoredByUsersCallback);
     }
 
@@ -134,23 +132,24 @@ public class MainMenu_Activity extends AppCompatActivity {
 //        userLocal = user;
 //
 //        Call<List<User>> caller = proxy.getMonitorsUsersById(userLocal.getId());
-//        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, monitorsUsers -> updateMonitorsUsersList(monitorsUsers));
+//        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, monitorsUsers -> getMonitorsUsersResponse(monitorsUsers));
 //
 //        Call<List<User>> newCaller = proxy.getMonitoredByUsersById(userLocal.getId());
-//        ProxyBuilder.callProxy(MainMenu_Activity.this, newCaller, monitoredByUsers -> updateMonitoredByUsersList(monitoredByUsers));
+//        ProxyBuilder.callProxy(MainMenu_Activity.this, newCaller, monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers));
 //    }
 
-    private void updateMonitorsUsersList(List<User> monitorsUsers) {
+    private void getMonitorsUsersResponse(List<User> monitorsUsers) {
         Log.i("MyApp","Inside update you");
-        youMonitorTempList = monitorsUsers;
+        this.monitorsUsers = monitorsUsers;
         populateMonitorsUsersList();
+        registerMonitorsUsersOnItemClick();
     }
 
     private void populateMonitorsUsersList() {
         ArrayAdapter<User> adapter = new monitorsUsersAdapter();
         //Configure ListView
-        monitorsUsersList = findViewById(R.id.jacky_monitoring_list);
-        monitorsUsersList.setAdapter(adapter);
+        monitorsUsersListView = findViewById(R.id.jacky_monitoring_list);
+        monitorsUsersListView.setAdapter(adapter);
         Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
 
@@ -167,7 +166,7 @@ public class MainMenu_Activity extends AppCompatActivity {
                 itemView = getLayoutInflater().inflate(R.layout.list_layout, parent, false);
             }
             //Find a user to add
-            User currentUser = youMonitorTempList.get(position);
+            User currentUser = monitorsUsers.get(position);
 
             //Name:
             TextView makeName = itemView.findViewById(R.id.jacky_user_name_dynamic);
@@ -182,17 +181,18 @@ public class MainMenu_Activity extends AppCompatActivity {
         }
     }
 
-    private void updateMonitoredByUsersList(List<User> monitoredByUsers) {
+    private void getMonitoredByUsersResponse(List<User> monitoredByUsers) {
         Log.i("MyApp", "How many times CALLED???");
-        monitorByTempList = monitoredByUsers;
+        this.monitoredByUsers = monitoredByUsers;
         populateMonitoredByUsersList();
+        registerMonitoredByUsersOnItemClick();
     }
 
     private void populateMonitoredByUsersList() {
         ArrayAdapter<User> adapter = new monitoredByUsersAdapter();
         //Configure ListView
-        monitoredByUsersList = findViewById(R.id.jacky_monitoing_by_list);
-        monitoredByUsersList.setAdapter(adapter);
+        monitoredByUsersListView = findViewById(R.id.jacky_monitoing_by_list);
+        monitoredByUsersListView.setAdapter(adapter);
         Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
 
@@ -210,7 +210,7 @@ public class MainMenu_Activity extends AppCompatActivity {
             }
             //Find a user to add
             Log.i("MyApp", "Inside Monitoring By");
-            User currentUser = monitorByTempList.get(position);
+            User currentUser = monitoredByUsers.get(position);
 
             //Name:
             TextView makeName = itemView.findViewById(R.id.jacky_user_name_dynamic);
@@ -245,7 +245,7 @@ public class MainMenu_Activity extends AppCompatActivity {
 //        return saveEmail.getString(PREFERENCE_EMAIL, "0");
 //    }
 
-    private void registerClickMonitorsUsers()                                                                                    //For clicking on list object
+    private void registerMonitorsUsersOnItemClick()                                                                                    //For clicking on list object
     {
         final ListView list = findViewById(R.id.jacky_monitoring_list);
 
@@ -256,7 +256,7 @@ public class MainMenu_Activity extends AppCompatActivity {
             {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
                 Log.i("MyApp", "Pressed Long" + position);
-                positionGlobal = position;
+//                selectedPosition = position;
                 PopupMenu popupMenu = new PopupMenu(MainMenu_Activity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
 
@@ -267,10 +267,10 @@ public class MainMenu_Activity extends AppCompatActivity {
                         switch(menuItem.getItemId())
                         {
                             case R.id.cancel:
-                                doCancel();
+//                                doCancel();
                                 break;
                             case R.id.delete:
-                                doDelete();
+                                removeMonitorsUserByPosition(position);
                                 break;
                         }
                         return true;
@@ -284,7 +284,7 @@ public class MainMenu_Activity extends AppCompatActivity {
         });
     }
 
-    private void registerClickMonitoredByUsers()                                                                                    //For clicking on list object
+    private void registerMonitoredByUsersOnItemClick()                                                                                    //For clicking on list object
     {
         final ListView list = findViewById(R.id.jacky_monitoing_by_list);
 
@@ -295,7 +295,7 @@ public class MainMenu_Activity extends AppCompatActivity {
             {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
                 Log.i("MyApp", "Pressed Long" + position);
-                positionGlobal = position;
+//                selectedPosition = position;
                 PopupMenu popupMenu = new PopupMenu(MainMenu_Activity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
 
@@ -306,10 +306,10 @@ public class MainMenu_Activity extends AppCompatActivity {
                         switch(menuItem.getItemId())
                         {
                             case R.id.cancel:
-                                doCancel();
+//                                doCancel();
                                 break;
                             case R.id.delete:
-                                doDeleteBy();
+                                removeMonitoredByUserByPosition(position);
                                 break;
                         }
                         return true;
@@ -323,21 +323,23 @@ public class MainMenu_Activity extends AppCompatActivity {
         });
     }
 
-    private void doCancel()
-    {
-        //Do nothing XD
-    }
 
-    private void doDelete()
+//    // TODO: not necessary.
+//    private void doCancel()
+//    {
+//        //Do nothing XD
+//    }
+
+    private void removeMonitorsUserByPosition(int position)
     {
-        User tempUser = youMonitorTempList.get(positionGlobal);
+        User tempUser = monitorsUsers.get(position);
         Call<Void> caller = proxy.removeMonitorsUser(userLocal.getId(), tempUser.getId());
         ProxyBuilder.callProxy(MainMenu_Activity.this, caller, noResponse -> redrawMonitorUser(noResponse));
     }
 
-    private void doDeleteBy()
+    private void removeMonitoredByUserByPosition(int position)
     {
-        User tempUser = monitorByTempList.get(positionGlobal);
+        User tempUser = monitoredByUsers.get(position);
         Call<Void> caller = proxy.removeMonitoredByUser(userLocal.getId(), tempUser.getId());
         ProxyBuilder.callProxy(MainMenu_Activity.this, caller, noResponse -> redrawMonitorUser(noResponse));
     }
