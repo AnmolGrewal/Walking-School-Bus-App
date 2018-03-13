@@ -111,10 +111,9 @@ public class AddMonitoredByUser extends AppCompatActivity {
     }
 
 
-    public static Intent makeIntent(Context context, String token){
-        Intent intent = new Intent(context, AddMonitoredByUser.class);
-        intent.putExtra(INTENT_TOKEN, token);
-        return intent;
+    public static Intent makeIntent(Context context){
+        //        intent.putExtra(INTENT_TOKEN, token);
+        return new Intent(context, AddMonitoredByUser.class);
     }
 
     private void extractDataFromIntent(){

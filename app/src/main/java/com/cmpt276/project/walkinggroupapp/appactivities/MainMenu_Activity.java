@@ -42,9 +42,9 @@ public class MainMenu_Activity extends AppCompatActivity {
 
 
 //    private int selectedPosition;
-    private WGServerProxy proxy;
+//    private WGServerProxy proxy;
 //    private User userLocal;
-    private String token;
+//    private String token;
 
 
 
@@ -96,7 +96,7 @@ public class MainMenu_Activity extends AppCompatActivity {
         btnAddNewMonitorsUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = AddMonitorsUser.makeIntent(getApplicationContext(), token);
+                Intent intent = AddMonitorsUser.makeIntent(getApplicationContext());
                 startActivity(intent);
             }
         });
@@ -107,7 +107,7 @@ public class MainMenu_Activity extends AppCompatActivity {
         btnAddNewMonitoredByUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = AddMonitoredByUser.makeIntent(getApplicationContext(), token);
+                Intent intent = AddMonitoredByUser.makeIntent(getApplicationContext());
                 startActivity(intent);
             }
         });
@@ -353,10 +353,10 @@ public class MainMenu_Activity extends AppCompatActivity {
         modelManager.getMonitoredByUsers(MainMenu_Activity.this, getMonitoredByUsersCallback);
     }
 
-    private void redrawMonitorUser(Void nothing)
-    {
-        Log.i("MyApp", "Removed USER");
-//        createUser();
-    }
+//    private void redrawMonitorUser(Void nothing)
+//    {
+//        Log.i("MyApp", "Removed USER");
+////        createUser();
+//    }
 
 }

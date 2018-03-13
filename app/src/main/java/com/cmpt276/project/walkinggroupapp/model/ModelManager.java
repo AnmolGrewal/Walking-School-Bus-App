@@ -132,20 +132,22 @@ public class ModelManager {
 //        return user.getMonitoredByUsers();
     }
 
-    public void addNewMonitorsUser(Context context, long targetId) {
+    public void addNewMonitorsUser(Context context, ProxyBuilder.SimpleCallback<List<User>> callback, long targetId) {
 //        updateUser();
         User newUser = new User();
         newUser.setId(targetId);
         Call<List<User>> caller = proxy.addNewMonitorsUser(user.getId(), newUser);
-        ProxyBuilder.callProxy(context, caller, monitorsUsers -> getMonitorsUsersResponse(monitorsUsers));
+//        ProxyBuilder.callProxy(context, caller, monitorsUsers -> getMonitorsUsersResponse(monitorsUsers));
+        ProxyBuilder.callProxy(context, caller, callback);
     }
 
-    public void addNewMonitoredByUser(Context context, long targetId) {
+    public void addNewMonitoredByUser(Context context, ProxyBuilder.SimpleCallback<List<User>> callback, long targetId) {
 //        updateUser();
         User newUser = new User();
         newUser.setId(targetId);
         Call<List<User>> caller = proxy.addNewMonitoredByUser(user.getId(), newUser);
-        ProxyBuilder.callProxy(context, caller, monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers));
+//        ProxyBuilder.callProxy(context, caller, monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers));
+        ProxyBuilder.callProxy(context, caller, callback);
     }
 
     public void removeMonitorsUser(Context context, ProxyBuilder.SimpleCallback<Void> callback, long targetId) {
