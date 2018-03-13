@@ -28,8 +28,8 @@ import retrofit2.Call;
 
 public class MainMenu_Activity extends AppCompatActivity {
 
-    private static final String PREFERENCE_EMAIL = "saved.email.key";
-    public static final String INTENT_TOKEN = "com.cmpt276.project.walkinggroupapp.intentToken";
+//    private static final String PREFERENCE_EMAIL = "saved.email.key";
+//    public static final String INTENT_TOKEN = "com.cmpt276.project.walkinggroupapp.intentToken";
 
     private Button btnAddNewMonitorsUser;
     private Button btnAddNewMonitoredByUser;
@@ -342,7 +342,7 @@ public class MainMenu_Activity extends AppCompatActivity {
     {
         long targetId = monitoredByUsers.get(position).getId();
         ProxyBuilder.SimpleCallback<Void> callback = returnNothing -> removeMonitoredByUserResponse(returnNothing);
-        modelManager.removeMonitorsUser(MainMenu_Activity.this, callback, targetId);
+        modelManager.removeMonitoredByUser(MainMenu_Activity.this, callback, targetId);
 //        User tempUser = monitoredByUsers.get(position);
 //        Call<Void> caller = proxy.removeMonitoredByUser(userLocal.getId(), tempUser.getId());
 //        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, noResponse -> redrawMonitorUser(noResponse));

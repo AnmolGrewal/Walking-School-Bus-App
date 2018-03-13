@@ -22,14 +22,14 @@ import retrofit2.Call;
 
 public class AddMonitorsUser extends AppCompatActivity {
 
-    private static final String PREFERENCE_EMAIL= "saved.email.key";
-    public static final String INTENT_TOKEN = "com.cmpt276.project.walkinggroupapp.intentToken";
+//    private static final String PREFERENCE_EMAIL= "saved.email.key";
+//    public static final String INTENT_TOKEN = "com.cmpt276.project.walkinggroupapp.intentToken";
 
-    private User userLocal;
-
-    private String token;
-
-    private WGServerProxy proxy;
+//    private User userLocal;
+//
+//    private String token;
+//
+//    private WGServerProxy proxy;
 
     private Button addBtn;
 
@@ -69,8 +69,8 @@ public class AddMonitorsUser extends AppCompatActivity {
             public void onClick(View view) {
                 //Once clicked we get data from user input, find user, if found add else tell user error
                 editTextUserId = findViewById(R.id.jacky_add_user);
-                String strId = editTextUserId.getText().toString();
-                long userId = Long.parseLong(strId);
+                String userIdString = editTextUserId.getText().toString();
+                long userId = Long.parseLong(userIdString);
 //                findUser(longUserId);
                 ProxyBuilder.SimpleCallback<List<User>> callback = monitorsUsers -> addNewMonitorsUserResponse(monitorsUsers);
                 modelManager.addNewMonitorsUser(AddMonitorsUser.this, callback, userId);
