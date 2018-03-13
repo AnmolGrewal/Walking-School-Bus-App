@@ -168,29 +168,12 @@ public class ModelManager {
 
 
 
-
-//    private void getUserResponse(User returnedUser) {
-////        user = returnedUser;
-//
-////        userId = returnedUser.getId();
-////        user.setId(userId);
-//
-//        user.setId(returnedUser.getId());
-//        user.setId(returnedUser.getId());
-//        user.setName(returnedUser.getName());
-//        user.setEmail(returnedUser.getEmail());
-//        user.setMonitoredByUsers(returnedUser.getMonitoredByUsers());
-//        user.setMonitorsUsers(returnedUser.getMonitorsUsers());
-//        user.setWalkingGroups(returnedUser.getWalkingGroups());
-//        user.setHref(returnedUser.getHref());
+//    private void getMonitorsUsersResponse(List<User> monitorsUsers) {
+//        user.setMonitorsUsers(monitorsUsers);
 //    }
-
-    private void getMonitorsUsersResponse(List<User> monitorsUsers) {
-        user.setMonitorsUsers(monitorsUsers);
-    }
-
-    private void getMonitoredByUsersResponse(List<User> monitoredByUsers) {
-        user.setMonitoredByUsers(monitoredByUsers);
-    }
+//
+//    private void getMonitoredByUsersResponse(List<User> monitoredByUsers) {
+//        user.setMonitoredByUsers(monitoredByUsers);
+//    }
 
 }

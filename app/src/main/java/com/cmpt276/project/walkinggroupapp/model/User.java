@@ -24,7 +24,7 @@ public class User {
     private List<WalkingGroup> leadsGroups = new ArrayList<>();
 
     private String href;
-    
+
 
     public Long getId() {
         return id;
