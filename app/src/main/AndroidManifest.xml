@@ -41,7 +41,7 @@
             android:value="@string/google_maps_key" />
 
 
-        <activity android:name=".appactivities.MainMenu_Activity" />
+        <activity android:name=".appactivities.MainMenuActivity" />
         <activity android:name=".appactivities.LoginActivity" />
         <activity android:name=".appactivities.WelcomeActivity">
             <intent-filter>
@@ -51,8 +51,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CheckMonitoringUsers" />
-        <activity android:name=".appactivities.AddMonitorsUser" />
-        <activity android:name=".appactivities.AddMonitoredByUser"></activity>
+        <activity android:name=".appactivities.AddMonitorsUserActivity" />
+        <activity android:name=".appactivities.AddMonitoredByUserActivity"></activity>
         <activity android:name=".appactivities.MapActivity"></activity>
     </application>
 

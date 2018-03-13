@@ -13,18 +13,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cmpt276.project.walkinggroupapp.model.User;
+import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
-import com.cmpt276.project.walkinggroupapp.proxy.WGServerProxy;
-import retrofit2.Call;
 
 import com.cmpt276.project.walkinggroupapp.R;
 
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
-    private static final String PREFERENCE_EMAIL= "saved.email.key";
-    private static final String PREFERENCE_PASSWORD= "saved.password.key";
+    private static final String PREFERENCE_EMAIL = "saved.email.key";
+    private static final String PREFERENCE_PASSWORD = "saved.password.key";
     private static final String PREFERENCE_IS_LOGOUT = "saved.logout.key";
 
     private Button mLoginButton;
@@ -36,19 +34,31 @@ public class LoginActivity extends AppCompatActivity {
 
     private String mPassword;
     private String mEmail;
-    private long userId = 0;
+//    private long userId = 0;
 
     private Intent intent;
 
-    private WGServerProxy proxy;
+//    private WGServerProxy proxy;
+
+
+
+
+    private ModelManager modelManager;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+        modelManager = ModelManager.getInstance();
+        modelManager.setApiKey(getString(R.string.gerry_apikey));
+
         // Build the server proxy--used for logging in
-        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), null);
+//        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), null);
 
         //set up all buttons, texViews etc.
         RegisterViews();
@@ -59,13 +69,15 @@ public class LoginActivity extends AppCompatActivity {
         //If user did not logout -- auto login
         //Load Saved data from preferences
         final SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
-        String savedPassword = sharedPreferences.getString(PREFERENCE_PASSWORD," ");
         String savedEmail = sharedPreferences.getString(PREFERENCE_EMAIL, " ");
+        String savedPassword = sharedPreferences.getString(PREFERENCE_PASSWORD," ");
         Boolean savedIsLogout = sharedPreferences.getBoolean(PREFERENCE_IS_LOGOUT, true);
 
         if(!savedIsLogout) {
             //login using data from preferences
-            Login(savedEmail,savedPassword);
+//            Login(savedEmail,savedPassword);
+            ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
+            modelManager.login(LoginActivity.this, callback, savedEmail, savedPassword);
         }
     }
 
@@ -73,9 +85,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-    private void response(User user) {
-        Log.w(TAG, "Server replied with user: " + user.toString());
-    }
 
     private void loginResponse(Void returnedNothing) {
         Log.w(TAG, "Server replied to login request (no content was expected).");
@@ -85,17 +94,28 @@ public class LoginActivity extends AppCompatActivity {
 
         //go to Main Menu
         Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
+
+//        ProxyBuilder.SimpleCallback<Void> callback = nothing -> updateUserResponse(nothing);
+//        modelManager.updateUser(callback);
+
+//        modelManager.updateUser();
+
+
+        intent = MainMenuActivity.makeIntent(LoginActivity.this);
         startActivity(intent);
-
-
     }
 
-    private void onReceiveToken(String token) {
-        // Replace the current proxy with one that uses the token!--to enable server data access
-        Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
-        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
-        intent = MainMenu_Activity.makeIntnet(this, token);
-    }
+//    private void updateUserResponse(Void nothing) {
+//        intent = MainMenuActivity.makeIntent(LoginActivity.this);
+//        startActivity(intent);
+//    }
+
+//    private void onReceiveToken(String token) {
+//        // Replace the current proxy with one that uses the token!--to enable server data access
+//        Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
+//        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
+//        intent = MainMenuActivity.makeIntent(this, token);
+//    }
 
 
 
@@ -110,11 +130,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //login using data from editTexts
-                Login(mEmail,mPassword);
+//                Login(mEmail,mPassword);
+                ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
+                modelManager.login(LoginActivity.this, callback, mEmail, mPassword);
 
             }
         });
-
 
         //register button
         mRegisterButton = findViewById(R.id.gerry_Register_Button_login);
@@ -125,7 +146,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
         //forgot password textView
         mForgotPasswordTextView = findViewById(R.id.gerry_ForgotPassword_TextView_login);
         mForgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +154,6 @@ public class LoginActivity extends AppCompatActivity {
                 //go to ForgotPassword Activity
             }
         });
-
 
         //password editText
         mPasswordEditText = findViewById(R.id.gerry_Password_EditText_login);
@@ -160,7 +179,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
         //email editText
         mEmailEditText = findViewById(R.id.gerry_Email_EditText_login);
         mEmailEditText.addTextChangedListener(new TextWatcher() {
@@ -184,7 +202,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
         //test map Button
         mMapTestButton = findViewById(R.id.gerry_Map_Button_login);
         mMapTestButton.setOnClickListener(new View.OnClickListener() {
@@ -201,37 +218,38 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-   private void Login(String email, String password) {
-       // Build new user
-       User user = new User();
-       user.setEmail(email);
-       user.setPassword(password);
-
-       // Register for token received:
-       ProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
-
-       // Make call
-       Call<Void> caller = proxy.login(user);
-       ProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> loginResponse(returnedNothing));
-   }
-
-
+//   private void Login(String email, String password) {
+//       // Build new user
+//       User user = new User();
+//       user.setEmail(email);
+//       user.setPassword(password);
+//
+//       // Register for token received:
+//       ProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
+//
+//       // Make call
+//       Call<Void> caller = proxy.login(user);
+//       ProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> loginResponse(returnedNothing));
+//   }
 
 
 
-    private void CreateUserTest() {
-        // Build new user
-        User user = new User();
-        user.setEmail("gerry1@test.com");
-        user.setName("Gerry Test1");
-        user.setPassword("justtesting");
 
-        // Make call
-        Call<User> caller = proxy.createNewUser(user);
-        ProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> response(returnedUser));
-    }
+//    private void CreateUserTest() {
+//        // Build new user
+//        User user = new User();
+//        user.setEmail("gerry1@test.com");
+//        user.setName("Gerry Test1");
+//        user.setPassword("justtesting");
+//
+//        // Make call
+//        Call<User> caller = proxy.createNewUser(user);
+//        ProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> response(returnedUser));
+//    }
 
-
+//    private void response(User user) {
+//        Log.w(TAG, "Server replied with user: " + user.toString());
+//    }
 
 
 
