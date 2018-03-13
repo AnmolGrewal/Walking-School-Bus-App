@@ -24,5 +24,6 @@
     <string name="jacky_add_monitoring_by">Add</string>
     <string name="jacky_add_monitoing">Add</string>
     <string name="title_activity_maps">Map</string>
+    <string name="anmol_userEmailHint">user@example.com</string>
 
 </resources>
