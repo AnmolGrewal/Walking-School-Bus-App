@@ -2,7 +2,6 @@ package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,18 +13,15 @@ import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
-import com.cmpt276.project.walkinggroupapp.proxy.WGServerProxy;
 
 import java.util.List;
 
-import retrofit2.Call;
-
-public class AddMonitorsUser extends AppCompatActivity {
+public class AddMonitoredByUserActivity extends AppCompatActivity {
 
 //    private static final String PREFERENCE_EMAIL= "saved.email.key";
 //    public static final String INTENT_TOKEN = "com.cmpt276.project.walkinggroupapp.intentToken";
 
-//    private User userLocal;
+//    private User UserLocal;
 //
 //    private String token;
 //
@@ -37,7 +33,6 @@ public class AddMonitorsUser extends AppCompatActivity {
 
 
 
-
     private ModelManager modelManager;
 
 
@@ -46,8 +41,9 @@ public class AddMonitorsUser extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_monitoring_user);
+        setContentView(R.layout.activity_add_monitored_by_user);
 
+        Log.i("MyApp", "INSIDE MONITOREDBY");
         //Extract data from intent
 //        extractDataFromIntent();
         //Need to recreate the user
@@ -55,7 +51,10 @@ public class AddMonitorsUser extends AppCompatActivity {
         //Need to wire button
 
 
+
         modelManager = ModelManager.getInstance();
+
+
 
 
         setUpButton();
@@ -63,36 +62,41 @@ public class AddMonitorsUser extends AppCompatActivity {
 
     private void setUpButton()
     {
-        addBtn = findViewById(R.id.jacky_add_user_button);
+        Log.i("MyApp", "Inside set btn");
+        addBtn = findViewById(R.id.jacky_add_by_user_button);
+        Log.i("MyApp", "After find btton");
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Once clicked we get data from user input, find user, if found add else tell user error
-                editTextUserId = findViewById(R.id.jacky_add_user);
+                editTextUserId = findViewById(R.id.jacky_add_by_user);
                 String userIdString = editTextUserId.getText().toString();
                 long userId = Long.parseLong(userIdString);
 //                findUser(longUserId);
-                ProxyBuilder.SimpleCallback<List<User>> callback = monitorsUsers -> addNewMonitorsUserResponse(monitorsUsers);
-                modelManager.addNewMonitorsUser(AddMonitorsUser.this, callback, userId);
+
+                ProxyBuilder.SimpleCallback<List<User>> callback = monitoredByUsers -> addNewMonitoredByUserResponse(monitoredByUsers);
+                modelManager.addNewMonitoredByUser(AddMonitoredByUserActivity.this, callback, userId);
+
             }
         });
     }
 
-    private void addNewMonitorsUserResponse(List<User> monitorsUsers) {
+    private void addNewMonitoredByUserResponse(List<User> monitoredByUsers) {
         finish();
     }
-
-//    private void response(User user) {
-//        Log.i("MyApp", "Server replied with user: " + user.toString() );
-//        userLocal = user;
-//    }
 
 //    private void createUser() {
 //        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
 //        String email = getSavedEmail();
 //        Log.i("MyApp", "Email is: " + email);
-//        Call<User> caller = proxy.getUserByEmail(email);                     //For now since the email is not being passed i will use a standard one
-//        ProxyBuilder.callProxy(AddMonitorsUser.this, caller, returnedUser -> response(returnedUser));
+//        Call<User> caller = proxy.getUserByEmail("1");
+//        Log.i("MyApp", "After caller");
+//        ProxyBuilder.callProxy(AddMonitoredByUserActivity.this, caller, returnedUser -> response(returnedUser));
+//    }
+
+//    private void response(User user) {
+//        Log.i("MyApp", "User invalid?");
+//        Log.i("MyApp", "Server replied with user: " + user.toString() );
+//        UserLocal = user;
 //    }
 
 //    private String getSavedEmail()
@@ -105,15 +109,15 @@ public class AddMonitorsUser extends AppCompatActivity {
 //    private void findUser(Long id)
 //    {
 //        Call<User> caller = proxy.getUserById(id);
-//        ProxyBuilder.callProxy(AddMonitorsUser.this, caller, newUser -> waitNew(newUser));
+//        ProxyBuilder.callProxy(AddMonitoredByUserActivity.this, caller, newUser -> waitNew(newUser));
 //    }
 
 //    private void waitNew(User user)
 //    {
 //        Log.i("MyApp", "    User: " + user.toString());
 //        User tempUser = user;
-//        Call<List<User>> caller = proxy.addNewMonitorsUser(userLocal.getId(),tempUser);                    //Since only the id is provided
-//        ProxyBuilder.callProxy(AddMonitorsUser.this, caller, monitoringList -> AddUser(monitoringList));
+//        Call<List<User>> caller = proxy.addNewMonitoredByUser(UserLocal.getId(), tempUser);
+//        ProxyBuilder.callProxy(AddMonitoredByUserActivity.this, caller, monitoringList -> AddUser(monitoringList));
 //    }
 
 //    private void AddUser(List <User> monitoringList)
@@ -128,7 +132,7 @@ public class AddMonitorsUser extends AppCompatActivity {
 
     public static Intent makeIntent(Context context){
         //        intent.putExtra(INTENT_TOKEN, token);
-        return new Intent(context, AddMonitorsUser.class);
+        return new Intent(context, AddMonitoredByUserActivity.class);
     }
 
 //    private void extractDataFromIntent(){

@@ -101,12 +101,12 @@ public class LoginActivity extends AppCompatActivity {
 //        modelManager.updateUser();
 
 
-        intent = MainMenu_Activity.makeIntent(LoginActivity.this);
+        intent = MainMenuActivity.makeIntent(LoginActivity.this);
         startActivity(intent);
     }
 
 //    private void updateUserResponse(Void nothing) {
-//        intent = MainMenu_Activity.makeIntent(LoginActivity.this);
+//        intent = MainMenuActivity.makeIntent(LoginActivity.this);
 //        startActivity(intent);
 //    }
 
@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 //        // Replace the current proxy with one that uses the token!--to enable server data access
 //        Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
 //        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
-//        intent = MainMenu_Activity.makeIntent(this, token);
+//        intent = MainMenuActivity.makeIntent(this, token);
 //    }
 
 
