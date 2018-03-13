@@ -49,7 +49,7 @@ import java.util.List;
  */
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, LocationListener {
 
-    private static final int DEFAULT_ZOOM= 12;
+    private static final int DEFAULT_ZOOM = 11;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CHECK_SETTINGS = 2;
 
@@ -111,9 +111,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mMap.setOnMarkerClickListener(this);
 
 
-        // Add a marker from
+
+        // Add a random marker
         LatLng randomPlace = new LatLng(37.35,-122.1);
         placeMarkerOnMap(randomPlace);
+
+        // Add a random marker
+        LatLng randomPlace2 = new LatLng(37.3,-122.19);
+        placeMarkerOnMap(randomPlace2);
+
+
 
         // Add a marker in Ney York
         LatLng myPlace = new LatLng(40.73, -73.99);  // this is New York
@@ -144,7 +151,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     public void onLocationChanged(Location location) {
         mLastLocation = location;
         if (null != mLastLocation) {
-            placeMarkerOnMap(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+            placeMarkerOnMapDefIcon(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
         }
     }
 
@@ -219,17 +226,26 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             //gives you the most recent location currently available
             if (mLastLocation != null) {
                 LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                placeMarkerOnMap(currentLocation);
+                placeMarkerOnMapDefIcon(currentLocation);
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, DEFAULT_ZOOM));
             }
         }
     }
 
 
-
+    //place a marker with non default icon
     protected void placeMarkerOnMap(LatLng location) {
         MarkerOptions markerOptions = new MarkerOptions().position(location)
                                                          .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_user_location));
+        String titleStr = getAddressOfMarker(location);
+        markerOptions.title(titleStr);
+
+        mMap.addMarker(markerOptions);
+    }
+
+    //place a marker with default icon
+    protected void placeMarkerOnMapDefIcon(LatLng location) {
+        MarkerOptions markerOptions = new MarkerOptions().position(location);
         String titleStr = getAddressOfMarker(location);
         markerOptions.title(titleStr);
 
