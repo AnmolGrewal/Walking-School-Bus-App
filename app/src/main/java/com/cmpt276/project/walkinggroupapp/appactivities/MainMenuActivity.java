@@ -30,6 +30,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private Button btnAddNewMonitorsUser;
     private Button btnAddNewMonitoredByUser;
+    private Button btnViewGroup;
 
     private ListView monitorsUsersListView;
     private ListView monitoredByUsersListView;
@@ -70,6 +71,7 @@ public class MainMenuActivity extends AppCompatActivity {
 //        createUser();
         setupAddNewMonitorsUserButton();
         setupAddNewMonitoredByUserButton();
+        setupViewGroupButton();
 //        registerMonitorsUsersOnItemClick();
 //        registerMonitoredByUsersOnItemClick();
     }
@@ -105,6 +107,17 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = AddMonitoredByUserActivity.makeIntent(getApplicationContext());
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setupViewGroupButton() {
+        btnViewGroup = findViewById(R.id.jacky_view_groups);
+        btnViewGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = AddOrViewGroup.makeIntent(getApplicationContext());
                 startActivity(intent);
             }
         });
