@@ -20,13 +20,10 @@ import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
-import com.cmpt276.project.walkinggroupapp.proxy.WGServerProxy;
 
 import java.util.List;
 
-import retrofit2.Call;
-
-public class MainMenu_Activity extends AppCompatActivity {
+public class MainMenuActivity extends AppCompatActivity {
 
 //    private static final String PREFERENCE_EMAIL = "saved.email.key";
 //    public static final String INTENT_TOKEN = "com.cmpt276.project.walkinggroupapp.intentToken";
@@ -57,16 +54,16 @@ public class MainMenu_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mainmenu);
+        setContentView(R.layout.activity_main_menu);
 
         modelManager = ModelManager.getInstance();
 
 
         ProxyBuilder.SimpleCallback<List<User>> getMonitorsUsersCallback = monitorsUsers -> getMonitorsUsersResponse(monitorsUsers);
-        modelManager.getMonitorsUsers(MainMenu_Activity.this, getMonitorsUsersCallback);
+        modelManager.getMonitorsUsers(MainMenuActivity.this, getMonitorsUsersCallback);
 
         ProxyBuilder.SimpleCallback<List<User>> getMonitoredByUsersCallback = monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers);
-        modelManager.getMonitoredByUsers(MainMenu_Activity.this, getMonitoredByUsersCallback);
+        modelManager.getMonitoredByUsers(MainMenuActivity.this, getMonitoredByUsersCallback);
 
 
 //        extractDataFromIntent();
@@ -84,10 +81,10 @@ public class MainMenu_Activity extends AppCompatActivity {
         // TODO
 //        createUser();
         ProxyBuilder.SimpleCallback<List<User>> getMonitorsUsersCallback = monitorsUsers -> getMonitorsUsersResponse(monitorsUsers);
-        modelManager.getMonitorsUsers(MainMenu_Activity.this, getMonitorsUsersCallback);
+        modelManager.getMonitorsUsers(MainMenuActivity.this, getMonitorsUsersCallback);
 
         ProxyBuilder.SimpleCallback<List<User>> getMonitoredByUsersCallback = monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers);
-        modelManager.getMonitoredByUsers(MainMenu_Activity.this, getMonitoredByUsersCallback);
+        modelManager.getMonitoredByUsers(MainMenuActivity.this, getMonitoredByUsersCallback);
     }
 
     private void setupAddNewMonitorsUserButton() {
@@ -96,7 +93,7 @@ public class MainMenu_Activity extends AppCompatActivity {
         btnAddNewMonitorsUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = AddMonitorsUser.makeIntent(getApplicationContext());
+                Intent intent = AddMonitorsUserActivity.makeIntent(getApplicationContext());
                 startActivity(intent);
             }
         });
@@ -107,7 +104,7 @@ public class MainMenu_Activity extends AppCompatActivity {
         btnAddNewMonitoredByUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = AddMonitoredByUser.makeIntent(getApplicationContext());
+                Intent intent = AddMonitoredByUserActivity.makeIntent(getApplicationContext());
                 startActivity(intent);
             }
         });
@@ -117,7 +114,7 @@ public class MainMenu_Activity extends AppCompatActivity {
 //        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
 //        String email = getSavedEmail();
 //        Call<User> caller = proxy.getUserByEmail(email);
-//        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, returnedUser -> response(returnedUser));
+//        ProxyBuilder.callProxy(MainMenuActivity.this, caller, returnedUser -> response(returnedUser));
 //    }
 
 //    private void response(User user) {
@@ -125,10 +122,10 @@ public class MainMenu_Activity extends AppCompatActivity {
 //        userLocal = user;
 //
 //        Call<List<User>> caller = proxy.getMonitorsUsersById(userLocal.getId());
-//        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, monitorsUsers -> getMonitorsUsersResponse(monitorsUsers));
+//        ProxyBuilder.callProxy(MainMenuActivity.this, caller, monitorsUsers -> getMonitorsUsersResponse(monitorsUsers));
 //
 //        Call<List<User>> newCaller = proxy.getMonitoredByUsersById(userLocal.getId());
-//        ProxyBuilder.callProxy(MainMenu_Activity.this, newCaller, monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers));
+//        ProxyBuilder.callProxy(MainMenuActivity.this, newCaller, monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers));
 //    }
 
     private void getMonitorsUsersResponse(List<User> monitorsUsers) {
@@ -148,7 +145,7 @@ public class MainMenu_Activity extends AppCompatActivity {
 
     private class monitorsUsersAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
         public monitorsUsersAdapter() {
-            super(MainMenu_Activity.this, R.layout.list_layout, monitorsUsers);
+            super(MainMenuActivity.this, R.layout.list_layout, monitorsUsers);
         }
 
         @Override
@@ -191,7 +188,7 @@ public class MainMenu_Activity extends AppCompatActivity {
 
     private class monitoredByUsersAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
         public monitoredByUsersAdapter() {
-            super(MainMenu_Activity.this, R.layout.list_layout, monitoredByUsers);
+            super(MainMenuActivity.this, R.layout.list_layout, monitoredByUsers);
         }
 
         @Override
@@ -218,11 +215,11 @@ public class MainMenu_Activity extends AppCompatActivity {
     }
 
     public static Intent makeIntent(Context context){
-        return new Intent(context, MainMenu_Activity.class);
+        return new Intent(context, MainMenuActivity.class);
     }
 
 //    public static Intent makeIntent(Context context, String token){
-//        Intent intent = new Intent(context, MainMenu_Activity.class);
+//        Intent intent = new Intent(context, MainMenuActivity.class);
 //        intent.putExtra(INTENT_TOKEN, token);
 //        return intent;
 //    }
@@ -250,7 +247,7 @@ public class MainMenu_Activity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
                 Log.i("MyApp", "Pressed Long" + position);
 //                selectedPosition = position;
-                PopupMenu popupMenu = new PopupMenu(MainMenu_Activity.this, viewClicked);
+                PopupMenu popupMenu = new PopupMenu(MainMenuActivity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
@@ -289,7 +286,7 @@ public class MainMenu_Activity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
                 Log.i("MyApp", "Pressed Long" + position);
 //                selectedPosition = position;
-                PopupMenu popupMenu = new PopupMenu(MainMenu_Activity.this, viewClicked);
+                PopupMenu popupMenu = new PopupMenu(MainMenuActivity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
@@ -327,30 +324,30 @@ public class MainMenu_Activity extends AppCompatActivity {
     {
         long targetId = monitorsUsers.get(position).getId();
         ProxyBuilder.SimpleCallback<Void> callback = returnNothing -> removeMonitorsUserResponse(returnNothing);
-        modelManager.removeMonitorsUser(MainMenu_Activity.this, callback, targetId);
+        modelManager.removeMonitorsUser(MainMenuActivity.this, callback, targetId);
 //        User tempUser = monitorsUsers.get(position);
 //        Call<Void> caller = proxy.removeMonitorsUser(userLocal.getId(), tempUser.getId());
-//        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, noResponse -> redrawMonitorUser(noResponse));
+//        ProxyBuilder.callProxy(MainMenuActivity.this, caller, noResponse -> redrawMonitorUser(noResponse));
     }
 
     private void removeMonitorsUserResponse(Void returnNothing) {
         ProxyBuilder.SimpleCallback<List<User>> getMonitorsUsersCallback = monitorsUsers -> getMonitorsUsersResponse(monitorsUsers);
-        modelManager.getMonitorsUsers(MainMenu_Activity.this, getMonitorsUsersCallback);
+        modelManager.getMonitorsUsers(MainMenuActivity.this, getMonitorsUsersCallback);
     }
 
     private void removeMonitoredByUserByPosition(int position)
     {
         long targetId = monitoredByUsers.get(position).getId();
         ProxyBuilder.SimpleCallback<Void> callback = returnNothing -> removeMonitoredByUserResponse(returnNothing);
-        modelManager.removeMonitoredByUser(MainMenu_Activity.this, callback, targetId);
+        modelManager.removeMonitoredByUser(MainMenuActivity.this, callback, targetId);
 //        User tempUser = monitoredByUsers.get(position);
 //        Call<Void> caller = proxy.removeMonitoredByUser(userLocal.getId(), tempUser.getId());
-//        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, noResponse -> redrawMonitorUser(noResponse));
+//        ProxyBuilder.callProxy(MainMenuActivity.this, caller, noResponse -> redrawMonitorUser(noResponse));
     }
 
     private void removeMonitoredByUserResponse(Void returnNothing) {
         ProxyBuilder.SimpleCallback<List<User>> getMonitoredByUsersCallback = monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers);
-        modelManager.getMonitoredByUsers(MainMenu_Activity.this, getMonitoredByUsersCallback);
+        modelManager.getMonitoredByUsers(MainMenuActivity.this, getMonitoredByUsersCallback);
     }
 
 //    private void redrawMonitorUser(Void nothing)
