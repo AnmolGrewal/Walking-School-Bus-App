@@ -100,13 +100,6 @@ public class LoginActivity extends AppCompatActivity {
 
 //        modelManager.updateUser();
 
-//        Log.w(TAG, modelManager.getUser().toString());
-
-
-//        while (modelManager.getUser().getId() == null) {
-//            Log.w(TAG, "Retrieving user data from server...");
-//            // busy waiting.
-//        }
 
         intent = MainMenu_Activity.makeIntent(LoginActivity.this);
         startActivity(intent);

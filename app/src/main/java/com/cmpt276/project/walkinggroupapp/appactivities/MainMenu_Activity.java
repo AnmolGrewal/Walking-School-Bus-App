@@ -62,13 +62,6 @@ public class MainMenu_Activity extends AppCompatActivity {
         modelManager = ModelManager.getInstance();
 
 
-//        // TODO: delete this.
-//        while (modelManager.getUser().getId() == null) {
-//            Log.w("Error", "!!!!!!!!!!!!!!!!");
-//        }
-
-
-
         ProxyBuilder.SimpleCallback<List<User>> getMonitorsUsersCallback = monitorsUsers -> getMonitorsUsersResponse(monitorsUsers);
         modelManager.getMonitorsUsers(MainMenu_Activity.this, getMonitorsUsersCallback);
 
@@ -332,16 +325,32 @@ public class MainMenu_Activity extends AppCompatActivity {
 
     private void removeMonitorsUserByPosition(int position)
     {
+        long targetId = monitorsUsers.get(position).getId();
+        ProxyBuilder.SimpleCallback<Void> callback = returnNothing -> removeMonitorsUserResponse(returnNothing);
+        modelManager.removeMonitorsUser(MainMenu_Activity.this, callback, targetId);
 //        User tempUser = monitorsUsers.get(position);
 //        Call<Void> caller = proxy.removeMonitorsUser(userLocal.getId(), tempUser.getId());
 //        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, noResponse -> redrawMonitorUser(noResponse));
     }
 
+    private void removeMonitorsUserResponse(Void returnNothing) {
+        ProxyBuilder.SimpleCallback<List<User>> getMonitorsUsersCallback = monitorsUsers -> getMonitorsUsersResponse(monitorsUsers);
+        modelManager.getMonitorsUsers(MainMenu_Activity.this, getMonitorsUsersCallback);
+    }
+
     private void removeMonitoredByUserByPosition(int position)
     {
+        long targetId = monitoredByUsers.get(position).getId();
+        ProxyBuilder.SimpleCallback<Void> callback = returnNothing -> removeMonitoredByUserResponse(returnNothing);
+        modelManager.removeMonitorsUser(MainMenu_Activity.this, callback, targetId);
 //        User tempUser = monitoredByUsers.get(position);
 //        Call<Void> caller = proxy.removeMonitoredByUser(userLocal.getId(), tempUser.getId());
 //        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, noResponse -> redrawMonitorUser(noResponse));
+    }
+
+    private void removeMonitoredByUserResponse(Void returnNothing) {
+        ProxyBuilder.SimpleCallback<List<User>> getMonitoredByUsersCallback = monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers);
+        modelManager.getMonitoredByUsers(MainMenu_Activity.this, getMonitoredByUsersCallback);
     }
 
     private void redrawMonitorUser(Void nothing)
