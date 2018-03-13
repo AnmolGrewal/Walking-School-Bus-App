@@ -5,6 +5,7 @@ import android.content.Context;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 import com.cmpt276.project.walkinggroupapp.proxy.WGServerProxy;
 
+import java.security.Policy;
 import java.util.List;
 
 import retrofit2.Call;
@@ -44,10 +45,29 @@ public class ModelManager {
     }
 
 
-    
+    // TODO: I think the callback param should return Void.
+    public void register(Context context,
+                         ProxyBuilder.SimpleCallback<Void> callback,
+                         String name, String emailAddress, String password) {
+
+        // TODO: do I need to login when register?
+        User newUser = new User();
+        newUser.setName(name);
+        newUser.setEmail(emailAddress);
+        newUser.setPassword(password);
+
+        Call<User> caller = proxy.createNewUser(newUser);
+        ProxyBuilder.callProxy(context, caller, returnedUser -> {
+            user = returnedUser;
+            callback.callback(null);
+        });
+
+    }
 
 
-    public void login(Context context, ProxyBuilder.SimpleCallback<Void> callback, String emailAddress, String password) {
+    public void login(Context context,
+                      ProxyBuilder.SimpleCallback<Void> callback,
+                      String emailAddress, String password) {
         user = new User();
         user.setEmail(emailAddress);
         user.setPassword(password);
@@ -128,7 +148,9 @@ public class ModelManager {
 //        return user.getMonitoredByUsers();
     }
 
-    public void addNewMonitorsUser(Context context, ProxyBuilder.SimpleCallback<List<User>> callback, long targetId) {
+    public void addNewMonitorsUser(Context context,
+                                   ProxyBuilder.SimpleCallback<List<User>> callback,
+                                   long targetId) {
 //        updateUser();
         User newUser = new User();
         newUser.setId(targetId);
@@ -137,7 +159,9 @@ public class ModelManager {
         ProxyBuilder.callProxy(context, caller, callback);
     }
 
-    public void addNewMonitoredByUser(Context context, ProxyBuilder.SimpleCallback<List<User>> callback, long targetId) {
+    public void addNewMonitoredByUser(Context context,
+                                      ProxyBuilder.SimpleCallback<List<User>> callback,
+                                      long targetId) {
 //        updateUser();
         User newUser = new User();
         newUser.setId(targetId);
@@ -146,14 +170,18 @@ public class ModelManager {
         ProxyBuilder.callProxy(context, caller, callback);
     }
 
-    public void removeMonitorsUser(Context context, ProxyBuilder.SimpleCallback<Void> callback, long targetId) {
+    public void removeMonitorsUser(Context context,
+                                   ProxyBuilder.SimpleCallback<Void> callback,
+                                   long targetId) {
 //        User userToRemove = new User();
 //        userToRemove.setId(targetId);
         Call<Void> caller = proxy.removeMonitorsUser(user.getId(), targetId);
         ProxyBuilder.callProxy(context, caller, callback);
     }
 
-    public void removeMonitoredByUser(Context context, ProxyBuilder.SimpleCallback<Void> callback, long targetId) {
+    public void removeMonitoredByUser(Context context,
+                                      ProxyBuilder.SimpleCallback<Void> callback,
+                                      long targetId) {
 //        User userToRemove = new User();
 //        userToRemove.setId(targetId);
         Call<Void> caller = proxy.removeMonitoredByUser(user.getId(), targetId);
@@ -181,12 +209,12 @@ public class ModelManager {
 //        user.setHref(returnedUser.getHref());
 //    }
 
-    private void getMonitorsUsersResponse(List<User> monitorsUsers) {
-        user.setMonitorsUsers(monitorsUsers);
-    }
-
-    private void getMonitoredByUsersResponse(List<User> monitoredByUsers) {
-        user.setMonitoredByUsers(monitoredByUsers);
-    }
+//    private void getMonitorsUsersResponse(List<User> monitorsUsers) {
+//        user.setMonitorsUsers(monitorsUsers);
+//    }
+//
+//    private void getMonitoredByUsersResponse(List<User> monitoredByUsers) {
+//        user.setMonitoredByUsers(monitoredByUsers);
+//    }
 
 }
