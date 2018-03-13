@@ -43,7 +43,7 @@ public class MainMenu_Activity extends AppCompatActivity {
 
 //    private int selectedPosition;
     private WGServerProxy proxy;
-    private User userLocal;
+//    private User userLocal;
     private String token;
 
 
@@ -155,7 +155,7 @@ public class MainMenu_Activity extends AppCompatActivity {
 
     private class monitorsUsersAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
         public monitorsUsersAdapter() {
-            super(MainMenu_Activity.this, R.layout.list_layout, userLocal.getMonitorsUsers());
+            super(MainMenu_Activity.this, R.layout.list_layout, monitorsUsers);
         }
 
         @Override
@@ -198,7 +198,7 @@ public class MainMenu_Activity extends AppCompatActivity {
 
     private class monitoredByUsersAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
         public monitoredByUsersAdapter() {
-            super(MainMenu_Activity.this, R.layout.list_layout, userLocal.getMonitoredByUsers());
+            super(MainMenu_Activity.this, R.layout.list_layout, monitoredByUsers);
         }
 
         @Override
@@ -332,16 +332,16 @@ public class MainMenu_Activity extends AppCompatActivity {
 
     private void removeMonitorsUserByPosition(int position)
     {
-        User tempUser = monitorsUsers.get(position);
-        Call<Void> caller = proxy.removeMonitorsUser(userLocal.getId(), tempUser.getId());
-        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, noResponse -> redrawMonitorUser(noResponse));
+//        User tempUser = monitorsUsers.get(position);
+//        Call<Void> caller = proxy.removeMonitorsUser(userLocal.getId(), tempUser.getId());
+//        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, noResponse -> redrawMonitorUser(noResponse));
     }
 
     private void removeMonitoredByUserByPosition(int position)
     {
-        User tempUser = monitoredByUsers.get(position);
-        Call<Void> caller = proxy.removeMonitoredByUser(userLocal.getId(), tempUser.getId());
-        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, noResponse -> redrawMonitorUser(noResponse));
+//        User tempUser = monitoredByUsers.get(position);
+//        Call<Void> caller = proxy.removeMonitoredByUser(userLocal.getId(), tempUser.getId());
+//        ProxyBuilder.callProxy(MainMenu_Activity.this, caller, noResponse -> redrawMonitorUser(noResponse));
     }
 
     private void redrawMonitorUser(Void nothing)
