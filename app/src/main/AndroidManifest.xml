@@ -50,7 +50,7 @@
         <activity android:name=".appactivities.AddMonitorsUserActivity" />
         <activity android:name=".appactivities.AddMonitoredByUserActivity" />
         <activity android:name=".appactivities.MapActivity" />
-        <activity android:name=".appactivities.activity_register"></activity>
+        <activity android:name=".appactivities.ActivityRegister"></activity>
     </application>
 
 </manifest>
