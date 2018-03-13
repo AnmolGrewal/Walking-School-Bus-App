@@ -25,7 +25,6 @@ public class ModelManager {
 
     private User user = null;
 
-//    private long userId = -1;
 
 
 
@@ -38,15 +37,15 @@ public class ModelManager {
         return instance;
     }
 
-//    private ModelManager() {
-//
-//    }
-
 
     public void setApiKey(String apiKey) {
         this.apiKey = apiKey;
         proxy = ProxyBuilder.getProxy(apiKey, token);
     }
+
+
+    
+
 
     public void login(Context context, ProxyBuilder.SimpleCallback<Void> callback, String emailAddress, String password) {
         user = new User();
@@ -64,7 +63,6 @@ public class ModelManager {
         });
 //        ProxyBuilder.callProxy(context, caller, returnedNothing -> loginResponse(returnedNothing));
 
-
     }
 
     private void onReceiveToken(String token) {
@@ -72,7 +70,6 @@ public class ModelManager {
     }
 
 //    private void loginResponse(Void returnedNothing) {
-//        // TODO: do something?
 //    }
 
 //    public void updateUser() {
@@ -83,7 +80,6 @@ public class ModelManager {
 ////            Call<User> caller = proxy.getUserByEmail(user.getEmail());
 ////            ProxyBuilder.callProxy(caller, returnedUser -> getUserResponse(returnedUser));
 ////        } else {
-////            // TODO: throw exception
 ////        }
 //
 //        Call<User> caller = proxy.getUserByEmail(user.getEmail());
@@ -111,9 +107,9 @@ public class ModelManager {
 //    }
 
 
-    public long getUserId() {
-        return user.getId();
-    }
+//    public long getUserId() {
+//        return user.getId();
+//    }
 
 
     public void getMonitorsUsers(Context context, ProxyBuilder.SimpleCallback<List<User>> callback) {
