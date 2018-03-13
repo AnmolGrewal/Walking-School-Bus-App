@@ -19,9 +19,12 @@ public class User {
 
     private List<User> monitoredByUsers = new ArrayList<>();
     private List<User> monitorsUsers = new ArrayList<>();
-    private List<WalkingGroup> walkingGroups = new ArrayList<>();
+
+    private List<WalkingGroup> memberOfGroups = new ArrayList<>();
+    private List<WalkingGroup> leadsGroups = new ArrayList<>();
 
     private String href;
+    
 
     public Long getId() {
         return id;
@@ -63,46 +66,33 @@ public class User {
         this.monitoredByUsers = monitoredByUsers;
     }
 
-
-    public void addUser(User user){
-        monitoredByUsers.add(user);
-    }
-
     public List<User> getMonitorsUsers() {
         return monitorsUsers;
     }
-
-//    public List<User> getMonitorByUsers(){
-//        return monitoredByUsers;
-//    }
-
-//    public int countList(){
-//        return monitorsUsers.size();
-//    }
-
 
     public void setMonitorsUsers(List<User> monitorsUsers) {
         this.monitorsUsers = monitorsUsers;
     }
 
-    public List<WalkingGroup> getWalkingGroups() {
-        return walkingGroups;
+    public List<WalkingGroup> getMemberOfGroups() {
+        return memberOfGroups;
     }
 
-    public void setWalkingGroups(List<WalkingGroup> walkingGroups) {
-        this.walkingGroups = walkingGroups;
+    public void setMemberOfGroups(List<WalkingGroup> memberOfGroups) {
+        this.memberOfGroups = memberOfGroups;
+    }
+
+    public List<WalkingGroup> getLeadsGroups() {
+        return leadsGroups;
+    }
+
+    public void setLeadsGroups(List<WalkingGroup> leadsGroups) {
+        this.leadsGroups = leadsGroups;
     }
 
     public String getHref() {
         return href;
     }
-
-//    private void validateIndexWithExceptionMonitorUsers(int index) {
-//        if (index < 0 || index >= countList()) {
-//            throw new IllegalArgumentException();
-//        }
-//
-//    }
 
     public void setHref(String href) {
         this.href = href;
@@ -117,7 +107,8 @@ public class User {
                 ", password='" + password + '\'' +
                 ", monitoredByUsers=" + monitoredByUsers +
                 ", monitorsUsers=" + monitorsUsers +
-                ", walkingGroups=" + walkingGroups +
+                ", memberOfGroups=" + memberOfGroups +
+                ", leadsGroups=" + leadsGroups +
                 '}';
     }
 }
