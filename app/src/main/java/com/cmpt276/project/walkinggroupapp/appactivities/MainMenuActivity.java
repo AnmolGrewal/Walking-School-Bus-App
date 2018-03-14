@@ -23,6 +23,13 @@ import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
 import java.util.List;
 
+/******
+ *  Notice the complex List Adapter is based off from https://www.youtube.com/watch?v=WRANgDgM2Zg
+ *  a video provided by the prof for assignment 2
+ *  Code is adapted from Jacky.T  Assignment 2
+ */
+
+
 public class MainMenuActivity extends AppCompatActivity {
 
 //    private static final String PREFERENCE_EMAIL = "saved.email.key";

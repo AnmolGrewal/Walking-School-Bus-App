@@ -4,22 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cmpt276.project.walkinggroupapp.appactivities.AddOrViewGroup">
+    tools:context="com.cmpt276.project.walkinggroupapp.appactivities.AddOrViewGroup"
+    tools:layout_editor_absoluteY="81dp">
+
+    <Button
+        android:id="@+id/jacky_create_group_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="Create Group"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/jacky_relativelayout_bottom" />
 
     <RelativeLayout
-        android:id="@+id/relativeLayout"
+        android:id="@+id/jacky_relativelayout_top"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="214dp"
+        android:layout_marginBottom="6dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/jacky_create_group"
+        app:layout_constraintBottom_toTopOf="@+id/jacky_relativelayout_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ListView
-            android:id="@+id/jacky_memberList"
+            android:id="@+id/jacky_member_list"
             android:layout_width="330dp"
             android:layout_height="190dp"
             android:layout_below="@+id/textView6"
@@ -32,19 +45,38 @@
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/jacky_member_list"
+            android:layout_marginTop="11dp"
             android:text="Groups that you are in:"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="3dp" />
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/jacky_create_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="Create Group"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <RelativeLayout
+        android:id="@+id/jacky_relativelayout_bottom"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/jacky_create_group_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/jacky_relativelayout_top">
+
+        <ListView
+            android:id="@+id/jacky_leader_list"
+            android:layout_width="330dp"
+            android:layout_height="190dp"
+            android:layout_below="@+id/jacky_leader_list_static"
+            android:layout_centerHorizontal="true"
+            tools:layout_editor_absoluteX="59dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <TextView
+            android:id="@+id/jacky_leader_list_static"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/jacky_leader_list"
+            android:text="Leader of the following groups:" />
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
