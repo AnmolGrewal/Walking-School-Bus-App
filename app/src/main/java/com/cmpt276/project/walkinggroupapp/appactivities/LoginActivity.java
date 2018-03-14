@@ -1,5 +1,6 @@
 package com.cmpt276.project.walkinggroupapp.appactivities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -21,9 +22,9 @@ import com.cmpt276.project.walkinggroupapp.R;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
-    private static final String PREFERENCE_EMAIL = "saved.email.key";
-    private static final String PREFERENCE_PASSWORD = "saved.password.key";
-    private static final String PREFERENCE_IS_LOGOUT = "saved.logout.key";
+    public static final String PREFERENCE_EMAIL = "saved.email.key";
+    public static final String PREFERENCE_PASSWORD = "saved.password.key";
+    public static final String PREFERENCE_IS_LOGOUT = "saved.logout.key";
 
     private Button mLoginButton;
     private Button mRegisterButton;
@@ -52,8 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
+        
         modelManager = ModelManager.getInstance();
         modelManager.setApiKey(getString(R.string.gerry_apikey));
 
@@ -62,7 +62,10 @@ public class LoginActivity extends AppCompatActivity {
 
         //set up all buttons, texViews etc.
         RegisterViews();
+        loginRequest();
+    }
 
+    private void loginRequest() {
         //test creating user
         //CreateUserTest();
 
@@ -76,18 +79,15 @@ public class LoginActivity extends AppCompatActivity {
         mEmail = savedEmail;
         mPassword = savedPassword;
 
-        if(savedIsLogout.equals("false") && !savedEmail.equals(" ") && !savedPassword.equals(" ")) {
+        if(savedIsLogout.equals("false") && !savedEmail.equals("") && !savedPassword.equals("")) {
             //login using data from preferences
 //            Login(savedEmail,savedPassword);
+            mPasswordEditText.setText(savedPassword);
+            mEmailEditText.setText(savedEmail);
             ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
             modelManager.login(LoginActivity.this, callback, savedEmail, savedPassword);
         }
     }
-
-
-
-
-
 
     private void loginResponse(Void returnedNothing) {
         Log.w(TAG, "Server replied to login request (no content was expected).");
@@ -121,9 +121,6 @@ public class LoginActivity extends AppCompatActivity {
 //    }
 
 
-
-
-
     private void RegisterViews() {
 
         //login button
@@ -146,6 +143,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //go to register activity
+                Intent registerActivity = RegisterActivity.makeIntent(getApplicationContext());
+                startActivity(registerActivity);
             }
         });
 
@@ -217,10 +216,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
-
-
-
 //   private void Login(String email, String password) {
 //       // Build new user
 //       User user = new User();
@@ -234,8 +229,6 @@ public class LoginActivity extends AppCompatActivity {
 //       Call<Void> caller = proxy.login(user);
 //       ProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> loginResponse(returnedNothing));
 //   }
-
-
 
 
 //    private void CreateUserTest() {
@@ -254,6 +247,10 @@ public class LoginActivity extends AppCompatActivity {
 //        Log.w(TAG, "Server replied with user: " + user.toString());
 //    }
 
+    public static Intent makeIntent(Context context)
+    {
+        return new Intent(context, LoginActivity.class);
+    }
 
 
     //save data using shared preferences
@@ -275,5 +272,11 @@ public class LoginActivity extends AppCompatActivity {
         editor.commit();
 
         Log.w(TAG,"save using preferences success");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loginRequest();
     }
 }

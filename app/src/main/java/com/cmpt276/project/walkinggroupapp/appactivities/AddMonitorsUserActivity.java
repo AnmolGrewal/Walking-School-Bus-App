@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
@@ -65,10 +66,16 @@ public class AddMonitorsUserActivity extends AppCompatActivity {
                 //Once clicked we get data from user input, find user, if found add else tell user error
                 editTextUserId = findViewById(R.id.jacky_add_user);
                 String userIdString = editTextUserId.getText().toString();
-                long userId = Long.parseLong(userIdString);
+                if(userIdString.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Please Enter a User ID", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                else {
+                    long userId = Long.parseLong(userIdString);
 //                findUser(longUserId);
-                ProxyBuilder.SimpleCallback<List<User>> callback = monitorsUsers -> addNewMonitorsUserResponse(monitorsUsers);
-                modelManager.addNewMonitorsUser(AddMonitorsUserActivity.this, callback, userId);
+                    ProxyBuilder.SimpleCallback<List<User>> callback = monitorsUsers -> addNewMonitorsUserResponse(monitorsUsers);
+                    modelManager.addNewMonitorsUser(AddMonitorsUserActivity.this, callback, userId);
+                }
             }
         });
     }
