@@ -31,6 +31,9 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        modelManager = ModelManager.getInstance();
+        modelManager.setApiKey(getString(R.string.gerry_apikey));
+
         setupIDs();
         setupHints(emailAddress, firstPassword, secondPassword);
         setupButtonClick();
@@ -80,8 +83,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void loginResponse(Void returnedNothing) {
-        Log.w(TAG, "Server replied to login request (no content was expected).");
-        Toast.makeText(RegisterActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
+        Log.w(TAG, "Sent server a create Account Request");
+        Toast.makeText(RegisterActivity.this,"Account Created",Toast.LENGTH_SHORT).show();
     }
 
 }
