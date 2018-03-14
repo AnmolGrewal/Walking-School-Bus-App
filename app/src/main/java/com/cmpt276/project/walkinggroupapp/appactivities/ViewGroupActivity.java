@@ -24,6 +24,7 @@ import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ViewGroupActivity extends AppCompatActivity {
 
@@ -45,10 +46,11 @@ public class ViewGroupActivity extends AppCompatActivity {
         modelManager = ModelManager.getInstance();
 
 
+        leadsGroups = new ArrayList<>();
         ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreLeadingCallback = groupIdsList -> getIdsOfGroupsYouAreLeadingResponse(groupIdsList);
         modelManager.getIdsOfGroupsYouAreLeading(ViewGroupActivity.this, getIdsOfGroupsYouAreLeadingCallback);
 
-
+        memberOfGroups = new ArrayList<>();
         ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreMemberOfCallback = groupIdsList -> getIdsOfGroupsYouAreMemberOfResponse(groupIdsList);
         modelManager.getIdsOfGroupsYouAreMemberOf(ViewGroupActivity.this, getIdsOfGroupsYouAreMemberOfCallback);
 
@@ -72,6 +74,11 @@ public class ViewGroupActivity extends AppCompatActivity {
     }
 
     private void getLeadsGroupResponse(WalkingGroup returnedGroup) {
+        for (WalkingGroup group: leadsGroups) {
+            if (Objects.equals(group.getId(), returnedGroup.getId())) {
+                return;
+            }
+        }
         leadsGroups.add(returnedGroup);
         populateLeaderList();
         registerLeaderListOnItemLongClick();
@@ -85,6 +92,11 @@ public class ViewGroupActivity extends AppCompatActivity {
     }
 
     private void getMemberOfGroupResponse(WalkingGroup returnedGroup) {
+        for (WalkingGroup group: memberOfGroups) {
+            if (Objects.equals(group.getId(), returnedGroup.getId())) {
+                return;
+            }
+        }
         memberOfGroups.add(returnedGroup);
         populateMemberList();
         registerMemberListOnItemLongClick();
@@ -94,10 +106,11 @@ public class ViewGroupActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
+        leadsGroups = new ArrayList<>();
         ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreLeadingCallback = groupIdsList -> getIdsOfGroupsYouAreLeadingResponse(groupIdsList);
         modelManager.getIdsOfGroupsYouAreLeading(ViewGroupActivity.this, getIdsOfGroupsYouAreLeadingCallback);
 
-
+        memberOfGroups = new ArrayList<>();
         ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreMemberOfCallback = groupIdsList -> getIdsOfGroupsYouAreMemberOfResponse(groupIdsList);
         modelManager.getIdsOfGroupsYouAreMemberOf(ViewGroupActivity.this, getIdsOfGroupsYouAreMemberOfCallback);
     }
