@@ -8,8 +8,8 @@
     <string name="gerry_start_welcome">Start</string>
     <string name="gerry_welcome_screen_welcome">WELCOME SCREEN</string>
     <string name="gerry_test_map_welcome">TEST MAP</string>
-    <string name="gerry_logout_main">Logout</string>
     <string name="gerry_apikey">D71A0AC3-1AD3-42BE-87C1-83345D63B4D9</string>
+    <string name="gerry_logout_main">Logout</string>
     <string name="jacky_enter_user_id_hint">Enter User ID</string>
     <string name="jacky_enter_user_id">Enter User Id</string>
     <string name="jacky_cancel_popup">Cancel</string>
@@ -25,5 +25,16 @@
     <string name="jacky_add_monitoring_by">Add</string>
     <string name="jacky_add_monitoing">Add</string>
     <string name="title_activity_maps">Map</string>
+    <string name="anmol_userEmailHint">user@example.com</string>
+    <string name="anmol_setPasswordOneHint">Enter Password Here</string>
+    <string name="anmol_setPasswordTwoHint">Enter Password Same as Above</string>
+    <string name="anmol_confirmRegisterText">Confirm</string>
+    <string name="anmol_signUp">Sign Up</string>
+    <string name="anmol_email_address">Email Address</string>
+    <string name="anmol_passwordText">Password</string>
+    <string name="anmol_confirm_password">Confirm Password</string>
+    <string name="anmol_passNoMatch">The Passwords do not match</string>
+    <string name="anmol_skip_button">skip Button</string>
+    <string name="anmol_backgroundimagewelcome">backgroundimagewelcome</string>
 
 </resources>

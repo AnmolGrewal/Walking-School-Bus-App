@@ -1,5 +1,6 @@
 package com.cmpt276.project.walkinggroupapp.appactivities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -145,6 +146,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //go to register activity
+                Intent registerActivity = RegisterActivity.makeIntent(getApplicationContext());
+                startActivity(registerActivity);
             }
         });
 
@@ -253,6 +256,10 @@ public class LoginActivity extends AppCompatActivity {
 //        Log.w(TAG, "Server replied with user: " + user.toString());
 //    }
 
+    public static Intent makeIntent(Context context)
+    {
+        return new Intent(context, LoginActivity.class);
+    }
 
 
     //save data using shared preferences
