@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
@@ -70,12 +71,16 @@ public class AddMonitoredByUserActivity extends AppCompatActivity {
             public void onClick(View view) {
                 editTextUserId = findViewById(R.id.jacky_add_by_user);
                 String userIdString = editTextUserId.getText().toString();
-                long userId = Long.parseLong(userIdString);
+                if(userIdString.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Please Enter a User ID", Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    long userId = Long.parseLong(userIdString);
 //                findUser(longUserId);
 
-                ProxyBuilder.SimpleCallback<List<User>> callback = monitoredByUsers -> addNewMonitoredByUserResponse(monitoredByUsers);
-                modelManager.addNewMonitoredByUser(AddMonitoredByUserActivity.this, callback, userId);
-
+                    ProxyBuilder.SimpleCallback<List<User>> callback = monitoredByUsers -> addNewMonitoredByUserResponse(monitoredByUsers);
+                    modelManager.addNewMonitoredByUser(AddMonitoredByUserActivity.this, callback, userId);
+                }
             }
         });
     }
