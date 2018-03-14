@@ -77,7 +77,7 @@ public class ModelManager {
 //        ProxyBuilder.callProxy(context, caller, callback);
         ProxyBuilder.callProxy(context, caller, returnNothing -> {
             Call<User> getUserCaller = proxy.getUserByEmail(user.getEmail());
-            ProxyBuilder.callProxy(getUserCaller, returnedUser -> {
+            ProxyBuilder.callProxy(context, getUserCaller, returnedUser -> {
                 user = returnedUser;
                 callback.callback(null);
             });
@@ -363,7 +363,7 @@ public class ModelManager {
     public void getIdsOfGroupsYouAreLeading(Context context,
                                             ProxyBuilder.SimpleCallback<List<Long>> callback) {
         Call<User> getUserCaller = proxy.getUserById(user.getId());
-        ProxyBuilder.callProxy(getUserCaller, returnedUser -> {
+        ProxyBuilder.callProxy(context, getUserCaller, returnedUser -> {
             user = returnedUser;
 
             List<Long> groupIds = new ArrayList<>();
@@ -380,12 +380,30 @@ public class ModelManager {
     public void getIdsOfGroupsYouAreMemberOf(Context context,
                                              ProxyBuilder.SimpleCallback<List<Long>> callback) {
         Call<User> getUserCaller = proxy.getUserById(user.getId());
-        ProxyBuilder.callProxy(getUserCaller, returnedUser -> {
+        ProxyBuilder.callProxy(context, getUserCaller, returnedUser -> {
             user = returnedUser;
 
             List<Long> groupIds = new ArrayList<>();
 
             for (WalkingGroup group: user.getMemberOfGroups()) {
+                groupIds.add(group.getId());
+            }
+
+            callback.callback(groupIds);
+
+        });
+    }
+
+    // return a list of groupId that the user with userId is member of.
+    public void getIdsOfGroupsAUserIsMemberOf(Context context,
+                                              ProxyBuilder.SimpleCallback<List<Long>> callback,
+                                              long userId) {
+        Call<User> getUserCaller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(context, getUserCaller, returnedUser -> {
+
+            List<Long> groupIds = new ArrayList<>();
+
+            for (WalkingGroup group: returnedUser.getMemberOfGroups()) {
                 groupIds.add(group.getId());
             }
 
@@ -423,6 +441,16 @@ public class ModelManager {
         newMember.setId(userId);
         Call<List<User>> caller = proxy.addNewMemberToGroup(groupId, newMember);
         ProxyBuilder.callProxy(context, caller, callback);
+    }
+
+    public void leaveGroup(Context context,
+                           ProxyBuilder.SimpleCallback<List<User>> callback,
+                           long groupId) {
+        Call<Void> caller = proxy.removeMemberFromGroup(groupId, user.getId());
+        ProxyBuilder.callProxy(context, caller, returnedNothing -> {
+            Call<List<User>> getAllMembersCaller = proxy.getAllMemberUsersByGroupId(groupId);
+            ProxyBuilder.callProxy(context, getAllMembersCaller, callback);
+        });
     }
 
     public void removeUserFromGroup(Context context,
