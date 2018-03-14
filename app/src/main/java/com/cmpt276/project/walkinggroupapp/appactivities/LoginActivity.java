@@ -79,6 +79,8 @@ public class LoginActivity extends AppCompatActivity {
         if(savedIsLogout.equals("false") && !savedEmail.equals(" ") && !savedPassword.equals(" ")) {
             //login using data from preferences
 //            Login(savedEmail,savedPassword);
+            mPasswordEditText.setText(savedPassword);
+            mEmailEditText.setText(savedEmail);
             ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
             modelManager.login(LoginActivity.this, callback, savedEmail, savedPassword);
         }

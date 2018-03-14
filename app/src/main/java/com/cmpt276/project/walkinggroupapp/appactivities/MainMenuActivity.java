@@ -105,10 +105,10 @@ public class MainMenuActivity extends AppCompatActivity {
         mLogoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
+                editor.clear();
                 //set the Logout string to show user logged out
                 editor.putString(PREFERENCE_IS_LOGOUT, "true");
 
