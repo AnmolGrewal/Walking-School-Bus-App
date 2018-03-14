@@ -152,7 +152,7 @@ public class MainMenuActivity extends AppCompatActivity {
         btnViewGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = AddOrViewGroup.makeIntent(getApplicationContext());
+                Intent intent = AddOrViewGroupActivity.makeIntent(getApplicationContext());
                 startActivity(intent);
             }
         });
@@ -373,7 +373,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private void editUserProfile(int position) {
         long targetId = monitorsUsers.get(position).getId();
-        Intent intent = EditMonitoringUserProfile.makeIntent(getApplicationContext(), targetId);
+        Intent intent = EditMonitoringUserProfileActivity.makeIntent(getApplicationContext(), targetId);
         startActivity(intent);
     }
 

@@ -16,51 +16,41 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
+import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditMonitoringUserProfile extends AppCompatActivity {
+public class EditMonitoringUserProfileActivity extends AppCompatActivity {
 
     public static final String USER_ID = "UserID";
 
-    private List<WalkingGroup> memberList = new ArrayList<>();
+    private List<WalkingGroup> groupsList = new ArrayList<>();
 
-    private ListView memberListView;
+    private ListView groupsListView;
 
     private long userId;
+
+
+    private ModelManager modelManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_monitoring_user_profile);
 
+        modelManager = ModelManager.getInstance();
+
         extractDataFromIntent();
 
-        WalkingGroup tempGroup = new WalkingGroup();
-        tempGroup.setGroupDescription("Hello This is test group I am here to break the build if i can with very very long text so i can overflow this!!!");
 
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
+        // TODO: function not implemented yet.
+
+
+
+
+
 
         populateMemberList();
         registerMonitoredUserGroupOnItemClick();
@@ -69,16 +59,16 @@ public class EditMonitoringUserProfile extends AppCompatActivity {
     }
 
     private void populateMemberList() {
-        ArrayAdapter<WalkingGroup> adapter = new EditMonitoringUserProfile.memberListAdapter();
+        ArrayAdapter<WalkingGroup> adapter = new EditMonitoringUserProfileActivity.memberListAdapter();
         //Configure ListView
-        memberListView = findViewById(R.id.jacky_edit_user_member_list);
-        memberListView.setAdapter(adapter);
+        groupsListView = findViewById(R.id.jacky_edit_user_member_list);
+        groupsListView.setAdapter(adapter);
         Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
 
     private class memberListAdapter extends ArrayAdapter<WalkingGroup> {                                                 //Code for complexList based from Brian Frasers video
         public memberListAdapter() {
-            super(EditMonitoringUserProfile.this, R.layout.group_layout, memberList);
+            super(EditMonitoringUserProfileActivity.this, R.layout.group_layout, groupsList);
         }
 
         @Override
@@ -90,7 +80,7 @@ public class EditMonitoringUserProfile extends AppCompatActivity {
             }
             //Find a group to add
             Log.i("MyApp", "Inside Monitoring By");
-            WalkingGroup currentGroup = memberList.get(position);
+            WalkingGroup currentGroup = groupsList.get(position);
 
             //Group Description
             TextView makeName = itemView.findViewById(R.id.jacky_group_description_dynamic);
@@ -112,7 +102,7 @@ public class EditMonitoringUserProfile extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
                 Log.i("MyApp", "Pressed Long" + position);
 //                selectedPosition = position;
-                PopupMenu popupMenu = new PopupMenu(EditMonitoringUserProfile.this, viewClicked);
+                PopupMenu popupMenu = new PopupMenu(EditMonitoringUserProfileActivity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
@@ -155,7 +145,7 @@ public class EditMonitoringUserProfile extends AppCompatActivity {
     }
 
     public static Intent makeIntent(Context context, long editUserId){
-        Intent intent = new Intent(context, EditMonitoringUserProfile.class);
+        Intent intent = new Intent(context, EditMonitoringUserProfileActivity.class);
         intent.putExtra(USER_ID, editUserId);
         return intent;
     }

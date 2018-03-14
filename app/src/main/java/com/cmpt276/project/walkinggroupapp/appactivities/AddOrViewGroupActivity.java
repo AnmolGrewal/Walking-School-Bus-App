@@ -23,7 +23,7 @@ import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddOrViewGroup extends AppCompatActivity {
+public class AddOrViewGroupActivity extends AppCompatActivity {
 
     private List<WalkingGroup> memberList = new ArrayList<>();
     private List<WalkingGroup> leaderList = new ArrayList<>();
@@ -74,7 +74,7 @@ public class AddOrViewGroup extends AppCompatActivity {
 
         //TODO
         //ProxyBuilder.SimpleCallback<List<WalkingGroup>> getMonitorsUsersCallback = monitorsUsers -> getMonitorsUsersResponse(monitorsUsers);
-        //modelManager.getMonitorsUsers(AddOrViewGroup.this, getMonitorsUsersCallback);
+        //modelManager.getMonitorsUsers(AddOrViewGroupActivity.this, getMonitorsUsersCallback);
 
         setUpCreateButton();
         registerLeaderListOnItemClick();
@@ -95,7 +95,7 @@ public class AddOrViewGroup extends AppCompatActivity {
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = CreateGroup.makeIntent(getApplicationContext());
+                Intent intent = CreateGroupActivity.makeIntent(getApplicationContext());
                 startActivity(intent);
             }
         });
@@ -103,7 +103,7 @@ public class AddOrViewGroup extends AppCompatActivity {
 
 
     private void populateMemberList() {
-        ArrayAdapter<WalkingGroup> adapter = new AddOrViewGroup.memberListAdapter();
+        ArrayAdapter<WalkingGroup> adapter = new AddOrViewGroupActivity.memberListAdapter();
         //Configure ListView
         memberListView = findViewById(R.id.jacky_edit_user_member_list);
         memberListView.setAdapter(adapter);
@@ -112,7 +112,7 @@ public class AddOrViewGroup extends AppCompatActivity {
 
     private class memberListAdapter extends ArrayAdapter<WalkingGroup> {                                                 //Code for complexList based from Brian Frasers video
         public memberListAdapter() {
-            super(AddOrViewGroup.this, R.layout.group_layout, memberList);
+            super(AddOrViewGroupActivity.this, R.layout.group_layout, memberList);
         }
 
         @Override
@@ -136,7 +136,7 @@ public class AddOrViewGroup extends AppCompatActivity {
     }
 
     private void populateLeaderList() {
-        ArrayAdapter<WalkingGroup> adapter = new AddOrViewGroup.LeaderAdapter();
+        ArrayAdapter<WalkingGroup> adapter = new AddOrViewGroupActivity.LeaderAdapter();
         //Configure ListView
         leaderListView = findViewById(R.id.jacky_leader_list);
         leaderListView.setAdapter(adapter);
@@ -145,7 +145,7 @@ public class AddOrViewGroup extends AppCompatActivity {
 
     private class LeaderAdapter extends ArrayAdapter<WalkingGroup> {                                                 //Code for complexList based from Brian Frasers video
         public LeaderAdapter() {
-            super(AddOrViewGroup.this, R.layout.group_layout, leaderList);
+            super(AddOrViewGroupActivity.this, R.layout.group_layout, leaderList);
         }
 
         @Override
@@ -178,7 +178,7 @@ public class AddOrViewGroup extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
                 Log.i("MyApp", "Pressed Long" + position);
 //                selectedPosition = position;
-                PopupMenu popupMenu = new PopupMenu(AddOrViewGroup.this, viewClicked);
+                PopupMenu popupMenu = new PopupMenu(AddOrViewGroupActivity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
@@ -215,7 +215,7 @@ public class AddOrViewGroup extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
                 Log.i("MyApp", "Pressed Long" + position);
 //                selectedPosition = position;
-                PopupMenu popupMenu = new PopupMenu(AddOrViewGroup.this, viewClicked);
+                PopupMenu popupMenu = new PopupMenu(AddOrViewGroupActivity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
@@ -246,6 +246,6 @@ public class AddOrViewGroup extends AppCompatActivity {
     }
 
     public static Intent makeIntent(Context context){
-        return new Intent(context, AddOrViewGroup.class);
+        return new Intent(context, AddOrViewGroupActivity.class);
     }
 }
