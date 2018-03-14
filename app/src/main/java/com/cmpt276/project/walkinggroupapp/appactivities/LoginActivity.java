@@ -1,6 +1,5 @@
 package com.cmpt276.project.walkinggroupapp.appactivities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -144,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //go to register activity
-                Intent registerActivity = new Intent(LoginActivity.this, ActivityRegister.class);
+                Intent registerActivity = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(registerActivity);
             }
         });

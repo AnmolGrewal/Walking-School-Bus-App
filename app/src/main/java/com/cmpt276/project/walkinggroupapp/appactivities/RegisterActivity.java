@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 
-public class ActivityRegister extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     private Button confirmButton;
     private EditText emailAddress;
