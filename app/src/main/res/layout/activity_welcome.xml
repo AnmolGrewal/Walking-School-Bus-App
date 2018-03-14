@@ -4,21 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/black"
     tools:context="com.cmpt276.project.walkinggroupapp.appactivities.WelcomeActivity">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/gerry_welcome_screen_welcome"
-            android:gravity="center"/>
-    </LinearLayout>
 
-
+    <ImageButton
+        android:id="@+id/anmol_imageButton"
+        android:layout_width="37dp"
+        android:layout_height="21dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/anmol_skip_button"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.968"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@android:drawable/ic_media_next" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,10 +31,11 @@
         android:orientation="vertical"
         android:gravity="bottom">
 
-        <Button
-            android:id="@+id/gerry_Start_Button_welcome"
+        <ImageView
+            android:id="@+id/anmol_imageView"
             android:layout_width="match_parent"
+            android:contentDescription="@string/anmol_backgroundimagewelcome"
             android:layout_height="wrap_content"
-            android:text="@string/gerry_start_welcome" />
+            app:srcCompat="@drawable/walkingbus" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
