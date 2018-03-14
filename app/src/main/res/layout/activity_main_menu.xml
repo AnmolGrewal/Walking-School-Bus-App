@@ -9,10 +9,11 @@
     <Button
         android:id="@+id/jacky_add_monitoring_button"
         android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="190dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="424dp"
+        android:layout_marginTop="3dp"
         android:text="@string/jacky_add_mainmenu_top"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintBottom_toTopOf="@+id/jacky_view_groups"
         app:layout_constraintEnd_toEndOf="@+id/jacky_add_monitoring_by_button"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/jacky_add_monitoring_by_button"
@@ -105,4 +106,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/jacky_view_groups"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="View Groups"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/jacky_add_monitoring_button" />
 </android.support.constraint.ConstraintLayout>
