@@ -152,7 +152,7 @@ public class MainMenuActivity extends AppCompatActivity {
         btnViewGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = AddOrViewGroupActivity.makeIntent(getApplicationContext());
+                Intent intent = ViewGroupActivity.makeIntent(getApplicationContext());
                 startActivity(intent);
             }
         });

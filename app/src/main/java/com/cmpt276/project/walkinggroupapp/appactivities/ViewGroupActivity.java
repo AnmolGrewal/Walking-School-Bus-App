@@ -19,17 +19,18 @@ import android.widget.Toast;
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
+import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddOrViewGroupActivity extends AppCompatActivity {
+public class ViewGroupActivity extends AppCompatActivity {
 
-    private List<WalkingGroup> memberList = new ArrayList<>();
-    private List<WalkingGroup> leaderList = new ArrayList<>();
+    private List<WalkingGroup> memberOfGroups = new ArrayList<>();
+    private List<WalkingGroup> leadsGroups = new ArrayList<>();
 
-    private ListView memberListView;
-    private ListView leaderListView;
+    private ListView groupsYouAreMemberOfListView;
+    private ListView groupsYouAreLeadingListView;
 
     private Button createBtn;
 
@@ -42,52 +43,62 @@ public class AddOrViewGroupActivity extends AppCompatActivity {
 
         modelManager = ModelManager.getInstance();
 
-        WalkingGroup tempGroup = new WalkingGroup();
-        tempGroup.setGroupDescription("Hello This is test group");
 
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
-        memberList.add(tempGroup);
+        ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreLeadingCallback = groupIdsList -> getIdsOfGroupsYouAreLeadingResponse(groupIdsList);
+        modelManager.getIdsOfGroupsYouAreLeading(ViewGroupActivity.this, getIdsOfGroupsYouAreLeadingCallback);
 
-        WalkingGroup currentGroup = memberList.get(0);
-        Log.i("MyApp", "The group description is: " + currentGroup.getGroupDescription());
-        leaderList.add(tempGroup);
 
-        populateMemberList();
-        populateLeaderList();
+        ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreMemberOfCallback = groupIdsList -> getIdsOfGroupsYouAreMemberOfResponse(groupIdsList);
+        modelManager.getIdsOfGroupsYouAreMemberOf(ViewGroupActivity.this, getIdsOfGroupsYouAreMemberOfCallback);
 
-        //TODO
-        //ProxyBuilder.SimpleCallback<List<WalkingGroup>> getMonitorsUsersCallback = monitorsUsers -> getMonitorsUsersResponse(monitorsUsers);
-        //modelManager.getMonitorsUsers(AddOrViewGroupActivity.this, getMonitorsUsersCallback);
+
+//        populateLeaderList();
+//        populateMemberList();
+
+//        registerLeaderListOnItemClick();
+//        registerMemberListOnItemClick();
+
 
         setUpCreateButton();
-        registerLeaderListOnItemClick();
-        registerMemberListOnItemClick();
 
+    }
+
+    private void getIdsOfGroupsYouAreLeadingResponse(List<Long> groupIdsList) {
+        for (Long groupId: groupIdsList) {
+            ProxyBuilder.SimpleCallback<WalkingGroup> callback = returnedGroup -> getLeadsGroupResponse(returnedGroup);
+            modelManager.getWalkingGroupById(ViewGroupActivity.this, callback, groupId);
+        }
+    }
+
+    private void getLeadsGroupResponse(WalkingGroup returnedGroup) {
+        leadsGroups.add(returnedGroup);
+        populateLeaderList();
+        registerLeaderListOnItemClick();
+    }
+
+    private void getIdsOfGroupsYouAreMemberOfResponse(List<Long> groupIdsList) {
+        for (Long groupId: groupIdsList) {
+            ProxyBuilder.SimpleCallback<WalkingGroup> callback = returnedGroup -> getMemberOfGroupResponse(returnedGroup);
+            modelManager.getWalkingGroupById(ViewGroupActivity.this, callback, groupId);
+        }
+    }
+
+    private void getMemberOfGroupResponse(WalkingGroup returnedGroup) {
+        memberOfGroups.add(returnedGroup);
+        populateMemberList();
+        registerMemberListOnItemClick();
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        //TODO
-        //REDRAW
+        ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreLeadingCallback = groupIdsList -> getIdsOfGroupsYouAreLeadingResponse(groupIdsList);
+        modelManager.getIdsOfGroupsYouAreLeading(ViewGroupActivity.this, getIdsOfGroupsYouAreLeadingCallback);
+
+
+        ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreMemberOfCallback = groupIdsList -> getIdsOfGroupsYouAreMemberOfResponse(groupIdsList);
+        modelManager.getIdsOfGroupsYouAreMemberOf(ViewGroupActivity.this, getIdsOfGroupsYouAreMemberOfCallback);
     }
 
     private void setUpCreateButton() {
@@ -103,16 +114,16 @@ public class AddOrViewGroupActivity extends AppCompatActivity {
 
 
     private void populateMemberList() {
-        ArrayAdapter<WalkingGroup> adapter = new AddOrViewGroupActivity.memberListAdapter();
+        ArrayAdapter<WalkingGroup> adapter = new ViewGroupActivity.memberListAdapter();
         //Configure ListView
-        memberListView = findViewById(R.id.jacky_edit_user_member_list);
-        memberListView.setAdapter(adapter);
+        groupsYouAreMemberOfListView = findViewById(R.id.jacky_edit_user_member_list);
+        groupsYouAreMemberOfListView.setAdapter(adapter);
         Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
 
     private class memberListAdapter extends ArrayAdapter<WalkingGroup> {                                                 //Code for complexList based from Brian Frasers video
         public memberListAdapter() {
-            super(AddOrViewGroupActivity.this, R.layout.group_layout, memberList);
+            super(ViewGroupActivity.this, R.layout.group_layout, memberOfGroups);
         }
 
         @Override
@@ -124,7 +135,7 @@ public class AddOrViewGroupActivity extends AppCompatActivity {
             }
             //Find a group to add
             Log.i("MyApp", "Inside Monitoring By");
-            WalkingGroup currentGroup = memberList.get(position);
+            WalkingGroup currentGroup = memberOfGroups.get(position);
 
             //Group Description
             TextView makeName = itemView.findViewById(R.id.jacky_group_description_dynamic);
@@ -136,16 +147,16 @@ public class AddOrViewGroupActivity extends AppCompatActivity {
     }
 
     private void populateLeaderList() {
-        ArrayAdapter<WalkingGroup> adapter = new AddOrViewGroupActivity.LeaderAdapter();
+        ArrayAdapter<WalkingGroup> adapter = new ViewGroupActivity.LeaderAdapter();
         //Configure ListView
-        leaderListView = findViewById(R.id.jacky_leader_list);
-        leaderListView.setAdapter(adapter);
+        groupsYouAreLeadingListView = findViewById(R.id.jacky_leader_list);
+        groupsYouAreLeadingListView.setAdapter(adapter);
         Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
 
     private class LeaderAdapter extends ArrayAdapter<WalkingGroup> {                                                 //Code for complexList based from Brian Frasers video
         public LeaderAdapter() {
-            super(AddOrViewGroupActivity.this, R.layout.group_layout, leaderList);
+            super(ViewGroupActivity.this, R.layout.group_layout, leadsGroups);
         }
 
         @Override
@@ -157,7 +168,7 @@ public class AddOrViewGroupActivity extends AppCompatActivity {
             }
             //Find a group to add
             Log.i("MyApp", "Inside Monitoring By");
-            WalkingGroup currentGroup = leaderList.get(position);
+            WalkingGroup currentGroup = leadsGroups.get(position);
 
             //Group Description
             TextView makeName = itemView.findViewById(R.id.jacky_group_description_dynamic);
@@ -178,7 +189,7 @@ public class AddOrViewGroupActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
                 Log.i("MyApp", "Pressed Long" + position);
 //                selectedPosition = position;
-                PopupMenu popupMenu = new PopupMenu(AddOrViewGroupActivity.this, viewClicked);
+                PopupMenu popupMenu = new PopupMenu(ViewGroupActivity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
@@ -190,7 +201,7 @@ public class AddOrViewGroupActivity extends AppCompatActivity {
 //                                doCancel();
                                 break;
                             case R.id.delete:
-                                removeUser(position);
+                                leaveGroupYouAreMemberOf(position);
                                 break;
                         }
                         return true;
@@ -215,7 +226,7 @@ public class AddOrViewGroupActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
                 Log.i("MyApp", "Pressed Long" + position);
 //                selectedPosition = position;
-                PopupMenu popupMenu = new PopupMenu(AddOrViewGroupActivity.this, viewClicked);
+                PopupMenu popupMenu = new PopupMenu(ViewGroupActivity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
@@ -227,7 +238,7 @@ public class AddOrViewGroupActivity extends AppCompatActivity {
 //                                doCancel();
                                 break;
                             case R.id.delete:
-                                removeUser(position);
+                                leaveGroupYouAreMemberOf(position);
                                 break;
                         }
                         return true;
@@ -241,11 +252,11 @@ public class AddOrViewGroupActivity extends AppCompatActivity {
         });
     }
 
-    private void removeUser(int position){
+    private void leaveGroupYouAreMemberOf(int position){
         //Remove user
     }
 
     public static Intent makeIntent(Context context){
-        return new Intent(context, AddOrViewGroupActivity.class);
+        return new Intent(context, ViewGroupActivity.class);
     }
 }
