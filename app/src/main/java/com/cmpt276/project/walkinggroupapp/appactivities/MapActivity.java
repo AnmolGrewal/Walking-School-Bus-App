@@ -50,6 +50,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -142,10 +143,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         //////REMOVE PRE_MADE MARKERS BELOW AND POPULATE MAP USING DATA FROM SERVER OF ALL WALKING GROUPS
         //"Marker + id from group" = mMap.addMarker(...) -- to differentiate all group marker based on the group id
 
-        //Show all the existing walking groups in server
-        ProxyBuilder.SimpleCallback<List<WalkingGroup>>  getWalkingGroupsCallback = mWalkingGroups -> getWalkingGroups(mWalkingGroups);
-        mModelManager.getAllWalkingGroups(MapActivity.this, getWalkingGroupsCallback);
+        showAllWalkingGroups();
 
+
+
+
+
+/*
         // Add a random marker
         LatLng randomPlace = new LatLng(37.35,-122.1);
         placeMarkerOnMap(randomPlace);
@@ -153,6 +157,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         // Add a random marker
         LatLng randomPlace2 = new LatLng(37.3,-122.19);
         placeMarkerOnMap(randomPlace2);
+*/
 
 
 
@@ -335,13 +340,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
     //place a marker with non default icon
-    protected void placeMarkerOnMap(LatLng location) {
+    protected void placeMarkerOnMap(WalkingGroup walkingGroup) {
+        //extract location of group
+        double latitude = walkingGroup.getRouteLatArray()[0];
+        double longitude = walkingGroup.getRouteLngArray()[0];
+        LatLng location = new LatLng(latitude,longitude);
+
         MarkerOptions markerOptions = new MarkerOptions().position(location)
                                                          .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_user_location));
         String titleStr = getAddressOfMarker(location);
         markerOptions.title(titleStr);
-        markerOptions.snippet("Extra details here \n ahahasdhasdpipihrfw\nFHefho;aewugf;awuogfw");
-        mMap.addMarker(markerOptions);
+        markerOptions.snippet(walkingGroup.getGroupDescription());
+        Marker theMarker = mMap.addMarker(markerOptions);
+
+        //set the tag of marker to be the groups id--use this to differentiate marker during marker click event
+        theMarker.setTag(walkingGroup.getId());
     }
 
     //place a marker with default icon--Users current location
@@ -438,6 +451,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private void getWalkingGroups(List<WalkingGroup> passedWalkingGroups) {
 
         this.mWalkingGroups = passedWalkingGroups;
+        //Populate the map with all the markers
+
+        for(int i = 0; i < mWalkingGroups.size(); i++ ) {
+            WalkingGroup ithGroup = mWalkingGroups.get(i);
+            placeMarkerOnMap(ithGroup);
+        }
+    }
+
+    private void showAllWalkingGroups() {
+        //Get the existing walking groups in server
+        ProxyBuilder.SimpleCallback<List<WalkingGroup>>  getWalkingGroupsCallback = mWalkingGroups -> getWalkingGroups(mWalkingGroups);
+        mModelManager.getAllWalkingGroups(MapActivity.this, getWalkingGroupsCallback);
+
     }
 
 }

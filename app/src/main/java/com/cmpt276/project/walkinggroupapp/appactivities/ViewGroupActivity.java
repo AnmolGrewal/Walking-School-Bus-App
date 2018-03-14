@@ -133,7 +133,9 @@ public class ViewGroupActivity extends AppCompatActivity {
         joinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new
+                //go to map activity
+                Intent intentMap = new Intent(ViewGroupActivity.this, MapActivity.class);
+                startActivity(intentMap);
             }
         });
     }
