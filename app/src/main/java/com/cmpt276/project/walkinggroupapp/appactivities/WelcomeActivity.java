@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.cmpt276.project.walkinggroupapp.R;
@@ -32,7 +31,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 // Do something after 6s = 6000ms
                 //Which is launch the Main Menu Activity
                 if(counter == 0) {
-                    mainMenu();
+                    goToLoginActivity();
                 }
             }
         }, 4000);
@@ -44,15 +43,14 @@ public class WelcomeActivity extends AppCompatActivity {
                 //go to Login Activity
                 Log.i(TAG, "Skip Pressed");
                 counter = 1;
-                mainMenu();
+                goToLoginActivity();
             }
         });
     }
 
-    private void mainMenu() {
-        Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+    private void goToLoginActivity() {
+        Intent intent = LoginActivity.makeIntent(getApplicationContext());
         startActivity(intent);
-        finish();
     }
 
 }
