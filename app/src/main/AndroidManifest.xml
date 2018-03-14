@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cmpt276.project.walkinggroupapp">
 
-
     <!--
      The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
      Google Maps Android API v2, but you must specify either coarse or fine
@@ -10,9 +9,7 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <!--
-        allow internet permissions
-    -->
+    <!-- allow internet permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -40,7 +37,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-
         <activity android:name=".appactivities.MainMenuActivity" />
         <activity android:name=".appactivities.LoginActivity" />
         <activity android:name=".appactivities.WelcomeActivity">
@@ -50,10 +46,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CheckMonitoringUsers" />
         <activity android:name=".appactivities.AddMonitorsUserActivity" />
-        <activity android:name=".appactivities.AddMonitoredByUserActivity"></activity>
-        <activity android:name=".appactivities.MapActivity"></activity>
+        <activity android:name=".appactivities.AddMonitoredByUserActivity" />
+        <activity android:name=".appactivities.MapActivity" />
+        <activity android:name=".appactivities.AddOrViewGroup" />
+        <activity android:name=".appactivities.CreateGroup"></activity>
     </application>
 
 </manifest>
