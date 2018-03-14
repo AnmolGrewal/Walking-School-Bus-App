@@ -79,10 +79,10 @@ public class MainMenuActivity extends AppCompatActivity {
 
 //        extractDataFromIntent();
 //        createUser();
-        setupAddNewMonitorsUserButton();
-        setupAddNewMonitoredByUserButton();
-        setupViewGroupButton();
-        setupLogoutButton();
+            setupAddNewMonitorsUserButton();
+            setupAddNewMonitoredByUserButton();
+            setupViewGroupButton();
+            setupLogoutButton();
 //        registerMonitorsUsersOnItemClick();
 //        registerMonitoredByUsersOnItemClick();
     }

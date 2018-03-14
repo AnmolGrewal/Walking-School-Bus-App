@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +77,8 @@ public class AddOrViewGroup extends AppCompatActivity {
         //modelManager.getMonitorsUsers(AddOrViewGroup.this, getMonitorsUsersCallback);
 
         setUpCreateButton();
+        registerLeaderListOnItemClick();
+        registerMemberListOnItemClick();
 
     }
 
@@ -160,6 +165,84 @@ public class AddOrViewGroup extends AppCompatActivity {
 
             return itemView;
         }
+    }
+
+    private void registerMemberListOnItemClick()                                                                                    //For clicking on list object
+    {
+        final ListView list = findViewById(R.id.jacky_edit_user_member_list);
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
+                Log.i("MyApp", "Pressed Long" + position);
+//                selectedPosition = position;
+                PopupMenu popupMenu = new PopupMenu(AddOrViewGroup.this, viewClicked);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        switch (menuItem.getItemId()) {
+                            case R.id.cancel:
+//                                doCancel();
+                                break;
+                            case R.id.delete:
+                                removeUser(position);
+                                break;
+                        }
+                        return true;
+                    }
+
+                });
+
+                popupMenu.show();
+                return true;
+            }
+        });
+    }
+
+    private void registerLeaderListOnItemClick()                                                                                    //For clicking on list object
+    {
+        final ListView list = findViewById(R.id.jacky_leader_list);
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
+                Log.i("MyApp", "Pressed Long" + position);
+//                selectedPosition = position;
+                PopupMenu popupMenu = new PopupMenu(AddOrViewGroup.this, viewClicked);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        switch (menuItem.getItemId()) {
+                            case R.id.cancel:
+//                                doCancel();
+                                break;
+                            case R.id.delete:
+                                removeUser(position);
+                                break;
+                        }
+                        return true;
+                    }
+
+                });
+
+                popupMenu.show();
+                return true;
+            }
+        });
+    }
+
+    private void removeUser(int position){
+        //Remove user
     }
 
     public static Intent makeIntent(Context context){
