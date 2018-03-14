@@ -230,7 +230,7 @@ public class LoginActivity extends AppCompatActivity {
 //       ProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> loginResponse(returnedNothing));
 //   }
 
-    
+
 //    private void CreateUserTest() {
 //        // Build new user
 //        User user = new User();
