@@ -1,5 +1,7 @@
 package com.cmpt276.project.walkinggroupapp.appactivities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -61,6 +63,11 @@ public class RegisterActivity extends AppCompatActivity {
         email.setHint(R.string.anmol_userEmailHint);
         pass1.setHint(R.string.anmol_setPasswordOneHint);
         pass2.setHint(R.string.anmol_setPasswordTwoHint);
+    }
+
+    public static Intent makeIntent(Context context)
+    {
+        return new Intent(context, RegisterActivity.class);
     }
 
 
