@@ -30,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText secondPassword;
     private String name;
     private String email;
-    private String passwordOne;
+    private String password1;
 
     private ModelManager modelManager;
 
@@ -59,15 +59,14 @@ public class RegisterActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                passwordOne = firstPassword.getText().toString();
-                String passwordTwo = secondPassword.getText().toString();
+                password1 = firstPassword.getText().toString();
+                String password2 = secondPassword.getText().toString();
 
-                if(passwordOne.equals(passwordTwo))
-                {
+                if(password1.equals(password2)) {
                     email = emailAddress.getText().toString();
                     name = "test_user1";
                     ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> registerResponse(returnedNothing);
-                    modelManager.register(RegisterActivity.this, callback, name, email, passwordOne);
+                    modelManager.register(RegisterActivity.this, callback, name, email, password1);
                 }
                 else
                 {
@@ -101,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         //put current email and password to preferences
         editor.putString(PREFERENCE_EMAIL,email);
-        editor.putString(PREFERENCE_PASSWORD,passwordOne);
+        editor.putString(PREFERENCE_PASSWORD,password1);
 
         //Assume user does not logout--change this when user preses logout manually
         editor.putString(PREFERENCE_IS_LOGOUT, "false");

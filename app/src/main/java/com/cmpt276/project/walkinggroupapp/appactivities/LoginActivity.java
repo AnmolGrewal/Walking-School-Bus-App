@@ -62,11 +62,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //set up all buttons, texViews etc.
         RegisterViews();
-        loginRequest();
 
-    }
-
-    private void loginRequest() {
         //test creating user
         //CreateUserTest();
 
@@ -283,13 +279,6 @@ public class LoginActivity extends AppCompatActivity {
         editor.commit();
 
         Log.w(TAG,"save using preferences success");
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loginRequest();
     }
 
 }
