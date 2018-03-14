@@ -215,7 +215,11 @@ public class ModelManager {
                                       String groupDescription) {
         WalkingGroup newWalkingGroup = new WalkingGroup();
         newWalkingGroup.setGroupDescription(groupDescription);
-        newWalkingGroup.setLeader(user);
+
+        User userWithId = new User();
+        userWithId.setId(user.getId());
+
+        newWalkingGroup.setLeader(userWithId);
 
         Call<WalkingGroup> caller = proxy.createNewWalkingGroup(newWalkingGroup);
         ProxyBuilder.callProxy(context, caller, callback);
@@ -226,9 +230,20 @@ public class ModelManager {
                                       String groupDescription,
                                       double startLatitude, double startLongitude,
                                       double destinationLatitude, double destinationLongitude) {
+
         WalkingGroup newWalkingGroup = new WalkingGroup();
+
         newWalkingGroup.setGroupDescription(groupDescription);
+
+        // TODO: delete this when server get updated.
+        long idInvalid = -1;
+        newWalkingGroup.setId(idInvalid);
+
         newWalkingGroup.setLeader(user);
+
+//        User userWithId = new User();
+//        userWithId.setId(user.getId());
+//        newWalkingGroup.setLeader(userWithId);
 
         double[] routeLatArray = new double[2];
         routeLatArray[0] = startLatitude;
