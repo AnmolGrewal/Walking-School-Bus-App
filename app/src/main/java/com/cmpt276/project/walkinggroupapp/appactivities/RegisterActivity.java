@@ -2,6 +2,7 @@ package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,10 @@ import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
+import static com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity.PREFERENCE_EMAIL;
+import static com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity.PREFERENCE_IS_LOGOUT;
+import static com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity.PREFERENCE_PASSWORD;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "RegisterActivity";
@@ -23,6 +28,9 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText emailAddress;
     private EditText firstPassword;
     private EditText secondPassword;
+    private String name;
+    private String email;
+    private String passwordOne;
 
     private ModelManager modelManager;
 
@@ -32,7 +40,6 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         modelManager = ModelManager.getInstance();
-        modelManager.setApiKey(getString(R.string.gerry_apikey));
 
         setupIDs();
         setupHints(emailAddress, firstPassword, secondPassword);
@@ -45,22 +52,22 @@ public class RegisterActivity extends AppCompatActivity {
         firstPassword = findViewById(R.id.anmol_firstPasswordUser);
         secondPassword = findViewById(R.id.anmol_secondPasswordUser);
         confirmButton = findViewById(R.id.anmol_confirmRegister);
+        //TODO:Create Name editText as well
     }
 
     private void setupButtonClick() {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String password1 = firstPassword.getText().toString();
-                String password2 = secondPassword.getText().toString();
+                passwordOne = firstPassword.getText().toString();
+                String passwordTwo = secondPassword.getText().toString();
 
-                if(password1.equals(password2))
+                if(passwordOne.equals(passwordTwo))
                 {
-                    String email = emailAddress.getText().toString();
-                    String name = "test_user1";
-                    //TODO Call Model Manager Use String email for username and use String password1 for password
-                    ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
-                    modelManager.register(RegisterActivity.this, callback, name, email, password1);
+                    email = emailAddress.getText().toString();
+                    name = "test_user1";
+                    ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> registerResponse(returnedNothing);
+                    modelManager.register(RegisterActivity.this, callback, name, email, passwordOne);
                 }
                 else
                 {
@@ -82,9 +89,28 @@ public class RegisterActivity extends AppCompatActivity {
         return new Intent(context, RegisterActivity.class);
     }
 
-    private void loginResponse(Void returnedNothing) {
+    private void registerResponse(Void returnedNothing) {
         Log.w(TAG, "Sent server a create Account Request");
         Toast.makeText(RegisterActivity.this,"Account Created",Toast.LENGTH_SHORT).show();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        //clear current data first
+        editor.clear();
+
+        //put current email and password to preferences
+        editor.putString(PREFERENCE_EMAIL,email);
+        editor.putString(PREFERENCE_PASSWORD,passwordOne);
+
+        //Assume user does not logout--change this when user preses logout manually
+        editor.putString(PREFERENCE_IS_LOGOUT, "false");
+
+        //commit to preference
+        editor.commit();
+
+        Log.w(TAG,"Saved Login on Account Creation");
+        finish();
     }
 
 }

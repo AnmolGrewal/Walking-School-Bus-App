@@ -22,9 +22,9 @@ import com.cmpt276.project.walkinggroupapp.R;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
-    private static final String PREFERENCE_EMAIL = "saved.email.key";
-    private static final String PREFERENCE_PASSWORD = "saved.password.key";
-    private static final String PREFERENCE_IS_LOGOUT = "saved.logout.key";
+    public static final String PREFERENCE_EMAIL = "saved.email.key";
+    public static final String PREFERENCE_PASSWORD = "saved.password.key";
+    public static final String PREFERENCE_IS_LOGOUT = "saved.logout.key";
 
     private Button mLoginButton;
     private Button mRegisterButton;
@@ -62,7 +62,11 @@ public class LoginActivity extends AppCompatActivity {
 
         //set up all buttons, texViews etc.
         RegisterViews();
+        loginRequest();
 
+    }
+
+    private void loginRequest() {
         //test creating user
         //CreateUserTest();
 
@@ -85,10 +89,6 @@ public class LoginActivity extends AppCompatActivity {
             modelManager.login(LoginActivity.this, callback, savedEmail, savedPassword);
         }
     }
-
-
-
-
 
 
     private void loginResponse(Void returnedNothing) {
@@ -284,4 +284,12 @@ public class LoginActivity extends AppCompatActivity {
 
         Log.w(TAG,"save using preferences success");
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loginRequest();
+    }
+
 }
