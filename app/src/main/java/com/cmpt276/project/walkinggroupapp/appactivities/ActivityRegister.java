@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 
@@ -38,7 +39,20 @@ public class ActivityRegister extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+                String password1 = firstPassword.getText().toString();
+                String password2 = secondPassword.getText().toString();
+
+                if(password1.equals(password2))
+                {
+                    String email = emailAddress.getText().toString();
+                    //TODO Call Model Manager Use String email for username and use String password1 for password
+
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), R.string.anmol_passNoMatch, Toast.LENGTH_SHORT )
+                            .show();
+                }
             }
         });
     }
