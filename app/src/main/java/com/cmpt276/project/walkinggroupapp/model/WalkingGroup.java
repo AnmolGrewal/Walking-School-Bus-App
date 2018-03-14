@@ -12,12 +12,12 @@ public class WalkingGroup {
 
     private String groupDescription;
 
-    private long[] routeLatArray;
-    private long[] routeLngArray;
+    private double[] routeLatArray;
+    private double[] routeLngArray;
 
     private User leader;
 
-    private List<User> memberUser = new ArrayList<>();
+    private List<User> memberUsers = new ArrayList<>();
 
     private String href;
 
@@ -38,19 +38,19 @@ public class WalkingGroup {
         this.groupDescription = groupDescription;
     }
 
-    public long[] getRouteLatArray() {
+    public double[] getRouteLatArray() {
         return routeLatArray;
     }
 
-    public void setRouteLatArray(long[] routeLatArray) {
+    public void setRouteLatArray(double[] routeLatArray) {
         this.routeLatArray = routeLatArray;
     }
 
-    public long[] getRouteLngArray() {
+    public double[] getRouteLngArray() {
         return routeLngArray;
     }
 
-    public void setRouteLngArray(long[] routeLngArray) {
+    public void setRouteLngArray(double[] routeLngArray) {
         this.routeLngArray = routeLngArray;
     }
 
@@ -62,12 +62,12 @@ public class WalkingGroup {
         this.leader = leader;
     }
 
-    public List<User> getMemberUser() {
-        return memberUser;
+    public List<User> getMemberUsers() {
+        return memberUsers;
     }
 
-    public void setMemberUser(List<User> memberUser) {
-        this.memberUser = memberUser;
+    public void setMemberUsers(List<User> memberUsers) {
+        this.memberUsers = memberUsers;
     }
 
     public String getHref() {
