@@ -1,8 +1,11 @@
 package com.cmpt276.project.walkinggroupapp.appactivities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -12,6 +15,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -55,11 +64,17 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
+    private Context mContext;
 
     private Location mLastLocation;
 
     private LocationRequest mLocationRequest;
     private boolean mLocationUpdateState;
+
+    private Button mJoinGroupButton;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +94,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     .build();
         }
 
+
+        mJoinGroupButton = findViewById(R.id.gerry_Join_Group_Button_map);
 
         createLocationRequest();
 
@@ -100,7 +117,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                placeMarkerOnMap(latLng);
+                //place marker
+                //placeMarkerOnMap(latLng);
+
+                //hide Join Button
+                mJoinGroupButton.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -112,6 +133,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
 
+        //////REMOVE PRE_MADE MARKERS BELOW AND POPULATE MAP USING DATA FROM SERVER OF ALL WALKING GROUPS
+        //"Marker + id from group" = mMap.addMarker(...) -- to differentiate all group marker based on the group id
+
+
         // Add a random marker
         LatLng randomPlace = new LatLng(37.35,-122.1);
         placeMarkerOnMap(randomPlace);
@@ -120,11 +145,76 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         LatLng randomPlace2 = new LatLng(37.3,-122.19);
         placeMarkerOnMap(randomPlace2);
 
-
-
         // Add a marker in Ney York
         LatLng myPlace = new LatLng(40.73, -73.99);  // this is New York
         placeMarkerOnMap(myPlace);
+
+
+
+        ///////CREATE LISTENERS FOR THE MARKERS
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                // if it is not the current location marker--has to be after mCurrentLocation has been initialized
+                if(!(marker.getSnippet().equals("Current Location"))) {
+                    //get the walking group which is associated with marker
+                    Toast.makeText(MapActivity.this,"CLICKED MARKER",Toast.LENGTH_SHORT).show();
+
+                    //show Join button
+                    mJoinGroupButton.setVisibility(View.VISIBLE);
+
+                }
+
+
+
+                return false;
+            }
+        });
+
+
+        //Join Button Listener
+        mJoinGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //allow user to join the group--go to activity
+                Toast.makeText(MapActivity.this,"JOIN GROUP",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        //allow multi line statements on title and snippet of markers
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            @Override
+            public View getInfoWindow(Marker arg0) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                mContext = getApplicationContext();
+
+                LinearLayout info = new LinearLayout(mContext);
+                info.setOrientation(LinearLayout.VERTICAL);
+
+                TextView title = new TextView(mContext);
+                title.setTextColor(Color.BLACK);
+                title.setGravity(Gravity.CENTER);
+                title.setTypeface(null, Typeface.BOLD);
+                title.setText(marker.getTitle());
+
+                TextView snippet = new TextView(mContext);
+                snippet.setTextColor(Color.GRAY);
+                snippet.setText(marker.getSnippet());
+
+                info.addView(title);
+                info.addView(snippet);
+
+                return info;
+            }
+        });
 
 
     }
@@ -135,6 +225,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         if (mLocationUpdateState) {
             startLocationUpdates();
         }
+
     }
 
     @Override
@@ -151,7 +242,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     public void onLocationChanged(Location location) {
         mLastLocation = location;
         if (null != mLastLocation) {
-            placeMarkerOnMapDefIcon(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+            placeMarkerCurrentLocation(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
         }
     }
 
@@ -226,7 +317,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             //gives you the most recent location currently available
             if (mLastLocation != null) {
                 LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                placeMarkerOnMapDefIcon(currentLocation);
+                placeMarkerCurrentLocation(currentLocation);
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, DEFAULT_ZOOM));
             }
         }
@@ -239,15 +330,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                                          .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_user_location));
         String titleStr = getAddressOfMarker(location);
         markerOptions.title(titleStr);
-
+        markerOptions.snippet("Extra details here \n ahahasdhasdpipihrfw\nFHefho;aewugf;awuogfw");
         mMap.addMarker(markerOptions);
     }
 
-    //place a marker with default icon
-    protected void placeMarkerOnMapDefIcon(LatLng location) {
+    //place a marker with default icon--Users current location
+    protected void placeMarkerCurrentLocation(LatLng location) {
         MarkerOptions markerOptions = new MarkerOptions().position(location);
         String titleStr = getAddressOfMarker(location);
         markerOptions.title(titleStr);
+        markerOptions.snippet("Current Location");
 
         mMap.addMarker(markerOptions);
     }
