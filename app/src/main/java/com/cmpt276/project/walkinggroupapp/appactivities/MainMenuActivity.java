@@ -296,7 +296,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 Log.i("MyApp", "Pressed Long" + position);
 //                selectedPosition = position;
                 PopupMenu popupMenu = new PopupMenu(MainMenuActivity.this, viewClicked);
-                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+                popupMenu.getMenuInflater().inflate(R.menu.monitoring_user_popup, popupMenu.getMenu());
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
                     @Override
@@ -309,6 +309,9 @@ public class MainMenuActivity extends AppCompatActivity {
                                 break;
                             case R.id.delete:
                                 removeMonitorsUserByPosition(position);
+                                break;
+                            case R.id.editGroup:
+                                editUserProfile(position);
                                 break;
                         }
                         return true;
@@ -368,8 +371,13 @@ public class MainMenuActivity extends AppCompatActivity {
 //        //Do nothing XD
 //    }
 
-    private void removeMonitorsUserByPosition(int position)
-    {
+    private void editUserProfile(int position) {
+        long targetId = monitorsUsers.get(position).getId();
+        Intent intent = EditMonitoringUserProfile.makeIntent(getApplicationContext(), targetId);
+        startActivity(intent);
+    }
+
+    private void removeMonitorsUserByPosition(int position) {
         long targetId = monitorsUsers.get(position).getId();
         ProxyBuilder.SimpleCallback<Void> callback = returnNothing -> removeMonitorsUserResponse(returnNothing);
         modelManager.removeMonitorsUser(MainMenuActivity.this, callback, targetId);
@@ -383,8 +391,7 @@ public class MainMenuActivity extends AppCompatActivity {
         modelManager.getMonitorsUsers(MainMenuActivity.this, getMonitorsUsersCallback);
     }
 
-    private void removeMonitoredByUserByPosition(int position)
-    {
+    private void removeMonitoredByUserByPosition(int position) {
         long targetId = monitoredByUsers.get(position).getId();
         ProxyBuilder.SimpleCallback<Void> callback = returnNothing -> removeMonitoredByUserResponse(returnNothing);
         modelManager.removeMonitoredByUser(MainMenuActivity.this, callback, targetId);

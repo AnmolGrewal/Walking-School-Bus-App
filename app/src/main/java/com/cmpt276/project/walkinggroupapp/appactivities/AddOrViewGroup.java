@@ -17,12 +17,13 @@ import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddOrViewGroup extends AppCompatActivity {
 
-    private List<WalkingGroup> memberList;
-    private List<WalkingGroup> leaderList;
+    private List<WalkingGroup> memberList = new ArrayList<>();
+    private List<WalkingGroup> leaderList = new ArrayList<>();
 
     private ListView memberListView;
     private ListView leaderListView;
@@ -38,6 +39,35 @@ public class AddOrViewGroup extends AppCompatActivity {
 
         modelManager = ModelManager.getInstance();
 
+        WalkingGroup tempGroup = new WalkingGroup();
+        tempGroup.setGroupDescription("Hello This is test group");
+
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+        memberList.add(tempGroup);
+
+        WalkingGroup currentGroup = memberList.get(0);
+        Log.i("MyApp", "The group description is: " + currentGroup.getGroupDescription());
+        leaderList.add(tempGroup);
+
+        populateMemberList();
+        populateLeaderList();
 
         //TODO
         //ProxyBuilder.SimpleCallback<List<WalkingGroup>> getMonitorsUsersCallback = monitorsUsers -> getMonitorsUsersResponse(monitorsUsers);
@@ -66,16 +96,11 @@ public class AddOrViewGroup extends AppCompatActivity {
         });
     }
 
-    private void getMonitorsUsersResponse(List<WalkingGroup> memberList) {
-        this.memberList = memberList;
-        populateMemberList();
-    }
-
 
     private void populateMemberList() {
         ArrayAdapter<WalkingGroup> adapter = new AddOrViewGroup.memberListAdapter();
         //Configure ListView
-        memberListView = findViewById(R.id.jacky_member_list);
+        memberListView = findViewById(R.id.jacky_edit_user_member_list);
         memberListView.setAdapter(adapter);
         Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
@@ -105,7 +130,7 @@ public class AddOrViewGroup extends AppCompatActivity {
         }
     }
 
-    private void LeaderList() {
+    private void populateLeaderList() {
         ArrayAdapter<WalkingGroup> adapter = new AddOrViewGroup.LeaderAdapter();
         //Configure ListView
         leaderListView = findViewById(R.id.jacky_leader_list);

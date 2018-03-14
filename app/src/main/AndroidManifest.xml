@@ -50,7 +50,8 @@
         <activity android:name=".appactivities.AddMonitoredByUserActivity" />
         <activity android:name=".appactivities.MapActivity" />
         <activity android:name=".appactivities.AddOrViewGroup" />
-        <activity android:name=".appactivities.CreateGroup"></activity>
+        <activity android:name=".appactivities.CreateGroup" />
+        <activity android:name=".appactivities.EditMonitoringUserProfile"></activity>
     </application>
 
 </manifest>

@@ -32,21 +32,21 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ListView
-            android:id="@+id/jacky_member_list"
+            android:id="@+id/jacky_edit_user_member_list"
             android:layout_width="330dp"
             android:layout_height="190dp"
-            android:layout_below="@+id/textView6"
+            android:layout_below="@+id/jacky_monitor_user_group_static"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             tools:layout_editor_absoluteX="15dp"
             tools:layout_editor_absoluteY="34dp" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/jacky_monitor_user_group_static"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/jacky_member_list"
+            android:layout_alignStart="@+id/jacky_edit_user_member_list"
             android:layout_marginTop="11dp"
             android:text="Groups that you are in:"
             tools:layout_editor_absoluteX="16dp"
