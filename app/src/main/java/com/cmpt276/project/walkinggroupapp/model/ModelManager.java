@@ -211,20 +211,18 @@ public class ModelManager {
 
 
     public void createNewWalkingGroup(Context context,
-                                      ProxyBuilder.SimpleCallback<Void> callback,
+                                      ProxyBuilder.SimpleCallback<WalkingGroup> callback,
                                       String groupDescription) {
         WalkingGroup newWalkingGroup = new WalkingGroup();
         newWalkingGroup.setGroupDescription(groupDescription);
         newWalkingGroup.setLeader(user);
 
         Call<WalkingGroup> caller = proxy.createNewWalkingGroup(newWalkingGroup);
-        ProxyBuilder.callProxy(context, caller, returnedGroup -> {
-            callback.callback(null);
-        });
+        ProxyBuilder.callProxy(context, caller, callback);
     }
 
     public void createNewWalkingGroup(Context context,
-                                      ProxyBuilder.SimpleCallback<Void> callback,
+                                      ProxyBuilder.SimpleCallback<WalkingGroup> callback,
                                       String groupDescription,
                                       double startLatitude, double startLongitude,
                                       double destinationLatitude, double destinationLongitude) {
@@ -244,10 +242,114 @@ public class ModelManager {
         newWalkingGroup.setRouteLngArray(routeLngArray);
 
         Call<WalkingGroup> caller = proxy.createNewWalkingGroup(newWalkingGroup);
-        ProxyBuilder.callProxy(context, caller, returnedGroup -> {
-            callback.callback(null);
-        });
+        ProxyBuilder.callProxy(context, caller, callback);
     }
+
+//    public void createNewWalkingGroup(Context context,
+//                                      ProxyBuilder.SimpleCallback<WalkingGroup> callback,
+//                                      String groupDescription,
+//                                      double[] routeLagArray, double[] routeLngArray) {
+//        // TODO:
+//    }
+
+    // Only update group description.
+    public void updateWalkingGroupById(Context context,
+                                       ProxyBuilder.SimpleCallback<WalkingGroup> callback,
+                                       WalkingGroup walkingGroup,
+                                       String groupDescription) {
+        walkingGroup.setGroupDescription(groupDescription);
+        Call<WalkingGroup> caller = proxy.updateWalkingGroupById(walkingGroup.getId(), walkingGroup);
+        ProxyBuilder.callProxy(context, caller, callback);
+    }
+
+    // Update group description and route with start and end points.
+    public void updateWalkingGroupById(Context context,
+                                       ProxyBuilder.SimpleCallback<WalkingGroup> callback,
+                                       WalkingGroup walkingGroup,
+                                       String groupDescription,
+                                       double startLatitude, double startLongitude,
+                                       double destinationLatitude, double destinationLongitude) {
+        walkingGroup.setGroupDescription(groupDescription);
+
+        double[] routeLatArray = new double[2];
+        routeLatArray[0] = startLatitude;
+        routeLatArray[1] = destinationLatitude;
+
+        double[] routeLngArray = new double[2];
+        routeLngArray[0] = startLongitude;
+        routeLngArray[1] = destinationLongitude;
+
+        walkingGroup.setRouteLatArray(routeLatArray);
+        walkingGroup.setRouteLngArray(routeLngArray);
+
+        Call<WalkingGroup> caller = proxy.updateWalkingGroupById(walkingGroup.getId(), walkingGroup);
+        ProxyBuilder.callProxy(context, caller, callback);
+    }
+
+    // Update group description and route with route arrays.
+//    public void updateWalkingGroupById(Context context,
+//                                       ProxyBuilder.SimpleCallback<WalkingGroup> callback,
+//                                       WalkingGroup walkingGroup,
+//                                       String groupDescription,
+//                                       double[] routeLatArray, double[] routeLngArray) {
+//
+//        // take care of invalid routeLatArray and routeLngArray.
+//        if (routeLatArray.length < 2 || routeLngArray.length < 2) {
+//            updateWalkingGroupById(context, callback, walkingGroup, groupDescription);
+//        } else {
+//            walkingGroup.setGroupDescription(groupDescription);
+//
+//            walkingGroup.setRouteLatArray(routeLatArray);
+//            walkingGroup.setRouteLngArray(routeLngArray);
+//
+//            Call<WalkingGroup> caller = proxy.updateWalkingGroupById(walkingGroup.getId(), walkingGroup);
+//            ProxyBuilder.callProxy(context, caller, callback);
+//        }
+//
+//    }
+
+    // Update route with start and end points.
+    public void updateWalkingGroupById(Context context,
+                                       ProxyBuilder.SimpleCallback<WalkingGroup> callback,
+                                       WalkingGroup walkingGroup,
+                                       double startLatitude, double startLongitude,
+                                       double destinationLatitude, double destinationLongitude) {
+
+        double[] routeLatArray = new double[2];
+        routeLatArray[0] = startLatitude;
+        routeLatArray[1] = destinationLatitude;
+
+        double[] routeLngArray = new double[2];
+        routeLngArray[0] = startLongitude;
+        routeLngArray[1] = destinationLongitude;
+
+        walkingGroup.setRouteLatArray(routeLatArray);
+        walkingGroup.setRouteLngArray(routeLngArray);
+
+        Call<WalkingGroup> caller = proxy.updateWalkingGroupById(walkingGroup.getId(), walkingGroup);
+        ProxyBuilder.callProxy(context, caller, callback);
+
+    }
+
+    // Update route with route arrays.
+//    public void updateWalkingGroupById(Context context,
+//                                       ProxyBuilder.SimpleCallback<WalkingGroup> callback,
+//                                       WalkingGroup walkingGroup,
+//                                       double[] routeLatArray, double[] routeLngArray) {
+//
+//        // take care of invalid routeLatArray and routeLngArray.
+//        if (routeLatArray.length < 2 || routeLngArray.length < 2) {
+//            callback.callback(walkingGroup);
+//        } else {
+//
+//            walkingGroup.setRouteLatArray(routeLatArray);
+//            walkingGroup.setRouteLngArray(routeLngArray);
+//
+//            Call<WalkingGroup> caller = proxy.updateWalkingGroupById(walkingGroup.getId(), walkingGroup);
+//            ProxyBuilder.callProxy(context, caller, callback);
+//        }
+//
+//    }
 
     public void getIdsOfGroupsYouAreLeading(Context context,
                                             ProxyBuilder.SimpleCallback<List<Long>> callback) {
@@ -297,7 +399,35 @@ public class ModelManager {
         ProxyBuilder.callProxy(context, caller, callback);
     }
 
-    
+
+    public void getAllMemberUsersByGroupId(Context context,
+                                           ProxyBuilder.SimpleCallback<List<User>> callback,
+                                           long groupId) {
+        Call<List<User>> caller = proxy.getAllMemberUsersByGroupId(groupId);
+        ProxyBuilder.callProxy(context, caller, callback);
+    }
+
+    public void addUserToGroup(Context context,
+                               ProxyBuilder.SimpleCallback<List<User>> callback,
+                               long groupId, long userId) {
+        User newMember = new User();
+        newMember.setId(userId);
+        Call<List<User>> caller = proxy.addNewMemberToGroup(groupId, newMember);
+        ProxyBuilder.callProxy(context, caller, callback);
+    }
+
+    public void removeUserFromGroup(Context context,
+                                    ProxyBuilder.SimpleCallback<List<User>> callback,
+                                    long groupId, long userId) {
+        Call<Void> caller = proxy.removeMemberFromGroup(groupId, userId);
+        ProxyBuilder.callProxy(context, caller, returnedNothing -> {
+            Call<List<User>> getAllMembersCaller = proxy.getAllMemberUsersByGroupId(groupId);
+            ProxyBuilder.callProxy(context, getAllMembersCaller, callback);
+        });
+    }
+
+
+
 
 
 
