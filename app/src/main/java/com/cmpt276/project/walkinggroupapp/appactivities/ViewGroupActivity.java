@@ -35,6 +35,7 @@ public class ViewGroupActivity extends AppCompatActivity {
     private ListView groupsYouAreLeadingListView;
 
     private Button createBtn;
+    private Button joinBtn;
 
     private ModelManager modelManager;
 
@@ -62,7 +63,8 @@ public class ViewGroupActivity extends AppCompatActivity {
 //        registerMemberListOnItemLongClick();
 
 
-        setUpCreateButton();
+        setupCreateButton();
+        setupJoinButton();
 
     }
 
@@ -115,13 +117,23 @@ public class ViewGroupActivity extends AppCompatActivity {
         modelManager.getIdsOfGroupsYouAreMemberOf(ViewGroupActivity.this, getIdsOfGroupsYouAreMemberOfCallback);
     }
 
-    private void setUpCreateButton() {
+    private void setupCreateButton() {
         createBtn = findViewById(R.id.jacky_create_group_button);
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = CreateGroupActivity.makeIntent(getApplicationContext());
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void setupJoinButton(){
+        joinBtn = findViewById(R.id.jacky_join_group_button);
+        joinBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent intent = new
             }
         });
     }

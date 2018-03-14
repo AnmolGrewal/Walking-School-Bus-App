@@ -79,4 +79,12 @@
             android:layout_alignStart="@+id/jacky_leader_list"
             android:text="Leader of the following groups:" />
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/jacky_join_group_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Join Group"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="459dp" />
 </android.support.constraint.ConstraintLayout>
