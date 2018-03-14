@@ -35,6 +35,7 @@ public class ViewGroupActivity extends AppCompatActivity {
     private ListView groupsYouAreLeadingListView;
 
     private Button createBtn;
+    private Button joinBtn;
 
     private ModelManager modelManager;
 
@@ -62,7 +63,8 @@ public class ViewGroupActivity extends AppCompatActivity {
 //        registerMemberListOnItemLongClick();
 
 
-        setUpCreateButton();
+        setupCreateButton();
+        setupJoinButton();
 
     }
 
@@ -115,13 +117,23 @@ public class ViewGroupActivity extends AppCompatActivity {
         modelManager.getIdsOfGroupsYouAreMemberOf(ViewGroupActivity.this, getIdsOfGroupsYouAreMemberOfCallback);
     }
 
-    private void setUpCreateButton() {
+    private void setupCreateButton() {
         createBtn = findViewById(R.id.jacky_create_group_button);
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = CreateGroupActivity.makeIntent(getApplicationContext());
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void setupJoinButton(){
+        joinBtn = findViewById(R.id.jacky_join_group_button);
+        joinBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent intent = new
             }
         });
     }
@@ -204,7 +216,7 @@ public class ViewGroupActivity extends AppCompatActivity {
                 Log.i("MyApp", "Pressed Long" + position);
 //                selectedPosition = position;
                 PopupMenu popupMenu = new PopupMenu(ViewGroupActivity.this, viewClicked);
-                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+                popupMenu.getMenuInflater().inflate(R.menu.popup_member_group, popupMenu.getMenu());
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
                     @Override
@@ -214,7 +226,7 @@ public class ViewGroupActivity extends AppCompatActivity {
                             case R.id.cancel:
 //                                doCancel();
                                 break;
-                            case R.id.delete:
+                            case R.id.leaveGroup:
                                 leaveGroupYouAreMemberOf(position);
                                 break;
                         }
