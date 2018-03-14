@@ -1,11 +1,14 @@
 package com.cmpt276.project.walkinggroupapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * This class model a walking group.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class WalkingGroup {
 
     private Long id;

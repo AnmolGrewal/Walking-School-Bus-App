@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cmpt276.project.walkinggroupapp.appactivities.AddOrViewGroup"
+    tools:context="com.cmpt276.project.walkinggroupapp.appactivities.ViewGroupActivity"
     tools:layout_editor_absoluteY="81dp">
 
     <Button
@@ -79,4 +79,13 @@
             android:layout_alignStart="@+id/jacky_leader_list"
             android:text="Leader of the following groups:" />
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/jacky_join_group_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="53dp"
+        android:text="Join Group"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/jacky_relativelayout_bottom" />
 </android.support.constraint.ConstraintLayout>
