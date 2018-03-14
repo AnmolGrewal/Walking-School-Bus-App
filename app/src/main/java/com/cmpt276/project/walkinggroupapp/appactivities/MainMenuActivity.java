@@ -411,10 +411,9 @@ public class MainMenuActivity extends AppCompatActivity {
 ////        createUser();
 //    }
 
-
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
+        //super.onBackPressed();
+        moveTaskToBack(true);
     }
 }

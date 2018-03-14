@@ -51,6 +51,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private void goToLoginActivity() {
         Intent intent = LoginActivity.makeIntent(getApplicationContext());
         startActivity(intent);
+        finish();
     }
 
 }

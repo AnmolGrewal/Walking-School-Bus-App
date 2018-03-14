@@ -106,6 +106,7 @@ public class LoginActivity extends AppCompatActivity {
 
         intent = MainMenuActivity.makeIntent(LoginActivity.this);
         startActivity(intent);
+        finish();
     }
 
 //    private void updateUserResponse(Void nothing) {
