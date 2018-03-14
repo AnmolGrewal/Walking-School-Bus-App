@@ -144,6 +144,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         //Show all the existing walking groups in server
         ProxyBuilder.SimpleCallback<List<WalkingGroup>>  getWalkingGroupsCallback = mWalkingGroups -> getWalkingGroups(mWalkingGroups);
+        mModelManager.getAllWalkingGroups(MapActivity.this, getWalkingGroupsCallback);
 
         // Add a random marker
         LatLng randomPlace = new LatLng(37.35,-122.1);

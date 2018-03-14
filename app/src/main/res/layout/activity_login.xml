@@ -91,7 +91,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/gerry_test_map_welcome"
                 android:layout_marginTop="50dp"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:visibility="gone"/>
         </LinearLayout>
     </LinearLayout>
 
