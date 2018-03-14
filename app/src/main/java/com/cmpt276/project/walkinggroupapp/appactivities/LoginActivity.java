@@ -62,7 +62,10 @@ public class LoginActivity extends AppCompatActivity {
 
         //set up all buttons, texViews etc.
         RegisterViews();
+        loginRequest();
+    }
 
+    private void loginRequest() {
         //test creating user
         //CreateUserTest();
 
@@ -76,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         mEmail = savedEmail;
         mPassword = savedPassword;
 
-        if(savedIsLogout.equals("false") && !savedEmail.equals(" ") && !savedPassword.equals(" ")) {
+        if(savedIsLogout.equals("false") && !savedEmail.equals("") && !savedPassword.equals("")) {
             //login using data from preferences
 //            Login(savedEmail,savedPassword);
             mPasswordEditText.setText(savedPassword);
@@ -85,7 +88,6 @@ public class LoginActivity extends AppCompatActivity {
             modelManager.login(LoginActivity.this, callback, savedEmail, savedPassword);
         }
     }
-
 
     private void loginResponse(Void returnedNothing) {
         Log.w(TAG, "Server replied to login request (no content was expected).");
@@ -117,9 +119,6 @@ public class LoginActivity extends AppCompatActivity {
 //        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
 //        intent = MainMenuActivity.makeIntent(this, token);
 //    }
-
-
-
 
 
     private void RegisterViews() {
@@ -217,10 +216,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
-
-
-
 //   private void Login(String email, String password) {
 //       // Build new user
 //       User user = new User();
@@ -234,8 +229,6 @@ public class LoginActivity extends AppCompatActivity {
 //       Call<Void> caller = proxy.login(user);
 //       ProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> loginResponse(returnedNothing));
 //   }
-
-
 
 
 //    private void CreateUserTest() {
@@ -281,4 +274,9 @@ public class LoginActivity extends AppCompatActivity {
         Log.w(TAG,"save using preferences success");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loginRequest();
+    }
 }
