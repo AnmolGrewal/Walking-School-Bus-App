@@ -1,3 +1,5 @@
+
+
 package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.content.Context;
@@ -23,6 +25,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
+import com.cmpt276.project.walkinggroupapp.model.ModelManager;
+import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
+import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -49,12 +54,8 @@ import java.util.List;
 
 
 /**
- * Simple test app to show a Google Map.
- * - If using the emulator, Create an Emulator from the API 26 image.
- *   (API27's doesn't/didn't support maps; nor will 24 or before I believe).
- * - Accessing Google Maps requires an API key: You can request one for free (and should!)
- *   see /res/values/google_maps_api.xml
- * - More notes at the end of this file.
+ * Map based on tutorial:https://www.raywenderlich.com/144066/introduction-google-maps-api-android and files provided by Professor Brian Fraser
+ * *Activity for joining and viewing walking groups in google map
  */
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, LocationListener {
 
@@ -65,14 +66,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private Context mContext;
-
     private Location mLastLocation;
-
     private LocationRequest mLocationRequest;
     private boolean mLocationUpdateState;
 
     private Button mJoinGroupButton;
 
+    private ModelManager mModelManager;
+    private List<WalkingGroup> mWalkingGroups;
 
 
 
@@ -80,6 +81,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+
+        mModelManager = ModelManager.getInstance();
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -136,6 +142,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         //////REMOVE PRE_MADE MARKERS BELOW AND POPULATE MAP USING DATA FROM SERVER OF ALL WALKING GROUPS
         //"Marker + id from group" = mMap.addMarker(...) -- to differentiate all group marker based on the group id
 
+        //Show all the existing walking groups in server
+        ProxyBuilder.SimpleCallback<List<WalkingGroup>>  getWalkingGroupsCallback = mWalkingGroups -> getWalkingGroups(mWalkingGroups);
 
         // Add a random marker
         LatLng randomPlace = new LatLng(37.35,-122.1);
@@ -145,13 +153,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         LatLng randomPlace2 = new LatLng(37.3,-122.19);
         placeMarkerOnMap(randomPlace2);
 
-        // Add a marker in Ney York
-        LatLng myPlace = new LatLng(40.73, -73.99);  // this is New York
-        placeMarkerOnMap(myPlace);
 
 
 
-        ///////CREATE LISTENERS FOR THE MARKERS
+        //Create Listeners for the markers v
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -427,6 +432,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 }
             }
         });
+    }
+
+    private void getWalkingGroups(List<WalkingGroup> passedWalkingGroups) {
+
+        this.mWalkingGroups = passedWalkingGroups;
     }
 
 }
