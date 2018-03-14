@@ -119,7 +119,7 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
                 Log.i("MyApp", "Pressed Long" + position);
 //                selectedPosition = position;
                 PopupMenu popupMenu = new PopupMenu(EditMonitoringUserProfileActivity.this, viewClicked);
-                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+                popupMenu.getMenuInflater().inflate(R.menu.popup_member_group, popupMenu.getMenu());
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
                     @Override
@@ -129,8 +129,8 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
                             case R.id.cancel:
 //                                doCancel();
                                 break;
-                            case R.id.delete:
-                                removeUser(position);
+                            case R.id.leaveGroup:
+                                leaveGroup(position);
                                 break;
                         }
                         return true;
@@ -144,7 +144,7 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void removeUser(int position){
+    private void leaveGroup(int position){
         long groupId = groupsList.get(position).getId();
         ProxyBuilder.SimpleCallback<List<User>> callback = returnedMembersList -> removeFromGroupResponse(returnedMembersList);
         modelManager.removeUserFromGroup(EditMonitoringUserProfileActivity.this, callback, groupId, userId);
