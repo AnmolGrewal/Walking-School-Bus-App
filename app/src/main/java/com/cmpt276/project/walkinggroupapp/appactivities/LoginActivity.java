@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         mEmail = savedEmail;
         mPassword = savedPassword;
 
-        if(savedIsLogout.equals("false") && !savedEmail.equals(" ") && !savedPassword.equals(" ")) {
+        if(savedIsLogout.equals("false") && !savedEmail.equals("") && !savedPassword.equals("")) {
             //login using data from preferences
 //            Login(savedEmail,savedPassword);
             mPasswordEditText.setText(savedPassword);
