@@ -2,6 +2,7 @@ package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,13 +24,23 @@ import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
 import java.util.List;
 
+/******
+ *  Notice the complex List Adapter is based off from https://www.youtube.com/watch?v=WRANgDgM2Zg
+ *  a video provided by the prof for assignment 2
+ *  Code is adapted from Jacky.T  Assignment 2
+ */
+
+
 public class MainMenuActivity extends AppCompatActivity {
 
 //    private static final String PREFERENCE_EMAIL = "saved.email.key";
 //    public static final String INTENT_TOKEN = "com.cmpt276.project.walkinggroupapp.intentToken";
+    private static final String PREFERENCE_IS_LOGOUT = "saved.logout.key";
 
     private Button btnAddNewMonitorsUser;
     private Button btnAddNewMonitoredByUser;
+    private Button mLogoutButton;
+    private Button btnViewGroup;
 
     private ListView monitorsUsersListView;
     private ListView monitoredByUsersListView;
@@ -70,6 +81,8 @@ public class MainMenuActivity extends AppCompatActivity {
 //        createUser();
         setupAddNewMonitorsUserButton();
         setupAddNewMonitoredByUserButton();
+        setupViewGroupButton();
+        setupLogoutButton();
 //        registerMonitorsUsersOnItemClick();
 //        registerMonitoredByUsersOnItemClick();
     }
@@ -85,6 +98,30 @@ public class MainMenuActivity extends AppCompatActivity {
 
         ProxyBuilder.SimpleCallback<List<User>> getMonitoredByUsersCallback = monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers);
         modelManager.getMonitoredByUsers(MainMenuActivity.this, getMonitoredByUsersCallback);
+    }
+
+    private void setupLogoutButton() {
+        mLogoutButton = findViewById(R.id.gerry_Logout_Button_main);
+        mLogoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                //set the Logout string to show user logged out
+                editor.putString(PREFERENCE_IS_LOGOUT, "true");
+
+                //commit to preference
+                editor.commit();
+
+
+                //go to LoginActivity
+                Intent intent = new Intent(MainMenuActivity.this, LoginActivity.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
     private void setupAddNewMonitorsUserButton() {
@@ -105,6 +142,17 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = AddMonitoredByUserActivity.makeIntent(getApplicationContext());
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setupViewGroupButton() {
+        btnViewGroup = findViewById(R.id.jacky_view_groups);
+        btnViewGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = AddOrViewGroup.makeIntent(getApplicationContext());
                 startActivity(intent);
             }
         });

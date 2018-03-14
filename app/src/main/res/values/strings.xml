@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Walking Group App</string>
     <string name="gerry_password_login">Password</string>
     <string name="gerry_email_login">Email</string>
@@ -8,7 +8,8 @@
     <string name="gerry_start_welcome">Start</string>
     <string name="gerry_welcome_screen_welcome">WELCOME SCREEN</string>
     <string name="gerry_test_map_welcome">TEST MAP</string>
-    <string name="gerry_apikey" tools:ignore="TypographyDashes">D71A0AC3-1AD3-42BE-87C1-83345D63B4D9</string>
+    <string name="gerry_apikey">D71A0AC3-1AD3-42BE-87C1-83345D63B4D9</string>
+    <string name="gerry_logout_main">Logout</string>
     <string name="jacky_enter_user_id_hint">Enter User ID</string>
     <string name="jacky_enter_user_id">Enter User Id</string>
     <string name="jacky_cancel_popup">Cancel</string>

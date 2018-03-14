@@ -71,9 +71,12 @@ public class LoginActivity extends AppCompatActivity {
         final SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
         String savedEmail = sharedPreferences.getString(PREFERENCE_EMAIL, " ");
         String savedPassword = sharedPreferences.getString(PREFERENCE_PASSWORD," ");
-        Boolean savedIsLogout = sharedPreferences.getBoolean(PREFERENCE_IS_LOGOUT, true);
+        String savedIsLogout = sharedPreferences.getString(PREFERENCE_IS_LOGOUT, "false");
+        //set mEmail and mPassword since SavePReference() relies on them
+        mEmail = savedEmail;
+        mPassword = savedPassword;
 
-        if(!savedIsLogout) {
+        if(savedIsLogout.equals("false") && !savedEmail.equals(" ") && !savedPassword.equals(" ")) {
             //login using data from preferences
 //            Login(savedEmail,savedPassword);
             ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
@@ -268,7 +271,7 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString(PREFERENCE_PASSWORD,mPassword);
 
         //Assume user does not logout--change this when user preses logout manually
-        editor.putBoolean(PREFERENCE_IS_LOGOUT, true);
+        editor.putString(PREFERENCE_IS_LOGOUT, "false");
 
         //commit to preference
         editor.commit();
