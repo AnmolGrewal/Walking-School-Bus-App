@@ -165,6 +165,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     mJoinGroupButton.setVisibility(View.VISIBLE);
 
                 }
+                else{
+                    //hide Join Button
+                    mJoinGroupButton.setVisibility(View.INVISIBLE);
+                }
 
 
 
