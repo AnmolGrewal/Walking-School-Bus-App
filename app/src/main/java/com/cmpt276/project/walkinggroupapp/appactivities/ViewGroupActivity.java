@@ -254,6 +254,14 @@ public class ViewGroupActivity extends AppCompatActivity {
 
     private void leaveGroupYouAreMemberOf(int position){
         //Remove user
+        long groupId = memberOfGroups.get(position).getId();
+
+        ProxyBuilder.SimpleCallback callback = returnedMembersList -> leaveGroupResponse(returnedMembersList);
+        modelManager.leaveGroup(ViewGroupActivity.this, callback, groupId);
+    }
+
+    private void leaveGroupResponse(Object returnedMembersList) {
+
     }
 
     public static Intent makeIntent(Context context){
