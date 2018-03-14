@@ -278,16 +278,4 @@ public class LoginActivity extends AppCompatActivity {
 
         Log.w(TAG,"save using preferences success");
     }
-
-    //Makes it if you press back button on activity screen it exits app
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        Log.i(TAG, "Hit Actionbar Back Button");
-        int pid = android.os.Process.myPid();
-        android.os.Process.killProcess(pid);
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        startActivity(intent);
-    }
 }
