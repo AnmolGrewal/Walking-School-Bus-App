@@ -283,7 +283,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-        Log.i("DATA", "Hit Actionbar Back Button");
+        Log.i(TAG, "Hit Actionbar Back Button");
         int pid = android.os.Process.myPid();
         android.os.Process.killProcess(pid);
         Intent intent = new Intent(Intent.ACTION_MAIN);

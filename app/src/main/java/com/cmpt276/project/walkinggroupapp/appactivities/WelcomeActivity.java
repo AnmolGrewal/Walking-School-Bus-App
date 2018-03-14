@@ -15,7 +15,7 @@ import com.cmpt276.project.walkinggroupapp.R;
 //http://psql.me/post/20081828750/good-afternoon-tumblr-how-is-your-day Sun
 public class WelcomeActivity extends AppCompatActivity {
 
-    private static final String TAG = "UserClicks";
+    private static final String TAG = "WelcomeActivity";
     int counter = 0;
     private ImageButton skipButton;
 
@@ -55,16 +55,4 @@ public class WelcomeActivity extends AppCompatActivity {
         finish();
     }
 
-
-    //Makes it if you press back button on activity screen it exits app Source: AS3
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        Log.i("DATA", "Hit Actionbar Back Button");
-        int pid = android.os.Process.myPid();
-        android.os.Process.killProcess(pid);
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        startActivity(intent);
-    }
 }
