@@ -56,8 +56,8 @@ public class ViewGroupActivity extends AppCompatActivity {
 //        populateLeaderList();
 //        populateMemberList();
 
-//        registerLeaderListOnItemClick();
-//        registerMemberListOnItemClick();
+//        registerLeaderListOnItemLongClick();
+//        registerMemberListOnItemLongClick();
 
 
         setUpCreateButton();
@@ -74,7 +74,7 @@ public class ViewGroupActivity extends AppCompatActivity {
     private void getLeadsGroupResponse(WalkingGroup returnedGroup) {
         leadsGroups.add(returnedGroup);
         populateLeaderList();
-        registerLeaderListOnItemClick();
+        registerLeaderListOnItemLongClick();
     }
 
     private void getIdsOfGroupsYouAreMemberOfResponse(List<Long> groupIdsList) {
@@ -87,7 +87,7 @@ public class ViewGroupActivity extends AppCompatActivity {
     private void getMemberOfGroupResponse(WalkingGroup returnedGroup) {
         memberOfGroups.add(returnedGroup);
         populateMemberList();
-        registerMemberListOnItemClick();
+        registerMemberListOnItemLongClick();
     }
 
     @Override
@@ -179,7 +179,7 @@ public class ViewGroupActivity extends AppCompatActivity {
         }
     }
 
-    private void registerMemberListOnItemClick()                                                                                    //For clicking on list object
+    private void registerMemberListOnItemLongClick()                                                                                    //For clicking on list object
     {
         final ListView list = findViewById(R.id.jacky_edit_user_member_list);
 
@@ -216,7 +216,7 @@ public class ViewGroupActivity extends AppCompatActivity {
         });
     }
 
-    private void registerLeaderListOnItemClick()                                                                                    //For clicking on list object
+    private void registerLeaderListOnItemLongClick()                                                                                    //For clicking on list object
     {
         final ListView list = findViewById(R.id.jacky_leader_list);
 
@@ -239,7 +239,7 @@ public class ViewGroupActivity extends AppCompatActivity {
 //                                doCancel();
                                 break;
                             case R.id.delete:
-                                leaveGroupYouAreMemberOf(position);
+                                // TODO: delete the group here.
                                 break;
                         }
                         return true;
