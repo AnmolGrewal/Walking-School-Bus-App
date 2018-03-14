@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
+import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
@@ -256,13 +257,15 @@ public class ViewGroupActivity extends AppCompatActivity {
         //Remove user
         long groupId = memberOfGroups.get(position).getId();
 
-        ProxyBuilder.SimpleCallback callback = returnedMembersList -> leaveGroupResponse(returnedMembersList);
+        ProxyBuilder.SimpleCallback<List<User>> callback = returnedMembersList -> leaveGroupResponse(returnedMembersList);
         modelManager.leaveGroup(ViewGroupActivity.this, callback, groupId);
     }
 
-    private void leaveGroupResponse(Object returnedMembersList) {
-
+    private void leaveGroupResponse(List<User> returnedMembersList) {
+        ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreMemberOfCallback = groupIdsList -> getIdsOfGroupsYouAreMemberOfResponse(groupIdsList);
+        modelManager.getIdsOfGroupsYouAreMemberOf(ViewGroupActivity.this, getIdsOfGroupsYouAreMemberOfCallback);
     }
+
 
     public static Intent makeIntent(Context context){
         return new Intent(context, ViewGroupActivity.class);

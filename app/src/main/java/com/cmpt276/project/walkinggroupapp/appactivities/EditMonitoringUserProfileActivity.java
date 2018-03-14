@@ -17,7 +17,9 @@ import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
+import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
+import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,20 +47,34 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
         extractDataFromIntent();
 
 
-        // TODO: function not implemented yet.
+        ProxyBuilder.SimpleCallback<List<Long>> callback = groupIdsList -> getIdsOfGroupsAUserIsMemberOfResponse(groupIdsList);
+        modelManager.getIdsOfGroupsAUserIsMemberOf(EditMonitoringUserProfileActivity.this, callback, userId);
 
 
 
 
 
 
-        populateMemberList();
-        registerMonitoredUserGroupOnItemClick();
+        populateGroupsList();
+        registerGroupsListOnItemClick();
 
         //TODO need to populate member list;
     }
 
-    private void populateMemberList() {
+    private void getIdsOfGroupsAUserIsMemberOfResponse(List<Long> groupIdsList) {
+        for (Long groupId: groupIdsList) {
+            ProxyBuilder.SimpleCallback<WalkingGroup> callback = returnedGroup -> getMemberOfGroupResponse(returnedGroup);
+            modelManager.getWalkingGroupById(EditMonitoringUserProfileActivity.this, callback, groupId);
+        }
+    }
+
+    private void getMemberOfGroupResponse(WalkingGroup returnedGroup) {
+        groupsList.add(returnedGroup);
+        populateGroupsList();
+        registerGroupsListOnItemClick();
+    }
+
+    private void populateGroupsList() {
         ArrayAdapter<WalkingGroup> adapter = new EditMonitoringUserProfileActivity.memberListAdapter();
         //Configure ListView
         groupsListView = findViewById(R.id.jacky_edit_user_member_list);
@@ -91,7 +107,7 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void registerMonitoredUserGroupOnItemClick()                                                                                    //For clicking on list object
+    private void registerGroupsListOnItemClick()                                                                                    //For clicking on list object
     {
         final ListView list = findViewById(R.id.jacky_edit_user_member_list);
 
@@ -129,9 +145,14 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
     }
 
     private void removeUser(int position){
-        //TODO
-        //Get use that user to get the group out
-        //Remove user from group
+        long groupId = groupsList.get(position).getId();
+        ProxyBuilder.SimpleCallback<List<User>> callback = returnedMembersList -> removeFromGroupResponse(returnedMembersList);
+        modelManager.removeUserFromGroup(EditMonitoringUserProfileActivity.this, callback, groupId, userId);
+    }
+
+    private void removeFromGroupResponse(List<User> returnedMembersList) {
+        ProxyBuilder.SimpleCallback<List<Long>> callback = groupIdsList -> getIdsOfGroupsAUserIsMemberOfResponse(groupIdsList);
+        modelManager.getIdsOfGroupsAUserIsMemberOf(EditMonitoringUserProfileActivity.this, callback, userId);
     }
 
     private void extractDataFromIntent(){
