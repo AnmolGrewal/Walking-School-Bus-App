@@ -26,6 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/******
+ *  Notice the complex List Adapter is based off from https://www.youtube.com/watch?v=WRANgDgM2Zg
+ *  a video provided by the prof for assignment 2
+ *  Code is adapted from Jacky.T  Assignment 2
+ */
+
 public class EditMonitoringUserProfileActivity extends AppCompatActivity {
 
     public static final String USER_ID = "UserID";
