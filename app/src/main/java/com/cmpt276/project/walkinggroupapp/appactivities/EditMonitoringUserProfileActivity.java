@@ -52,9 +52,6 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
 
 
 
-
-
-
         populateGroupsList();
         registerGroupsListOnItemClick();
 
@@ -151,6 +148,7 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
     }
 
     private void removeFromGroupResponse(List<User> returnedMembersList) {
+        groupsList.clear();
         ProxyBuilder.SimpleCallback<List<Long>> callback = groupIdsList -> getIdsOfGroupsAUserIsMemberOfResponse(groupIdsList);
         modelManager.getIdsOfGroupsAUserIsMemberOf(EditMonitoringUserProfileActivity.this, callback, userId);
     }
