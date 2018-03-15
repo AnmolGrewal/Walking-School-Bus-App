@@ -38,5 +38,6 @@
     <string name="anmol_skip_button">skip Button</string>
     <string name="anmol_backgroundimagewelcome">backgroundimagewelcome</string>
     <string name="anmol_UserHintName">John Doe</string>
+    <string name="anmol_nameRegister">Name</string>
 
 </resources>
