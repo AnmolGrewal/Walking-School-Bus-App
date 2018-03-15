@@ -85,6 +85,7 @@ public class ViewGroupActivity extends AppCompatActivity {
     }
 
     private void getIdsOfGroupsYouAreMemberOfResponse(List<Long> groupIdsList) {
+        memberOfGroups.clear();
         for (Long groupId: groupIdsList) {
             ProxyBuilder.SimpleCallback<WalkingGroup> callback = returnedGroup -> getMemberOfGroupResponse(returnedGroup);
             modelManager.getWalkingGroupById(ViewGroupActivity.this, callback, groupId);
@@ -285,7 +286,6 @@ public class ViewGroupActivity extends AppCompatActivity {
     }
 
     private void leaveGroupResponse(List<User> returnedMembersList) {
-        memberOfGroups.clear();
         ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreMemberOfCallback = groupIdsList -> getIdsOfGroupsYouAreMemberOfResponse(groupIdsList);
         modelManager.getIdsOfGroupsYouAreMemberOf(ViewGroupActivity.this, getIdsOfGroupsYouAreMemberOfCallback);
     }
