@@ -63,6 +63,7 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
     }
 
     private void getIdsOfGroupsAUserIsMemberOfResponse(List<Long> groupIdsList) {
+        groupsList.clear();
         for (Long groupId: groupIdsList) {
             ProxyBuilder.SimpleCallback<WalkingGroup> callback = returnedGroup -> getMemberOfGroupResponse(returnedGroup);
             modelManager.getWalkingGroupById(EditMonitoringUserProfileActivity.this, callback, groupId);
@@ -157,7 +158,6 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
     }
 
     private void removeFromGroupResponse(List<User> returnedMembersList) {
-        groupsList.clear();
         ProxyBuilder.SimpleCallback<List<Long>> callback = groupIdsList -> getIdsOfGroupsAUserIsMemberOfResponse(groupIdsList);
         modelManager.getIdsOfGroupsAUserIsMemberOf(EditMonitoringUserProfileActivity.this, callback, userId);
     }
