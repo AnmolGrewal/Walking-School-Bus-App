@@ -193,7 +193,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             public void onClick(View v) {
 
                 //"Child" wanting to join group by him/herself
-                if(!mIsParent) {
+                if(!mModelManager.isParent()) {
                     //Add the group to users list of walking group
                     mCurrentUser = mModelManager.getUser();
 
@@ -479,18 +479,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private void addUserToClickedGroupResponse(List<User> passedGroup) {
         //already added user to the group
 
-        if(mModelManager.isParent()) {
-            //finish to activity and go back to main menu
-            Intent intentMap = new Intent(MapActivity.this, EditMonitoringUserProfileActivity.class);
-            startActivity(intentMap);
-        }
-        else {
-            //finish to activity and go back to EditMonitoringActivity
-            Intent intentMap = new Intent(MapActivity.this, ViewGroupActivity.class);
-            startActivity(intentMap);
-
-        }
-
+        //go back to previous activity
         finish();
     }
 

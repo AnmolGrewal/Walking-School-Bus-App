@@ -63,7 +63,15 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
 
         //TODO need to populate member list;
     }
-
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        // TODO
+//        createUser();
+        ProxyBuilder.SimpleCallback<List<Long>> callback = groupIdsList -> getIdsOfGroupsAUserIsMemberOfResponse(groupIdsList);
+        modelManager.getIdsOfGroupsAUserIsMemberOf(EditMonitoringUserProfileActivity.this, callback, userId);
+    }
     private void getIdsOfGroupsAUserIsMemberOfResponse(List<Long> groupIdsList) {
         groupsList.clear();
         for (Long groupId: groupIdsList) {
