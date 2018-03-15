@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
+import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 import com.google.android.gms.common.ConnectionResult;
@@ -50,8 +51,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Long.parseLong;
 
 
 /**
@@ -75,6 +79,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     private ModelManager mModelManager;
     private List<WalkingGroup> mWalkingGroups;
+    private long mClickedGroupId;
+    private User mCurrentUser;
 
 
 
@@ -139,39 +145,25 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mMap.setOnMarkerClickListener(this);
 
 
-
-        //////REMOVE PRE_MADE MARKERS BELOW AND POPULATE MAP USING DATA FROM SERVER OF ALL WALKING GROUPS
-        //"Marker + id from group" = mMap.addMarker(...) -- to differentiate all group marker based on the group id
-
-        showAllWalkingGroups();
+        //Get the existing walking groups in server
+        populateMapWithGroups();
 
 
 
 
 
-/*
-        // Add a random marker
-        LatLng randomPlace = new LatLng(37.35,-122.1);
-        placeMarkerOnMap(randomPlace);
 
-        // Add a random marker
-        LatLng randomPlace2 = new LatLng(37.3,-122.19);
-        placeMarkerOnMap(randomPlace2);
-*/
-
-
-
-
-        //Create Listeners for the markers v
+        //Create Listeners for the markers
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
 
+                //get the Id of marker in long format
+                String stringID = String.valueOf(marker.getTag());
+                mClickedGroupId = parseLong(stringID);
+
                 // if it is not the current location marker--has to be after mCurrentLocation has been initialized
                 if(!(marker.getSnippet().equals("Current Location"))) {
-                    //get the walking group which is associated with marker
-                    Toast.makeText(MapActivity.this,"CLICKED MARKER",Toast.LENGTH_SHORT).show();
-
                     //show Join button
                     mJoinGroupButton.setVisibility(View.VISIBLE);
 
@@ -192,8 +184,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mJoinGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //allow user to join the group--go to activity
-                Toast.makeText(MapActivity.this,"JOIN GROUP",Toast.LENGTH_SHORT).show();
+
+                //Add the group to users list of walking group
+                User currentUser = mModelManager.getUser();
+
+                //get the walking group which is associated with marker--set it to mClickedGroup
+                //then add user to be part of that group
+                ProxyBuilder.SimpleCallback<List<User>> addUserToGroupCallback = serverPassedWalkingGroup -> addUserToClickedGroup(serverPassedWalkingGroup);
+                mModelManager.addUserToGroup(MapActivity.this,addUserToGroupCallback,mClickedGroupId,currentUser.getId());
+
             }
         });
 
@@ -451,20 +450,33 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private void getWalkingGroups(List<WalkingGroup> passedWalkingGroups) {
 
         this.mWalkingGroups = passedWalkingGroups;
-        //Populate the map with all the markers
 
+        //Populate the map with all the markers
         for(int i = 0; i < mWalkingGroups.size(); i++ ) {
             WalkingGroup ithGroup = mWalkingGroups.get(i);
             placeMarkerOnMap(ithGroup);
         }
     }
 
-    private void showAllWalkingGroups() {
-        //Get the existing walking groups in server
-        ProxyBuilder.SimpleCallback<List<WalkingGroup>>  getWalkingGroupsCallback = mWalkingGroups -> getWalkingGroups(mWalkingGroups);
-        mModelManager.getAllWalkingGroups(MapActivity.this, getWalkingGroupsCallback);
+    private void addUserToClickedGroup(List<User> passedGroup) {
+        //already added user to the group
 
+        //re-populate Map with newly updated server info
+        populateMapWithGroups();
     }
+
+
+    private void populateMapWithGroups () {
+        ProxyBuilder.SimpleCallback<List<WalkingGroup>>  getWalkingGroupsCallback = serverPassedWalkingGroups -> getWalkingGroups(serverPassedWalkingGroups);
+        mModelManager.getAllWalkingGroups(MapActivity.this, getWalkingGroupsCallback);
+    }
+
+
+
+
+
+
+
 
 }
 
