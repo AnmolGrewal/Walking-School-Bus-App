@@ -38,8 +38,9 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".appactivities.MainMenuActivity" />
-        <activity android:name=".appactivities.LoginActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".appactivities.LoginActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".appactivities.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,8 +53,9 @@
         <activity android:name=".appactivities.MapActivity" />
         <activity android:name=".appactivities.ViewGroupActivity" />
         <activity android:name=".appactivities.CreateGroupActivity" />
-        <activity android:name=".appactivities.EditMonitoringUserProfileActivity"></activity>
-        <activity android:name=".appactivities.RegisterActivity"></activity>
+        <activity android:name=".appactivities.EditMonitoringUserProfileActivity" />
+        <activity android:name=".appactivities.RegisterActivity" />
+        <activity android:name=".appactivities.HelpActivity"></activity>
     </application>
 
 </manifest>
