@@ -47,11 +47,9 @@ public class ViewGroupActivity extends AppCompatActivity {
         modelManager = ModelManager.getInstance();
 
 
-        leadsGroups = new ArrayList<>();
         ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreLeadingCallback = groupIdsList -> getIdsOfGroupsYouAreLeadingResponse(groupIdsList);
         modelManager.getIdsOfGroupsYouAreLeading(ViewGroupActivity.this, getIdsOfGroupsYouAreLeadingCallback);
 
-        memberOfGroups = new ArrayList<>();
         ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreMemberOfCallback = groupIdsList -> getIdsOfGroupsYouAreMemberOfResponse(groupIdsList);
         modelManager.getIdsOfGroupsYouAreMemberOf(ViewGroupActivity.this, getIdsOfGroupsYouAreMemberOfCallback);
 
@@ -87,6 +85,7 @@ public class ViewGroupActivity extends AppCompatActivity {
     }
 
     private void getIdsOfGroupsYouAreMemberOfResponse(List<Long> groupIdsList) {
+        memberOfGroups.clear();
         for (Long groupId: groupIdsList) {
             ProxyBuilder.SimpleCallback<WalkingGroup> callback = returnedGroup -> getMemberOfGroupResponse(returnedGroup);
             modelManager.getWalkingGroupById(ViewGroupActivity.this, callback, groupId);
@@ -108,11 +107,9 @@ public class ViewGroupActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        leadsGroups = new ArrayList<>();
         ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreLeadingCallback = groupIdsList -> getIdsOfGroupsYouAreLeadingResponse(groupIdsList);
         modelManager.getIdsOfGroupsYouAreLeading(ViewGroupActivity.this, getIdsOfGroupsYouAreLeadingCallback);
 
-        memberOfGroups = new ArrayList<>();
         ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreMemberOfCallback = groupIdsList -> getIdsOfGroupsYouAreMemberOfResponse(groupIdsList);
         modelManager.getIdsOfGroupsYouAreMemberOf(ViewGroupActivity.this, getIdsOfGroupsYouAreMemberOfCallback);
     }
@@ -133,7 +130,9 @@ public class ViewGroupActivity extends AppCompatActivity {
         joinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new
+                //go to map activity
+                Intent intentMap = new Intent(ViewGroupActivity.this, MapActivity.class);
+                startActivity(intentMap);
             }
         });
     }
@@ -144,7 +143,7 @@ public class ViewGroupActivity extends AppCompatActivity {
         //Configure ListView
         groupsYouAreMemberOfListView = findViewById(R.id.jacky_edit_user_member_list);
         groupsYouAreMemberOfListView.setAdapter(adapter);
-        Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
 
     private class memberListAdapter extends ArrayAdapter<WalkingGroup> {                                                 //Code for complexList based from Brian Frasers video
@@ -177,7 +176,7 @@ public class ViewGroupActivity extends AppCompatActivity {
         //Configure ListView
         groupsYouAreLeadingListView = findViewById(R.id.jacky_leader_list);
         groupsYouAreLeadingListView.setAdapter(adapter);
-        Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
 
     private class LeaderAdapter extends ArrayAdapter<WalkingGroup> {                                                 //Code for complexList based from Brian Frasers video

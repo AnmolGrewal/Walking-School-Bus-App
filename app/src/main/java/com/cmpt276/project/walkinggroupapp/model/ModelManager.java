@@ -25,8 +25,11 @@ public class ModelManager {
 
     private String token = null;
 
-    private User user = null;
 
+    private User user = null;
+    public User getUser() {
+        return user;
+    }
 
 
 
@@ -437,6 +440,15 @@ public class ModelManager {
                                            ProxyBuilder.SimpleCallback<List<User>> callback,
                                            long groupId) {
         Call<List<User>> caller = proxy.getAllMemberUsersByGroupId(groupId);
+        ProxyBuilder.callProxy(context, caller, callback);
+    }
+
+    public void addUserToGroup(Context context,
+                               ProxyBuilder.SimpleCallback<List<User>> callback,
+                               long groupId) {
+        User newMember = new User();
+        newMember.setId(user.getId());
+        Call<List<User>> caller = proxy.addNewMemberToGroup(groupId, newMember);
         ProxyBuilder.callProxy(context, caller, callback);
     }
 
