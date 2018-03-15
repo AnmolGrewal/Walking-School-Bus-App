@@ -35,7 +35,7 @@
         app:layout_constraintTop_toBottomOf="@+id/jacky_monitor_user_group_static" />
 
     <Button
-        android:id="@+id/add_group_button"
+        android:id="@+id/gerry_Add_Group_Button_edit_child"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
