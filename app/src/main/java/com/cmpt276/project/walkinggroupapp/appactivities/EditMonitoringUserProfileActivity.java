@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -34,6 +35,8 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
 
     private long userId;
 
+    private Button mAddGroupButton;
+
 
     private ModelManager modelManager;
 
@@ -51,8 +54,7 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
         modelManager.getIdsOfGroupsAUserIsMemberOf(EditMonitoringUserProfileActivity.this, callback, userId);
 
 
-
-
+        setupAddGroupButton();
 
 
         populateGroupsList();
@@ -169,5 +171,18 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(context, EditMonitoringUserProfileActivity.class);
         intent.putExtra(USER_ID, editUserId);
         return intent;
+    }
+
+    private void setupAddGroupButton() {
+        mAddGroupButton = findViewById(R.id.gerry_Add_Group_Button_edit_child);
+        mAddGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //pass in userId of user to be "forced" to join a group
+                Intent intent = MapActivity.makeIntent(EditMonitoringUserProfileActivity.this, userId);
+                startActivity(intent);
+            }
+        });
     }
 }

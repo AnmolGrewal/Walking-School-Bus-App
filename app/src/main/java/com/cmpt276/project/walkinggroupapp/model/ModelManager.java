@@ -481,6 +481,11 @@ public class ModelManager {
         });
     }
 
+    public void getUserById(Context context,ProxyBuilder.SimpleCallback<User> callback,long userId) {
+        Call<User> caller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(context, caller, callback);
+
+    }
 
 
 
