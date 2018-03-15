@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/leaveGroup"
-        android:title="Leave"/>
+        android:title="@string/jacky_leave"/>
 
     <item
         android:id="@+id/cancel"
