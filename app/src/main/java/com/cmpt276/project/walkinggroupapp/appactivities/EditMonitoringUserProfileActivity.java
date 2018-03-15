@@ -23,6 +23,7 @@ import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EditMonitoringUserProfileActivity extends AppCompatActivity {
 
@@ -69,6 +70,11 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
     }
 
     private void getMemberOfGroupResponse(WalkingGroup returnedGroup) {
+        for (WalkingGroup group: groupsList) {
+            if (Objects.equals(group.getId(), returnedGroup.getId())) {
+                return;
+            }
+        }
         groupsList.add(returnedGroup);
         populateGroupsList();
         registerGroupsListOnItemClick();
