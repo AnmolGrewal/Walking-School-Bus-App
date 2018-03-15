@@ -82,6 +82,8 @@ public class LoginActivity extends AppCompatActivity {
 
         if(savedIsLogout.equals("false") && !savedEmail.equals("") && !savedPassword.equals("")) {
             //login using data from preferences
+            mLoginButton.setVisibility(View.INVISIBLE);
+            mRegisterButton.setVisibility(View.INVISIBLE);
             mPasswordEditText.setText(savedPassword);
             mEmailEditText.setText(savedEmail);
             ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
@@ -98,7 +100,6 @@ public class LoginActivity extends AppCompatActivity {
         //go to Main Menu
         Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
 
-
         intent = MainMenuActivity.makeIntent(LoginActivity.this);
         startActivity(intent);
         finish();
@@ -113,6 +114,8 @@ public class LoginActivity extends AppCompatActivity {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
 
                 //login using data from editTexts
                 ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
