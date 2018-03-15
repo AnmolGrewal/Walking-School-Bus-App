@@ -409,12 +409,4 @@ public class MainMenuActivity extends AppCompatActivity {
 //    {
 //        Log.i("MyApp", "Removed USER");
 ////        createUser();
-//    }
-
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-    }
 }

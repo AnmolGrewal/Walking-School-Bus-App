@@ -28,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText emailAddress;
     private EditText firstPassword;
     private EditText secondPassword;
+    private EditText userNameInputed;
     private String name;
     private String email;
     private String password1;
@@ -42,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
         modelManager = ModelManager.getInstance();
 
         setupIDs();
-        setupHints(emailAddress, firstPassword, secondPassword);
+        setupHints();
         setupButtonClick();
     }
 
@@ -51,6 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
         emailAddress = findViewById(R.id.anmol_emailAddressUser);
         firstPassword = findViewById(R.id.anmol_firstPasswordUser);
         secondPassword = findViewById(R.id.anmol_secondPasswordUser);
+        userNameInputed = findViewById(R.id.anmol_nameUserInput);
         confirmButton = findViewById(R.id.anmol_confirmRegister);
         //TODO:Create Name editText as well
     }
@@ -64,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if(password1.equals(password2)) {
                     email = emailAddress.getText().toString();
-                    name = "test_user1";
+                    name = userNameInputed.getText().toString();
                     ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> registerResponse(returnedNothing);
                     modelManager.register(RegisterActivity.this, callback, name, email, password1);
                 }
@@ -77,10 +79,11 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void setupHints(EditText email, EditText pass1, EditText pass2) {
-        email.setHint(R.string.anmol_userEmailHint);
-        pass1.setHint(R.string.anmol_setPasswordOneHint);
-        pass2.setHint(R.string.anmol_setPasswordTwoHint);
+    private void setupHints() {
+        userNameInputed.setHint(R.string.anmol_UserHintName);
+        emailAddress.setHint(R.string.anmol_userEmailHint);
+        firstPassword.setHint(R.string.anmol_setPasswordOneHint);
+        secondPassword.setHint(R.string.anmol_setPasswordTwoHint);
     }
 
     public static Intent makeIntent(Context context)
