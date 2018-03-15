@@ -93,9 +93,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        extractDataFromIntent();
 
         mModelManager = ModelManager.getInstance();
+
+        extractDataFromIntent();
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -478,8 +479,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private void addUserToClickedGroupResponse(List<User> passedGroup) {
         //already added user to the group
 
-        //re-populate Map with newly updated server info
-        populateMapWithGroups();
+        if(mModelManager.isParent()) {
+            //finish to activity and go back to main menu
+            Intent intentMap = new Intent(MapActivity.this, EditMonitoringUserProfileActivity.class);
+            startActivity(intentMap);
+        }
+        else {
+            //finish to activity and go back to EditMonitoringActivity
+            Intent intentMap = new Intent(MapActivity.this, ViewGroupActivity.class);
+            startActivity(intentMap);
+
+        }
+
+        finish();
     }
 
 
@@ -516,17 +528,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
 
-    //for extracting intent extras made from other Activities
+    //for extracting intent extras made from other Activities--only do this when parent forcing child
     private void extractDataFromIntent() {
 
-        mIsParent = true;
+        if(mModelManager.isParent()) {
+            mIsParent = true;
 
-        Intent intent = getIntent();
-        mChildUserId = intent.getLongExtra(USER_ID, 0);
-        if(mChildUserId == 0)
-        {
-            Toast.makeText(getApplicationContext(), "Invalid User", Toast.LENGTH_SHORT).show();
-            finish();
+            Intent intent = getIntent();
+            mChildUserId = intent.getLongExtra(USER_ID, 0);
         }
 
     }

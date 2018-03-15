@@ -130,9 +130,13 @@ public class ViewGroupActivity extends AppCompatActivity {
         joinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Parent not forcing child to join groups
+                modelManager.setIsParent(false);
+
                 //go to map activity
                 Intent intentMap = new Intent(ViewGroupActivity.this, MapActivity.class);
                 startActivity(intentMap);
+
             }
         });
     }

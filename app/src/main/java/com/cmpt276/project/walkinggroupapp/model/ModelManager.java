@@ -27,9 +27,13 @@ public class ModelManager {
 
 
     private User user = null;
-    public User getUser() {
-        return user;
-    }
+
+    private boolean isParent = false;
+
+
+
+
+
 
 
 
@@ -485,6 +489,19 @@ public class ModelManager {
         Call<User> caller = proxy.getUserById(userId);
         ProxyBuilder.callProxy(context, caller, callback);
 
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+
+    public boolean isParent() {
+        return isParent;
+    }
+
+    public void setIsParent(boolean parent) {
+        isParent = parent;
     }
 
 

@@ -186,6 +186,9 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                //Parent forcing child to join group
+                modelManager.setIsParent(true);
+
                 //pass in userId of user to be "forced" to join a group
                 Intent intent = MapActivity.makeIntent(EditMonitoringUserProfileActivity.this, userId);
                 startActivity(intent);
