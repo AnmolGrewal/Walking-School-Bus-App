@@ -283,6 +283,7 @@ public class ViewGroupActivity extends AppCompatActivity {
     }
 
     private void leaveGroupResponse(List<User> returnedMembersList) {
+        memberOfGroups.clear();
         ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreMemberOfCallback = groupIdsList -> getIdsOfGroupsYouAreMemberOfResponse(groupIdsList);
         modelManager.getIdsOfGroupsYouAreMemberOf(ViewGroupActivity.this, getIdsOfGroupsYouAreMemberOfCallback);
     }
