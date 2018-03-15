@@ -20,6 +20,9 @@ import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 import com.cmpt276.project.walkinggroupapp.R;
 
 
+/**
+ * Class for the User to log in using proper credentials or to register a new account
+ * */
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     public static final String PREFERENCE_EMAIL = "saved.email.key";
@@ -29,17 +32,17 @@ public class LoginActivity extends AppCompatActivity {
     private Button mLoginButton;
     private Button mRegisterButton;
     private Button mMapTestButton;
+    private Button mHelpButton;
     private TextView mForgotPasswordTextView;
     private EditText mPasswordEditText;
     private EditText mEmailEditText;
 
     private String mPassword;
     private String mEmail;
-//    private long userId = 0;
 
     private Intent intent;
 
-//    private WGServerProxy proxy;
+
 
 
 
@@ -58,7 +61,6 @@ public class LoginActivity extends AppCompatActivity {
         modelManager.setApiKey(getString(R.string.gerry_apikey));
 
         // Build the server proxy--used for logging in
-//        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), null);
 
         //set up all buttons, texViews etc.
         RegisterViews();
@@ -81,7 +83,8 @@ public class LoginActivity extends AppCompatActivity {
 
         if(savedIsLogout.equals("false") && !savedEmail.equals("") && !savedPassword.equals("")) {
             //login using data from preferences
-//            Login(savedEmail,savedPassword);
+            mLoginButton.setVisibility(View.INVISIBLE);
+            mRegisterButton.setVisibility(View.INVISIBLE);
             mPasswordEditText.setText(savedPassword);
             mEmailEditText.setText(savedEmail);
             ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
@@ -98,27 +101,11 @@ public class LoginActivity extends AppCompatActivity {
         //go to Main Menu
         Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
 
-//        ProxyBuilder.SimpleCallback<Void> callback = nothing -> updateUserResponse(nothing);
-//        modelManager.updateUser(callback);
-
-//        modelManager.updateUser();
-
-
         intent = MainMenuActivity.makeIntent(LoginActivity.this);
         startActivity(intent);
+        finish();
     }
 
-//    private void updateUserResponse(Void nothing) {
-//        intent = MainMenuActivity.makeIntent(LoginActivity.this);
-//        startActivity(intent);
-//    }
-
-//    private void onReceiveToken(String token) {
-//        // Replace the current proxy with one that uses the token!--to enable server data access
-//        Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
-//        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
-//        intent = MainMenuActivity.makeIntent(this, token);
-//    }
 
 
     private void RegisterViews() {
@@ -129,8 +116,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
+
                 //login using data from editTexts
-//                Login(mEmail,mPassword);
                 ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
                 modelManager.login(LoginActivity.this, callback, mEmail, mPassword);
 
@@ -214,38 +202,19 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intentMap);
             }
         });
+
+        //Help button
+        mHelpButton = findViewById(R.id.jacky_help_button);
+        mHelpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Go to help screen
+                Intent intentHelp = HelpActivity.makeIntent(LoginActivity.this);
+                startActivity(intentHelp);
+            }
+        });
     }
 
-//   private void Login(String email, String password) {
-//       // Build new user
-//       User user = new User();
-//       user.setEmail(email);
-//       user.setPassword(password);
-//
-//       // Register for token received:
-//       ProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
-//
-//       // Make call
-//       Call<Void> caller = proxy.login(user);
-//       ProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> loginResponse(returnedNothing));
-//   }
-
-
-//    private void CreateUserTest() {
-//        // Build new user
-//        User user = new User();
-//        user.setEmail("gerry1@test.com");
-//        user.setName("Gerry Test1");
-//        user.setPassword("justtesting");
-//
-//        // Make call
-//        Call<User> caller = proxy.createNewUser(user);
-//        ProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> response(returnedUser));
-//    }
-
-//    private void response(User user) {
-//        Log.w(TAG, "Server replied with user: " + user.toString());
-//    }
 
     public static Intent makeIntent(Context context)
     {
@@ -277,6 +246,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loginRequest();
+        //loginRequest();
     }
 }

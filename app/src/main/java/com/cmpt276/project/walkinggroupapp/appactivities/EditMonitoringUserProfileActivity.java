@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -25,6 +26,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/******
+ * Class for the "parent" to modify the "child's" Walking Groups
+ *
+ * *  Notice the complex List Adapter is based off from https://www.youtube.com/watch?v=WRANgDgM2Zg
+ *  a video provided by the prof for assignment 2
+ *  Code is adapted from Jacky.T  Assignment 2
+ */
+
 public class EditMonitoringUserProfileActivity extends AppCompatActivity {
 
     public static final String USER_ID = "UserID";
@@ -34,6 +43,8 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
     private ListView groupsListView;
 
     private long userId;
+
+    private Button mAddGroupButton;
 
 
     private ModelManager modelManager;
@@ -52,13 +63,23 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
         modelManager.getIdsOfGroupsAUserIsMemberOf(EditMonitoringUserProfileActivity.this, callback, userId);
 
 
+        setupAddGroupButton();
+
 
         populateGroupsList();
         registerGroupsListOnItemClick();
 
         //TODO need to populate member list;
     }
-
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        // TODO
+//        createUser();
+        ProxyBuilder.SimpleCallback<List<Long>> callback = groupIdsList -> getIdsOfGroupsAUserIsMemberOfResponse(groupIdsList);
+        modelManager.getIdsOfGroupsAUserIsMemberOf(EditMonitoringUserProfileActivity.this, callback, userId);
+    }
     private void getIdsOfGroupsAUserIsMemberOfResponse(List<Long> groupIdsList) {
         groupsList.clear();
         for (Long groupId: groupIdsList) {
@@ -155,7 +176,6 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
     }
 
     private void removeFromGroupResponse(List<User> returnedMembersList) {
-        groupsList.clear();
         ProxyBuilder.SimpleCallback<List<Long>> callback = groupIdsList -> getIdsOfGroupsAUserIsMemberOfResponse(groupIdsList);
         modelManager.getIdsOfGroupsAUserIsMemberOf(EditMonitoringUserProfileActivity.this, callback, userId);
     }
@@ -174,5 +194,21 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(context, EditMonitoringUserProfileActivity.class);
         intent.putExtra(USER_ID, editUserId);
         return intent;
+    }
+
+    private void setupAddGroupButton() {
+        mAddGroupButton = findViewById(R.id.gerry_Add_Group_Button_edit_child);
+        mAddGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Parent forcing child to join group
+                modelManager.setIsParent(true);
+
+                //pass in userId of user to be "forced" to join a group
+                Intent intent = MapActivity.makeIntent(EditMonitoringUserProfileActivity.this, userId);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -16,16 +16,11 @@ import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
 import java.util.List;
 
+/**
+ * Class for adding users monitored and users monitoring the current user
+ * */
 public class AddMonitorsUserActivity extends AppCompatActivity {
 
-//    private static final String PREFERENCE_EMAIL= "saved.email.key";
-//    public static final String INTENT_TOKEN = "com.cmpt276.project.walkinggroupapp.intentToken";
-
-//    private User userLocal;
-//
-//    private String token;
-//
-//    private WGServerProxy proxy;
 
     private Button addBtn;
 
@@ -43,12 +38,6 @@ public class AddMonitorsUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_monitors_user);
-
-        //Extract data from intent
-//        extractDataFromIntent();
-        //Need to recreate the user
-//        createUser();
-        //Need to wire button
 
 
         modelManager = ModelManager.getInstance();
@@ -72,7 +61,6 @@ public class AddMonitorsUserActivity extends AppCompatActivity {
                 }
                 else {
                     long userId = Long.parseLong(userIdString);
-//                findUser(longUserId);
                     ProxyBuilder.SimpleCallback<List<User>> callback = monitorsUsers -> addNewMonitorsUserResponse(monitorsUsers);
                     modelManager.addNewMonitorsUser(AddMonitorsUserActivity.this, callback, userId);
                 }
@@ -84,48 +72,7 @@ public class AddMonitorsUserActivity extends AppCompatActivity {
         finish();
     }
 
-//    private void response(User user) {
-//        Log.i("MyApp", "Server replied with user: " + user.toString() );
-//        userLocal = user;
-//    }
 
-//    private void createUser() {
-//        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
-//        String email = getSavedEmail();
-//        Log.i("MyApp", "Email is: " + email);
-//        Call<User> caller = proxy.getUserByEmail(email);                     //For now since the email is not being passed i will use a standard one
-//        ProxyBuilder.callProxy(AddMonitorsUserActivity.this, caller, returnedUser -> response(returnedUser));
-//    }
-
-//    private String getSavedEmail()
-//    {
-//        SharedPreferences saveEmail= getSharedPreferences("MyData", MODE_PRIVATE);
-//        return saveEmail.getString(PREFERENCE_EMAIL, "0");
-//    }
-
-
-//    private void findUser(Long id)
-//    {
-//        Call<User> caller = proxy.getUserById(id);
-//        ProxyBuilder.callProxy(AddMonitorsUserActivity.this, caller, newUser -> waitNew(newUser));
-//    }
-
-//    private void waitNew(User user)
-//    {
-//        Log.i("MyApp", "    User: " + user.toString());
-//        User tempUser = user;
-//        Call<List<User>> caller = proxy.addNewMonitorsUser(userLocal.getId(),tempUser);                    //Since only the id is provided
-//        ProxyBuilder.callProxy(AddMonitorsUserActivity.this, caller, monitoringList -> AddUser(monitoringList));
-//    }
-
-//    private void AddUser(List <User> monitoringList)
-//    {
-//        Log.i("MyApp", "ADDED user");
-//        for (User user : monitoringList) {
-//            Log.w("MyApp", "    User: " + user.toString());
-//        }
-//        finish();
-//    }
 
 
     public static Intent makeIntent(Context context){
@@ -133,8 +80,4 @@ public class AddMonitorsUserActivity extends AppCompatActivity {
         return new Intent(context, AddMonitorsUserActivity.class);
     }
 
-//    private void extractDataFromIntent(){
-//        Intent intent = getIntent();
-//        token = intent.getStringExtra(INTENT_TOKEN);
-//    }
 }

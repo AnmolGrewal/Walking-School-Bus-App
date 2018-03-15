@@ -25,6 +25,8 @@ import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 import java.util.List;
 
 /******
+ *
+ * Main Menu Activity
  *  Notice the complex List Adapter is based off from https://www.youtube.com/watch?v=WRANgDgM2Zg
  *  a video provided by the prof for assignment 2
  *  Code is adapted from Jacky.T  Assignment 2
@@ -33,8 +35,6 @@ import java.util.List;
 
 public class MainMenuActivity extends AppCompatActivity {
 
-//    private static final String PREFERENCE_EMAIL = "saved.email.key";
-//    public static final String INTENT_TOKEN = "com.cmpt276.project.walkinggroupapp.intentToken";
     private static final String PREFERENCE_IS_LOGOUT = "saved.logout.key";
 
     private Button btnAddNewMonitorsUser;
@@ -48,11 +48,6 @@ public class MainMenuActivity extends AppCompatActivity {
     private List<User> monitorsUsers;
     private List<User> monitoredByUsers;
 
-
-//    private int selectedPosition;
-//    private WGServerProxy proxy;
-//    private User userLocal;
-//    private String token;
 
 
 
@@ -77,14 +72,11 @@ public class MainMenuActivity extends AppCompatActivity {
         modelManager.getMonitoredByUsers(MainMenuActivity.this, getMonitoredByUsersCallback);
 
 
-//        extractDataFromIntent();
-//        createUser();
             setupAddNewMonitorsUserButton();
             setupAddNewMonitoredByUserButton();
             setupViewGroupButton();
             setupLogoutButton();
-//        registerMonitorsUsersOnItemClick();
-//        registerMonitoredByUsersOnItemClick();
+
     }
 
     @Override
@@ -92,12 +84,16 @@ public class MainMenuActivity extends AppCompatActivity {
     {
         super.onResume();
         // TODO
-//        createUser();
         ProxyBuilder.SimpleCallback<List<User>> getMonitorsUsersCallback = monitorsUsers -> getMonitorsUsersResponse(monitorsUsers);
         modelManager.getMonitorsUsers(MainMenuActivity.this, getMonitorsUsersCallback);
 
         ProxyBuilder.SimpleCallback<List<User>> getMonitoredByUsersCallback = monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers);
         modelManager.getMonitoredByUsers(MainMenuActivity.this, getMonitoredByUsersCallback);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     private void setupLogoutButton() {
@@ -117,8 +113,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
                 //go to LoginActivity
-                Intent intent = new Intent(MainMenuActivity.this, LoginActivity.class);
-                startActivity(intent);
+                finish();
 
             }
         });
@@ -158,23 +153,6 @@ public class MainMenuActivity extends AppCompatActivity {
         });
     }
 
-//    private void createUser() {
-//        proxy = ProxyBuilder.getProxy(getString(R.string.gerry_apikey), token);
-//        String email = getSavedEmail();
-//        Call<User> caller = proxy.getUserByEmail(email);
-//        ProxyBuilder.callProxy(MainMenuActivity.this, caller, returnedUser -> response(returnedUser));
-//    }
-
-//    private void response(User user) {
-//        Log.i("MyApp", "Server replied with user: " + user.toString());
-//        userLocal = user;
-//
-//        Call<List<User>> caller = proxy.getMonitorsUsersById(userLocal.getId());
-//        ProxyBuilder.callProxy(MainMenuActivity.this, caller, monitorsUsers -> getMonitorsUsersResponse(monitorsUsers));
-//
-//        Call<List<User>> newCaller = proxy.getMonitoredByUsersById(userLocal.getId());
-//        ProxyBuilder.callProxy(MainMenuActivity.this, newCaller, monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers));
-//    }
 
     private void getMonitorsUsersResponse(List<User> monitorsUsers) {
         Log.i("MyApp","Inside update you");
@@ -266,22 +244,6 @@ public class MainMenuActivity extends AppCompatActivity {
         return new Intent(context, MainMenuActivity.class);
     }
 
-//    public static Intent makeIntent(Context context, String token){
-//        Intent intent = new Intent(context, MainMenuActivity.class);
-//        intent.putExtra(INTENT_TOKEN, token);
-//        return intent;
-//    }
-
-//    private void extractDataFromIntent(){
-//        Intent intent = getIntent();
-//        token = intent.getStringExtra(INTENT_TOKEN);
-//    }
-
-//    private String getSavedEmail()
-//    {
-//        SharedPreferences saveEmail= getSharedPreferences("MyData", MODE_PRIVATE);
-//        return saveEmail.getString(PREFERENCE_EMAIL, "0");
-//    }
 
     private void registerMonitorsUsersOnItemClick()                                                                                    //For clicking on list object
     {
@@ -294,7 +256,6 @@ public class MainMenuActivity extends AppCompatActivity {
             {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
                 Log.i("MyApp", "Pressed Long" + position);
-//                selectedPosition = position;
                 PopupMenu popupMenu = new PopupMenu(MainMenuActivity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.monitoring_user_popup, popupMenu.getMenu());
 
@@ -305,7 +266,6 @@ public class MainMenuActivity extends AppCompatActivity {
                         switch(menuItem.getItemId())
                         {
                             case R.id.cancel:
-//                                doCancel();
                                 break;
                             case R.id.delete:
                                 removeMonitorsUserByPosition(position);
@@ -336,7 +296,6 @@ public class MainMenuActivity extends AppCompatActivity {
             {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
                 Log.i("MyApp", "Pressed Long" + position);
-//                selectedPosition = position;
                 PopupMenu popupMenu = new PopupMenu(MainMenuActivity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
 
@@ -347,7 +306,6 @@ public class MainMenuActivity extends AppCompatActivity {
                         switch(menuItem.getItemId())
                         {
                             case R.id.cancel:
-//                                doCancel();
                                 break;
                             case R.id.delete:
                                 removeMonitoredByUserByPosition(position);
@@ -365,11 +323,6 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
 
-//    // TODO: not necessary.
-//    private void doCancel()
-//    {
-//        //Do nothing XD
-//    }
 
     private void editUserProfile(int position) {
         long targetId = monitorsUsers.get(position).getId();
@@ -381,9 +334,6 @@ public class MainMenuActivity extends AppCompatActivity {
         long targetId = monitorsUsers.get(position).getId();
         ProxyBuilder.SimpleCallback<Void> callback = returnNothing -> removeMonitorsUserResponse(returnNothing);
         modelManager.removeMonitorsUser(MainMenuActivity.this, callback, targetId);
-//        User tempUser = monitorsUsers.get(position);
-//        Call<Void> caller = proxy.removeMonitorsUser(userLocal.getId(), tempUser.getId());
-//        ProxyBuilder.callProxy(MainMenuActivity.this, caller, noResponse -> redrawMonitorUser(noResponse));
     }
 
     private void removeMonitorsUserResponse(Void returnNothing) {
@@ -395,9 +345,6 @@ public class MainMenuActivity extends AppCompatActivity {
         long targetId = monitoredByUsers.get(position).getId();
         ProxyBuilder.SimpleCallback<Void> callback = returnNothing -> removeMonitoredByUserResponse(returnNothing);
         modelManager.removeMonitoredByUser(MainMenuActivity.this, callback, targetId);
-//        User tempUser = monitoredByUsers.get(position);
-//        Call<Void> caller = proxy.removeMonitoredByUser(userLocal.getId(), tempUser.getId());
-//        ProxyBuilder.callProxy(MainMenuActivity.this, caller, noResponse -> redrawMonitorUser(noResponse));
     }
 
     private void removeMonitoredByUserResponse(Void returnNothing) {
@@ -405,16 +352,5 @@ public class MainMenuActivity extends AppCompatActivity {
         modelManager.getMonitoredByUsers(MainMenuActivity.this, getMonitoredByUsersCallback);
     }
 
-//    private void redrawMonitorUser(Void nothing)
-//    {
-//        Log.i("MyApp", "Removed USER");
-////        createUser();
-//    }
 
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-    }
 }

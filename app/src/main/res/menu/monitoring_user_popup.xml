@@ -7,7 +7,7 @@
         android:title="@string/jacky_delete_popup"/>
 
     <item android:id="@+id/editGroup"
-        android:title="Edit Group"/>
+        android:title="@string/jacky_edit_group"/>
 
     <item
         android:id="@+id/cancel"

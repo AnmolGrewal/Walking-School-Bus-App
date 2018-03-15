@@ -26,6 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/******
+ *  Notice the complex List Adapter is based off from https://www.youtube.com/watch?v=WRANgDgM2Zg
+ *  a video provided by the prof for assignment 2
+ *  Code is adapted from Jacky.T  Assignment 2
+ */
+
 public class ViewGroupActivity extends AppCompatActivity {
 
     private List<WalkingGroup> memberOfGroups = new ArrayList<>();
@@ -130,9 +136,13 @@ public class ViewGroupActivity extends AppCompatActivity {
         joinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Parent not forcing child to join groups
+                modelManager.setIsParent(false);
+
                 //go to map activity
                 Intent intentMap = new Intent(ViewGroupActivity.this, MapActivity.class);
                 startActivity(intentMap);
+
             }
         });
     }

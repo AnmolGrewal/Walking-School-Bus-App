@@ -9,9 +9,16 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.cmpt276.project.walkinggroupapp.R;
-//ASSETS http://wyomingpublicmedia.org/post/jackson-school-program-encourages-walking-school Bus
-//http://diysolarpanelsv.com/clipart-horizontal-road.html Background
-//http://psql.me/post/20081828750/good-afternoon-tumblr-how-is-your-day Sun
+
+
+/**
+ * Class for registering a new User
+ *
+ * ASSETS http://wyomingpublicmedia.org/post/jackson-school-program-encourages-walking-school Bus
+ *http://diysolarpanelsv.com/clipart-horizontal-road.html Background
+ *http://psql.me/post/20081828750/good-afternoon-tumblr-how-is-your-day Sun
+ * */
+
 public class WelcomeActivity extends AppCompatActivity {
 
     private static final String TAG = "WelcomeActivity";
@@ -51,6 +58,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private void goToLoginActivity() {
         Intent intent = LoginActivity.makeIntent(getApplicationContext());
         startActivity(intent);
+        finish();
     }
 
 }
