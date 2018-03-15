@@ -51,8 +51,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.lang.reflect.Proxy;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Long.parseLong;
@@ -68,6 +66,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CHECK_SETTINGS = 2;
 
+    public static final String USER_ID = "UserID";
+
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private Context mContext;
@@ -80,7 +80,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private ModelManager mModelManager;
     private List<WalkingGroup> mWalkingGroups;
     private long mClickedGroupId;
+
     private User mCurrentUser;
+
+    private long mChildUserId;
+    private boolean mIsParent = false;
 
 
 
@@ -91,6 +95,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
         mModelManager = ModelManager.getInstance();
+
+        extractDataFromIntent();
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -125,6 +131,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     public void onMapReady(GoogleMap googleMap) {
         Log.i("App", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> onMapReady");
         mMap = googleMap;
+
 
         //create map listener
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -185,13 +192,24 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public void onClick(View v) {
 
-                //Add the group to users list of walking group
-                User currentUser = mModelManager.getUser();
+                //"Child" wanting to join group by him/herself
+                if(!mModelManager.isParent()) {
+                    //Add the group to users list of walking group
+                    mCurrentUser = mModelManager.getUser();
 
-                //get the walking group which is associated with marker--set it to mClickedGroup
-                //then add user to be part of that group
-                ProxyBuilder.SimpleCallback<List<User>> addUserToGroupCallback = serverPassedWalkingGroup -> addUserToClickedGroup(serverPassedWalkingGroup);
-                mModelManager.addUserToGroup(MapActivity.this,addUserToGroupCallback,mClickedGroupId,currentUser.getId());
+                    //get the walking group which is associated with marker--set it to mClickedGroup
+                    //then add user to be part of that group
+                    ProxyBuilder.SimpleCallback<List<User>> addUserToGroupCallback = serverPassedWalkingGroup -> addUserToClickedGroupResponse(serverPassedWalkingGroup);
+                    mModelManager.addUserToGroup(MapActivity.this, addUserToGroupCallback, mClickedGroupId, mCurrentUser.getId());
+                }
+                //"Parent" requesting for his/her child
+                else {
+                    //set mCurrentUser to be the User with the UserId passed by the parent
+                    ProxyBuilder.SimpleCallback<User> getUserByIdCallback = serverPassedUser -> getUserByIdResponse(serverPassedUser);
+                    mModelManager.getUserById(MapActivity.this,getUserByIdCallback,mChildUserId);
+
+
+                }
 
             }
         });
@@ -447,7 +465,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         });
     }
 
-    private void getWalkingGroups(List<WalkingGroup> passedWalkingGroups) {
+    private void getWalkingGroupsResponse(List<WalkingGroup> passedWalkingGroups) {
 
         this.mWalkingGroups = passedWalkingGroups;
 
@@ -458,22 +476,58 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         }
     }
 
-    private void addUserToClickedGroup(List<User> passedGroup) {
+    private void addUserToClickedGroupResponse(List<User> passedGroup) {
         //already added user to the group
 
-        //re-populate Map with newly updated server info
-        populateMapWithGroups();
+        //go back to previous activity
+        finish();
+    }
+
+
+    private void getUserByIdResponse(User passedUser) {
+        mCurrentUser = passedUser;
+
+        //add the group to the child
+        //get the walking group which is associated with marker--set it to mClickedGroup
+        //then add user to be part of that group
+        ProxyBuilder.SimpleCallback<List<User>> addUserToGroupCallback = serverPassedWalkingGroup -> addUserToClickedGroupResponse(serverPassedWalkingGroup);
+        mModelManager.addUserToGroup(MapActivity.this, addUserToGroupCallback, mClickedGroupId, mCurrentUser.getId());
     }
 
 
     private void populateMapWithGroups () {
-        ProxyBuilder.SimpleCallback<List<WalkingGroup>>  getWalkingGroupsCallback = serverPassedWalkingGroups -> getWalkingGroups(serverPassedWalkingGroups);
+        ProxyBuilder.SimpleCallback<List<WalkingGroup>>  getWalkingGroupsCallback = serverPassedWalkingGroups -> getWalkingGroupsResponse(serverPassedWalkingGroups);
         mModelManager.getAllWalkingGroups(MapActivity.this, getWalkingGroupsCallback);
     }
 
 
 
 
+
+
+
+
+
+
+    //For creating intents outside of this Activity
+    public static Intent makeIntent(Context context, long editUserId){
+        Intent intent = new Intent(context, MapActivity.class);
+        intent.putExtra(USER_ID, editUserId);
+        return intent;
+    }
+
+
+    //for extracting intent extras made from other Activities--only do this when parent forcing child
+    private void extractDataFromIntent() {
+
+        if(mModelManager.isParent()) {
+            mIsParent = true;
+
+            Intent intent = getIntent();
+            mChildUserId = intent.getLongExtra(USER_ID, 0);
+        }
+
+    }
 
 
 
