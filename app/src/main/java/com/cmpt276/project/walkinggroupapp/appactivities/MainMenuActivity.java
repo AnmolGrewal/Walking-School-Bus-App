@@ -188,7 +188,7 @@ public class MainMenuActivity extends AppCompatActivity {
         //Configure ListView
         monitorsUsersListView = findViewById(R.id.jacky_monitoring_list);
         monitorsUsersListView.setAdapter(adapter);
-        Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
 
     private class monitorsUsersAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
@@ -231,7 +231,7 @@ public class MainMenuActivity extends AppCompatActivity {
         //Configure ListView
         monitoredByUsersListView = findViewById(R.id.jacky_monitoing_by_list);
         monitoredByUsersListView.setAdapter(adapter);
-        Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "Done Populating List", Toast.LENGTH_LONG).show();
     }
 
     private class monitoredByUsersAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video

@@ -25,8 +25,11 @@ public class ModelManager {
 
     private String token = null;
 
-    private User user = null;
 
+    private User user = null;
+    public User getUser() {
+        return user;
+    }
 
 
 
