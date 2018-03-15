@@ -91,6 +91,11 @@ public class MainMenuActivity extends AppCompatActivity {
         modelManager.getMonitoredByUsers(MainMenuActivity.this, getMonitoredByUsersCallback);
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
     private void setupLogoutButton() {
         mLogoutButton = findViewById(R.id.gerry_Logout_Button_main);
         mLogoutButton.setOnClickListener(new View.OnClickListener() {
@@ -108,8 +113,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
                 //go to LoginActivity
-                Intent intent = new Intent(MainMenuActivity.this, LoginActivity.class);
-                startActivity(intent);
+                finish();
 
             }
         });
