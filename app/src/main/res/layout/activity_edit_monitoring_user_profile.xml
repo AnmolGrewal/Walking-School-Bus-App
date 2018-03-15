@@ -15,7 +15,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="3dp"
-        android:text="User is in the following groups"
+        android:text="@string/jacky_edit_user_user_is_in_the_following_groups"
         app:layout_constraintBottom_toTopOf="@+id/jacky_edit_user_member_list"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
-        android:text="Add Group"
+        android:text="@string/jacky_edit_user_add_group"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

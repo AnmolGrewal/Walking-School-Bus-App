@@ -14,6 +14,11 @@ import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
+
+/**
+ * Class for creating Walking Groups in the map
+ * Accepts only manual input latitude and longitude for now
+ * */
 public class CreateGroupActivity extends AppCompatActivity {
 
     private Button createBtn;

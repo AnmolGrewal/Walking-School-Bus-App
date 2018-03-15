@@ -14,7 +14,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="4dp"
         android:layout_marginEnd="16dp"
-        android:text="Create Group"
+        android:text="@string/jacky_view_group_activity_create_group"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/jacky_relativelayout_bottom" />
@@ -48,7 +48,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignStart="@+id/jacky_edit_user_member_list"
             android:layout_marginTop="11dp"
-            android:text="Groups that you are in:"
+            android:text="@string/jacky_view_group_activitygroups_that_you_are_in"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="3dp" />
     </RelativeLayout>
@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignStart="@+id/jacky_leader_list"
-            android:text="Leader of the following groups:" />
+            android:text="@string/jacky_view_group_activity_leader_of_the_following_groups" />
     </RelativeLayout>
 
     <Button
@@ -85,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="53dp"
-        android:text="Join Group"
+        android:text="@string/jacky_view_group_activity_join_group"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/jacky_relativelayout_bottom" />
 </android.support.constraint.ConstraintLayout>

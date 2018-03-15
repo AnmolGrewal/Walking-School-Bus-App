@@ -39,5 +39,24 @@
     <string name="anmol_backgroundimagewelcome">backgroundimagewelcome</string>
     <string name="anmol_UserHintName">John Doe</string>
     <string name="anmol_nameRegister">Name</string>
+    <string name="jacky_view_group_activity_create_group">Create Group</string>
+    <string name="jacky_view_group_activitygroups_that_you_are_in">Groups that you are in:</string>
+    <string name="jacky_view_group_activity_leader_of_the_following_groups">Leader of the following groups:</string>
+    <string name="jacky_view_group_activity_join_group">Join Group</string>
+    <string name="jacky_create_group_activity_create">Create</string>
+    <string name="jacky_create_group_activity_group_description_hint">Group Description</string>
+    <string name="jacky_create_group_activity_group_description">Group Description:</string>
+    <string name="jacky_create_group_activity_start_location">Start Location</string>
+    <string name="jacky_create_group_activity_start_latitude">Latitude</string>
+    <string name="jacky_create_group_activity_start_longitude">Longitude</string>
+    <string name="jacky_create_group_activity_end_latitude">Latitude</string>
+    <string name="jacky_create_group_activity_end_longitude">Longitude</string>
+    <string name="jacky_create_group_activity_end_location">End Location</string>
+    <string name="jacky_edit_user_user_is_in_the_following_groups">User is in the following groups</string>
+    <string name="jacky_edit_user_add_group">Add Group</string>
+    <string name="jacky_grouup_layout_group_description">Group Description:</string>
+    <string name="group_layout_hello">Hello</string>
+    <string name="jacky_edit_group">Edit Group</string>
+    <string name="jacky_leave">Leave</string>
 
 </resources>
