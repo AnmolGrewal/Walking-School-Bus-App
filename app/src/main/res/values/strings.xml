@@ -58,5 +58,14 @@
     <string name="group_layout_hello">Hello</string>
     <string name="jacky_edit_group">Edit Group</string>
     <string name="jacky_leave">Leave</string>
+    <string name="jacky_help_button">Help</string>
+    <string name="jacky_back_button">Back</string>
+    <string name="jacky_how_to_use_application">How to use application:</string>
+    <string name="jacky_login_explanation">On login page, either register for a new account or login with an existing one</string>
+    <string name="jacky_long_click">Once on the main menu, press and hold on users to either, edit, delete or simply push the add button if you know the users id</string>
+    <string name="jacky_how_to_view_group">If you click the view group button you will be taken to a page where you are able to view the groups that you are a member of or currently leading. Once again if you push and hold you are given the choice to leave the group.</string>
+    <string name="jacky_how_to_create_new_group">To create a group simply press create a group and enter the specfic coordinates that the group is meeting up at, also give your group a meaningful description</string>
+    <string name="jacky_how_to_join_new_group">To join a group simple press join group button and select the group from the map.</string>
+    <string name="jacky_edit_user_group_text">To edit the groups of the user you are monitoring simple press and hold on the user you want to edit and the rest of the steps to remove and add will be similar to the view group</string>
 
 </resources>

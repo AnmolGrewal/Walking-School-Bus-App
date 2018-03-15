@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cmpt276.project.walkinggroupapp.appactivities.HelpActivity">
+
+    <Button
+        android:id="@+id/jacky_back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="11dp"
+        android:text="@string/jacky_back_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/jacky_how_to_join_group"
+        app:layout_constraintTop_toBottomOf="@+id/jacky_how_to_join_group" />
+
+    <TextView
+        android:id="@+id/jacky_intro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:text="@string/jacky_how_to_use_application"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/jacky_login_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/jacky_login_description"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/jacky_login_explanation"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/jacky_main_menu"
+        app:layout_constraintEnd_toEndOf="@+id/jacky_main_menu"
+        app:layout_constraintStart_toStartOf="@+id/jacky_intro"
+        app:layout_constraintTop_toBottomOf="@+id/jacky_intro" />
+
+    <TextView
+        android:id="@+id/jacky_main_menu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/jacky_long_click"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/jacky_how_to_edit_user"
+        app:layout_constraintEnd_toEndOf="@+id/jacky_how_to_edit_user"
+        app:layout_constraintStart_toStartOf="@+id/jacky_how_to_edit_user"
+        app:layout_constraintTop_toBottomOf="@+id/jacky_login_description" />
+
+    <TextView
+        android:id="@+id/jacky_how_to_view_groups"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/jacky_how_to_view_group"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/jacky_how_to_create_group"
+        app:layout_constraintEnd_toEndOf="@+id/jacky_how_to_create_group"
+        app:layout_constraintStart_toStartOf="@+id/jacky_how_to_create_group"
+        app:layout_constraintTop_toBottomOf="@+id/jacky_how_to_edit_user" />
+
+    <TextView
+        android:id="@+id/jacky_how_to_create_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/jacky_how_to_create_new_group"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/jacky_how_to_join_group"
+        app:layout_constraintEnd_toEndOf="@+id/jacky_how_to_join_group"
+        app:layout_constraintStart_toStartOf="@+id/jacky_how_to_join_group"
+        app:layout_constraintTop_toBottomOf="@+id/jacky_how_to_view_groups" />
+
+    <TextView
+        android:id="@+id/jacky_how_to_join_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/jacky_how_to_join_new_group"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/jacky_back_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/jacky_how_to_create_group" />
+
+    <TextView
+        android:id="@+id/jacky_how_to_edit_user"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/jacky_edit_user_group_text"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/jacky_how_to_view_groups"
+        app:layout_constraintEnd_toEndOf="@+id/jacky_how_to_view_groups"
+        app:layout_constraintStart_toStartOf="@+id/jacky_how_to_view_groups"
+        app:layout_constraintTop_toBottomOf="@+id/jacky_main_menu" />
+</android.support.constraint.ConstraintLayout>

@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button mLoginButton;
     private Button mRegisterButton;
     private Button mMapTestButton;
+    private Button mHelpButton;
     private TextView mForgotPasswordTextView;
     private EditText mPasswordEditText;
     private EditText mEmailEditText;
@@ -199,6 +200,17 @@ public class LoginActivity extends AppCompatActivity {
                 //go to test map activity
                 Intent intentMap = new Intent(LoginActivity.this, MapActivity.class);
                 startActivity(intentMap);
+            }
+        });
+
+        //Help button
+        mHelpButton = findViewById(R.id.jacky_help_button);
+        mHelpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Go to help screen
+                Intent intentHelp = HelpActivity.makeIntent(LoginActivity.this);
+                startActivity(intentHelp);
             }
         });
     }
