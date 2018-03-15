@@ -85,6 +85,7 @@ public class ViewGroupActivity extends AppCompatActivity {
     }
 
     private void getIdsOfGroupsYouAreMemberOfResponse(List<Long> groupIdsList) {
+        memberOfGroups.clear();
         for (Long groupId: groupIdsList) {
             ProxyBuilder.SimpleCallback<WalkingGroup> callback = returnedGroup -> getMemberOfGroupResponse(returnedGroup);
             modelManager.getWalkingGroupById(ViewGroupActivity.this, callback, groupId);

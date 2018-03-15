@@ -24,6 +24,7 @@ import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EditMonitoringUserProfileActivity extends AppCompatActivity {
 
@@ -64,6 +65,7 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
     }
 
     private void getIdsOfGroupsAUserIsMemberOfResponse(List<Long> groupIdsList) {
+        groupsList.clear();
         for (Long groupId: groupIdsList) {
             ProxyBuilder.SimpleCallback<WalkingGroup> callback = returnedGroup -> getMemberOfGroupResponse(returnedGroup);
             modelManager.getWalkingGroupById(EditMonitoringUserProfileActivity.this, callback, groupId);
@@ -71,6 +73,11 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
     }
 
     private void getMemberOfGroupResponse(WalkingGroup returnedGroup) {
+        for (WalkingGroup group: groupsList) {
+            if (Objects.equals(group.getId(), returnedGroup.getId())) {
+                return;
+            }
+        }
         groupsList.add(returnedGroup);
         populateGroupsList();
         registerGroupsListOnItemClick();
