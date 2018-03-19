@@ -150,7 +150,6 @@ public class MainMenuActivity extends AppCompatActivity {
         });
     }
 
-
     private void getMonitorsUsersResponse(List<User> monitorsUsers) {
         Log.i("MyApp","Inside update you");
         this.monitorsUsers = monitorsUsers;
@@ -183,7 +182,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
             //Name:
             TextView makeName = itemView.findViewById(R.id.jacky_user_name_dynamic);
-            makeName.setText(currentUser.getName());
+            makeName.setText(currentUser.getAddress());
 
             //Email
             TextView makeEmail = itemView.findViewById(R.id.jacky_user_email_dynamic);

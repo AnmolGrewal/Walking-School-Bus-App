@@ -56,13 +56,26 @@ public class ModelManager {
     // TODO: I think the callback param should return Void.
     public void register(Context context,
                          ProxyBuilder.SimpleCallback<Void> callback,
-                         String name, String emailAddress, String password) {
+                         String name, String emailAddress, String password,
+                         int birthYear, int birthMonth,
+                         String address, String cellPhone,
+                         String homePhone, String grade,
+                         String teacherName, String emergencyContactInfo ) {
 
         // TODO: do I need to login when register?
         User newUser = new User();
         newUser.setName(name);
         newUser.setEmail(emailAddress);
         newUser.setPassword(password);
+        //Testing
+        newUser.setBirthYear(birthYear);
+        newUser.setBirthMonth(birthMonth);
+        newUser.setAddress(address);
+        newUser.setCellPhone(cellPhone);
+        newUser.setHomePhone(homePhone);
+        newUser.setGrade(grade);
+        newUser.setTeacherName(teacherName);
+        newUser.setEmergencyContactInfo(emergencyContactInfo);
 
         Call<User> caller = proxy.createNewUser(newUser);
         ProxyBuilder.callProxy(context, caller, returnedUser -> {
