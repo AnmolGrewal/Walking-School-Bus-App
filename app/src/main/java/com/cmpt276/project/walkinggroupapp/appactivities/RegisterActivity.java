@@ -32,6 +32,14 @@ public class RegisterActivity extends AppCompatActivity {
     private String name;
     private String email;
     private String password1;
+    private int birthYear;
+    private int birthMonth;
+    private String address;
+    private String cellPhone;
+    private String homePhone;
+    private String grade;
+    private String teacherName;
+    private String emergencyContactInfo;
 
     private ModelManager modelManager;
 
@@ -67,8 +75,18 @@ public class RegisterActivity extends AppCompatActivity {
                 if(password1.equals(password2)) {
                     email = emailAddress.getText().toString();
                     name = userNameInputed.getText().toString();
+                    //TODO: ANMOL NEEDS TO REPLACE THIS WITH ACTUAL UI TO GET INPUT
+                    birthYear = 2012;
+                    birthMonth = 12;
+                    address = "#1 big way, Surrey BC, H0H 0H0, Canada";
+                    cellPhone = "+1.778.098.7765";
+                    homePhone = "(604) 123-4567";
+                    grade = "Kindergarten";
+                    teacherName = "Mr.Big";
+                    emergencyContactInfo = "Call my mom! She knows how to help.";
                     ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> registerResponse(returnedNothing);
-                    modelManager.register(RegisterActivity.this, callback, name, email, password1);
+                    modelManager.register(RegisterActivity.this, callback, name, email, password1,
+                            birthYear, birthMonth, address, cellPhone, homePhone, grade, teacherName, emergencyContactInfo);
                 }
                 else
                 {
