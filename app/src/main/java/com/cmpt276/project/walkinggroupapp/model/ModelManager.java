@@ -524,8 +524,23 @@ public class ModelManager {
 
 
 
-    
 
+
+    // this part support togroup message receiving.
+
+    public void getEmergencyMessagesToGroup(Context context,
+                                            ProxyBuilder.SimpleCallback<List<Message>> callback,
+                                            long groupId) {
+        Call<List<Message>> getEmergencyMessagesToGroupCaller = proxy.getEmergencyMessagesToGroup(groupId);
+        ProxyBuilder.callProxy(context, getEmergencyMessagesToGroupCaller, callback);
+    }
+
+    public void getMessagesToGroup(Context context,
+                                   ProxyBuilder.SimpleCallback<List<Message>> callback,
+                                   long groupId) {
+        Call<List<Message>> getMessagesToGroupCaller = proxy.getMessagesToGroup(groupId);
+        ProxyBuilder.callProxy(context, getMessagesToGroupCaller, callback);
+    }
 
 
 
@@ -533,19 +548,25 @@ public class ModelManager {
     // this part support foruser message receiving.
 
     public void getUnreadEmergencyMessagesForUser(Context context,
-                                                  ProxyBuilder.SimpleCallback<List<Message>> callback,
-                                                  long userId) {
+                                                  ProxyBuilder.SimpleCallback<List<Message>> callback) {
+        Call<List<Message>> getUnreadEmergencyMessagesForUserCaller = proxy.getUnreadEmergencyMessagesForUser(user.getId());
+        ProxyBuilder.callProxy(context, getUnreadEmergencyMessagesForUserCaller, callback);
+    }
+
+    public void getMessagesForUser(Context context,
+                                   ProxyBuilder.SimpleCallback<List<Message>> callback) {
 
         List<Message> messages = new ArrayList<>();
 
-        Call<List<Message>> getReadMessagesForUserCaller = proxy.getReadMessagesForUser(userId);
-        Call<List<Message>> getUnreadMessagesForUserCaller = proxy.getUnreadMessagesForUser(userId);
+        Call<List<Message>> getReadMessagesForUserCaller = proxy.getReadMessagesForUser(user.getId());
+        Call<List<Message>> getUnreadMessagesForUserCaller = proxy.getUnreadMessagesForUser(user.getId());
 
         ProxyBuilder.callProxy(context, getReadMessagesForUserCaller, readMessages -> {
             messages.addAll(readMessages);
             ProxyBuilder.callProxy(context, getUnreadMessagesForUserCaller, unreadMessages -> {
                 messages.addAll(unreadMessages);
                 java.util.Collections.sort(messages, new Comparator<Message>() {
+                    // TODO: consider moving this to an actual class if it is needed somewhere else.
                     @Override
                     public int compare(Message msg1, Message msg2) {
                         // this gives us descending ordering.
@@ -558,12 +579,7 @@ public class ModelManager {
 
     }
 
-    public void getMessagesForUser(Context context,
-                                   ProxyBuilder.SimpleCallback<List<Message>> callback,
-                                   long userId) {
-        Call<List<Message>> getUnreadEmergencyMessagesForUserCaller = proxy.getUnreadEmergencyMessagesForUser(userId);
-        ProxyBuilder.callProxy(context, getUnreadEmergencyMessagesForUserCaller, callback);
-    }
+
 
 
 
