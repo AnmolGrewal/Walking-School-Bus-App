@@ -11,6 +11,9 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Message {
 
+    // TODO: I think I need to implement a comparator.
+
+
     private Long id;
     private Date timestamp;
     private String text;

@@ -7,6 +7,8 @@ import com.cmpt276.project.walkinggroupapp.proxy.WGServerProxy;
 
 import java.security.Policy;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -516,6 +518,54 @@ public class ModelManager {
     public void setIsParent(boolean parent) {
         isParent = parent;
     }
+
+
+
+
+
+
+    
+
+
+
+
+
+    // this part support foruser message receiving.
+
+    public void getUnreadEmergencyMessagesForUser(Context context,
+                                                  ProxyBuilder.SimpleCallback<List<Message>> callback,
+                                                  long userId) {
+
+        List<Message> messages = new ArrayList<>();
+
+        Call<List<Message>> getReadMessagesForUserCaller = proxy.getReadMessagesForUser(userId);
+        Call<List<Message>> getUnreadMessagesForUserCaller = proxy.getUnreadMessagesForUser(userId);
+
+        ProxyBuilder.callProxy(context, getReadMessagesForUserCaller, readMessages -> {
+            messages.addAll(readMessages);
+            ProxyBuilder.callProxy(context, getUnreadMessagesForUserCaller, unreadMessages -> {
+                messages.addAll(unreadMessages);
+                java.util.Collections.sort(messages, new Comparator<Message>() {
+                    @Override
+                    public int compare(Message msg1, Message msg2) {
+                        // this gives us descending ordering.
+                        return -(msg1.getTimestamp().compareTo(msg2.getTimestamp()));
+                    }
+                });
+                callback.callback(messages);
+            });
+        });
+
+    }
+
+    public void getMessagesForUser(Context context,
+                                   ProxyBuilder.SimpleCallback<List<Message>> callback,
+                                   long userId) {
+        Call<List<Message>> getUnreadEmergencyMessagesForUserCaller = proxy.getUnreadEmergencyMessagesForUser(userId);
+        ProxyBuilder.callProxy(context, getUnreadEmergencyMessagesForUserCaller, callback);
+    }
+
+
 
 
 
