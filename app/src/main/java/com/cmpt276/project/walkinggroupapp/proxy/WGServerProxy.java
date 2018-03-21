@@ -2,6 +2,7 @@ package com.cmpt276.project.walkinggroupapp.proxy;
 
 import java.util.List;
 
+import com.cmpt276.project.walkinggroupapp.model.Message;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 
@@ -84,8 +85,26 @@ public interface WGServerProxy {
 
 
 
-    
+    @GET("/messages")
+    Call<List<Message>> getALlMessages();
 
+    @GET("/messages")
+    Call<List<Message>> getMessagesToGroup(@Query("togroup") long groupId);
+
+    @GET("/messages?is-emergency=true")
+    Call<List<Message>> getEmergencyMessagesToGroup(@Query("togroup") long groupId);
+
+    @GET("/messages")
+    Call<List<Message>> getMessagesForUser(@Query("foruser") long userId);
+
+    @GET("/messages?status=read")
+    Call<List<Message>> getReadMessagesForUser(@Query("foruser") long userId);
+
+    @GET("/messages?status=unread")
+    Call<List<Message>> getUnreadMessagesForUser(@Query("foruser") long userId);
+
+    @GET("/messages?is-emergency=true&status=unread")
+    Call<List<Message>> getUnreadEmergencyMessagesForUser(@Query("foruser") long userId);
 
 
 
