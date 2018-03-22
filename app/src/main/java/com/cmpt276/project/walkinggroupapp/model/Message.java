@@ -3,15 +3,16 @@ package com.cmpt276.project.walkinggroupapp.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-/**
- * Created by zherenx on 2018-03-20.
- */
+import java.util.Date;
 
+/**
+ * This class model a message.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Message {
 
     private Long id;
-    private long timestamp;
+    private Date timestamp;
     private String text;
     private User fromUser;
     private WalkingGroup toGroup;
@@ -29,11 +30,11 @@ public class Message {
         this.id = id;
     }
 
-    public long getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 
