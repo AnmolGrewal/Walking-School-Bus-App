@@ -81,7 +81,7 @@ public class User {
     //isParent
     public boolean isParent() {return isParent;}
 
-    public void setIsParent(boolean parent) {isParent = parent;}
+    public void setIsParent(boolean isParent) {this.isParent = isParent;}
 
     //Birth Month
     public int getBirthMonth() {
