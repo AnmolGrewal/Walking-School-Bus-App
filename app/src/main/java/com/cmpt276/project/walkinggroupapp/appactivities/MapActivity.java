@@ -164,14 +164,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                //get the Id of marker in long format
-                String stringID = String.valueOf(marker.getTag());
-                mClickedGroupId = parseLong(stringID);
 
                 // if it is not the current location marker--has to be after mCurrentLocation has been initialized
                 if(!(marker.getSnippet().equals("Current Location"))) {
+
+                    //get the Id of marker in long format
+                    String stringID = String.valueOf(marker.getTag());
+                    mClickedGroupId = parseLong(stringID);
+
+
                     //show Join button
                     mJoinGroupButton.setVisibility(View.VISIBLE);
+
 
                 }
                 else{
