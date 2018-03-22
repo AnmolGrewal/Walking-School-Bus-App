@@ -588,6 +588,28 @@ public class ModelManager {
 
 
 
+
+
+    // this part is for sending messages.
+
+    public void sendMessageToGroup(Context context,
+                                   ProxyBuilder.SimpleCallback<Message> callback,
+                                   long groupId,
+                                   String text,
+                                   boolean isEmergency) {
+
+        Message message = new Message();
+        message.setText(text);
+        message.setEmergency(isEmergency);
+        Call<Message> sendMessageToGroupCaller = proxy.sendMessageToGroup(groupId, message);
+        ProxyBuilder.callProxy(context, sendMessageToGroupCaller, callback);
+    }
+
+
+
+
+
+
 //    private void getUserResponse(User returnedUser) {
 ////        user = returnedUser;
 //
