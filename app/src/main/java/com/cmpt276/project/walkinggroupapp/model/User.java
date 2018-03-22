@@ -33,6 +33,7 @@ public class User {
 
     private String href;
 
+    @JsonIgnore
     private boolean isParent = false;
 
 
