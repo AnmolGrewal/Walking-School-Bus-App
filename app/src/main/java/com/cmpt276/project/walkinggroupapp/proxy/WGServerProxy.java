@@ -2,6 +2,7 @@ package com.cmpt276.project.walkinggroupapp.proxy;
 
 import java.util.List;
 
+import com.cmpt276.project.walkinggroupapp.model.Message;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 
@@ -81,6 +82,13 @@ public interface WGServerProxy {
     @DELETE("/groups/{groupId}/memberUsers/{userId}")
     Call<Void> removeMemberFromGroup(@Path("groupId") Long groupId, @Path("userId") Long userId);
 
+
+
+
+
+
+    @POST("/messages/togroup/{groupId}")
+    Call<Message> sendMessageToGroup(@Path("groupId") long groupId, @Body Message message);
 
 
 
