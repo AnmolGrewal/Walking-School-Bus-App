@@ -130,7 +130,7 @@ public class ProxyBuilder {
                     String message;
                     try {
                         message = "CALL TO SERVER FAILED:\n" + response.errorBody().string();
-                        message = "Invalid Input";
+                        //message = "Invalid Input";
                     } catch (IOException e) {
                         e.printStackTrace();
                         message = "Unable to decode response (body or error's body).";

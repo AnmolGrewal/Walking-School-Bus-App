@@ -30,7 +30,6 @@ public class ModelManager {
 
     private User user = null;
 
-    private boolean isParent = false;
 
 
 
@@ -509,20 +508,6 @@ public class ModelManager {
     public User getUser() {
         return user;
     }
-
-
-    public boolean isParent() {
-        return isParent;
-    }
-
-    public void setIsParent(boolean parent) {
-        isParent = parent;
-    }
-
-
-
-
-
 
 
 
