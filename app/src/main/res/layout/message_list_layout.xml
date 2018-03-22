@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:text="Message Title:"
+        android:text="@string/jacky_static_message_title"
         android:textSize="16sp" />
 
     <TextView
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/jacky_message_title_static"
-        android:text="From:"
+        android:text="@string/jacky_from_static"
         android:textSize="16sp" />
 
     <TextView
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/jacky_message_title_static"
         android:layout_toEndOf="@+id/jacky_from_email_static"
-        android:text="UserEmail"
+        android:text="@string/jacky_dyanmic_email"
         android:textSize="16sp" />
 
     <TextView
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/jacky_message_title_static"
-        android:text="Message Des"
+        android:text="@string/jacky_dynamic_message_description"
         android:textSize="16sp" />
 
     <ImageView
