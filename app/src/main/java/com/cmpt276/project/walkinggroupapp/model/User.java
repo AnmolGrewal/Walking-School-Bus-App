@@ -33,6 +33,8 @@ public class User {
 
     private String href;
 
+    private boolean isParent = false;
+
 
     public Long getId() {
         return id;
@@ -74,6 +76,11 @@ public class User {
     }
 
     public void setBirthYear(int birthYear) { this.birthYear = birthYear; }
+
+    //isParent
+    public boolean isParent() {return isParent;}
+
+    public void setIsParent(boolean parent) {isParent = parent;}
 
     //Birth Month
     public int getBirthMonth() {
@@ -173,6 +180,8 @@ public class User {
     public void setHref(String href) {
         this.href = href;
     }
+
+
 
     @Override
     public String toString() {

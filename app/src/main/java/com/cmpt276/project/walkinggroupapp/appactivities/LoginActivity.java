@@ -74,8 +74,8 @@ public class LoginActivity extends AppCompatActivity {
         //If user did not logout -- auto login
         //Load Saved data from preferences
         final SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
-        String savedEmail = sharedPreferences.getString(PREFERENCE_EMAIL, " ");
-        String savedPassword = sharedPreferences.getString(PREFERENCE_PASSWORD," ");
+        String savedEmail = sharedPreferences.getString(PREFERENCE_EMAIL, "");
+        String savedPassword = sharedPreferences.getString(PREFERENCE_PASSWORD,"");
         String savedIsLogout = sharedPreferences.getString(PREFERENCE_IS_LOGOUT, "false");
         //set mEmail and mPassword since SavePReference() relies on them
         mEmail = savedEmail;
