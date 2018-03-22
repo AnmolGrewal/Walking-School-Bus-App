@@ -109,6 +109,13 @@ public interface WGServerProxy {
 
 
 
+
+    @POST("/messages/togroup/{groupId}")
+    Call<Message> sendMessageToGroup(@Path("groupId") long groupId, @Body Message message);
+
+
+
+
     /**
      * MORE GOES HERE:
      * - Monitoring
