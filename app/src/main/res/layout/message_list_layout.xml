@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/jacky_message_title_static"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="Message Title:"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/jacky_from_email_static"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/jacky_message_title_static"
+        android:text="From:"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/jacky_from_dynamic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/jacky_message_title_static"
+        android:layout_toEndOf="@+id/jacky_from_email_static"
+        android:text="UserEmail"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/message_decription_dynamic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/jacky_message_title_static"
+        android:text="Message Des"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/jacky_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/jacky_from_dynamic"
+        android:layout_alignParentEnd="true"
+        app:srcCompat="@drawable/temp_pic" />
+</RelativeLayout>
