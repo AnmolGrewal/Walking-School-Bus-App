@@ -30,7 +30,6 @@ public class ModelManager {
 
     private User user = null;
 
-    private boolean isParent = false;
 
 
 
@@ -511,20 +510,6 @@ public class ModelManager {
     }
 
 
-    public boolean isParent() {
-        return isParent;
-    }
-
-    public void setIsParent(boolean parent) {
-        isParent = parent;
-    }
-
-
-
-
-
-
-
 
     // this part support togroup message receiving.
 
@@ -582,6 +567,28 @@ public class ModelManager {
 
 
 
+
+
+
+
+
+
+
+
+    // this part is for sending messages.
+
+    public void sendMessageToGroup(Context context,
+                                   ProxyBuilder.SimpleCallback<Message> callback,
+                                   long groupId,
+                                   String text,
+                                   boolean isEmergency) {
+
+        Message message = new Message();
+        message.setText(text);
+        message.setEmergency(isEmergency);
+        Call<Message> sendMessageToGroupCaller = proxy.sendMessageToGroup(groupId, message);
+        ProxyBuilder.callProxy(context, sendMessageToGroupCaller, callback);
+    }
 
 
 

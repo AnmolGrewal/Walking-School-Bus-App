@@ -84,7 +84,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private User mCurrentUser;
 
     private long mChildUserId;
-    private boolean mIsParent = false;
 
 
 
@@ -165,14 +164,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                //get the Id of marker in long format
-                String stringID = String.valueOf(marker.getTag());
-                mClickedGroupId = parseLong(stringID);
 
                 // if it is not the current location marker--has to be after mCurrentLocation has been initialized
                 if(!(marker.getSnippet().equals("Current Location"))) {
+
+                    //get the Id of marker in long format
+                    String stringID = String.valueOf(marker.getTag());
+                    mClickedGroupId = parseLong(stringID);
+
+
                     //show Join button
                     mJoinGroupButton.setVisibility(View.VISIBLE);
+
 
                 }
                 else{
@@ -193,7 +196,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             public void onClick(View v) {
 
                 //"Child" wanting to join group by him/herself
-                if(!mModelManager.isParent()) {
+                if(!mModelManager.getUser().isParent()) {
                     //Add the group to users list of walking group
                     mCurrentUser = mModelManager.getUser();
 
@@ -520,8 +523,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     //for extracting intent extras made from other Activities--only do this when parent forcing child
     private void extractDataFromIntent() {
 
-        if(mModelManager.isParent()) {
-            mIsParent = true;
+        if(mModelManager.getUser().isParent()) {
 
             Intent intent = getIntent();
             mChildUserId = intent.getLongExtra(USER_ID, 0);

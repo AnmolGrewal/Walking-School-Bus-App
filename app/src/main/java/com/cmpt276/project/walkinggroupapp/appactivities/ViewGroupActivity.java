@@ -137,7 +137,7 @@ public class ViewGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Parent not forcing child to join groups
-                modelManager.setIsParent(false);
+                modelManager.getUser().setIsParent(false);
 
                 //go to map activity
                 Intent intentMap = new Intent(ViewGroupActivity.this, MapActivity.class);
