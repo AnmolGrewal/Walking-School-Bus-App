@@ -68,5 +68,12 @@
     <string name="jacky_how_to_join_new_group">To join a group simple press join group button and select the group from the map.</string>
     <string name="jacky_edit_user_group_text">To edit the groups of the user you are monitoring simple press and hold on the user you want to edit and the rest of the steps to remove and add will be similar to the view group</string>
     <string name="anmol_continue">Continue</string>
+    <string name="anmol_you_are_a">You are a</string>
+    <string name="anmol_year_you_were_born">Year you were born</string>
+    <string name="anmol_registerP">Register</string>
+    <string name="anmol_cell_phone_numberP">Cell Phone Number</string>
+    <string name="anmol_home_phone_numberP">Home Phone Number</string>
+    <string name="anmol_addressP">Address</string>
+    <string name="anmol_month_you_were_born_inP">Month you were born in</string>
 
 </resources>

@@ -56,8 +56,8 @@
         <activity android:name=".appactivities.EditMonitoringUserProfileActivity" />
         <activity android:name=".appactivities.RegisterActivity" />
         <activity android:name=".appactivities.HelpActivity" />
-        <activity android:name=".appactivities.RegisterActivityStudent" />
-        <activity android:name=".appactivities.RegisterActivityParent"></activity>
+        <activity android:name=".appactivities.RegisterActivityParent" />
+        <activity android:name=".RegisterActivityStudent"></activity>
     </application>
 
 </manifest>
