@@ -24,7 +24,7 @@ import static com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity.PR
 public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "RegisterActivity";
-    private Button confirmButton;
+    private Button nextButton;
     private EditText emailAddress;
     private EditText firstPassword;
     private EditText secondPassword;
@@ -61,12 +61,12 @@ public class RegisterActivity extends AppCompatActivity {
         firstPassword = findViewById(R.id.anmol_firstPasswordUser);
         secondPassword = findViewById(R.id.anmol_secondPasswordUser);
         userNameInputed = findViewById(R.id.anmol_nameUserInput);
-        confirmButton = findViewById(R.id.anmol_confirmRegister);
+        nextButton = findViewById(R.id.anmol_nextButton);
         //TODO:Create Name editText as well
     }
 
     private void setupButtonClick() {
-        confirmButton.setOnClickListener(new View.OnClickListener() {
+        nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 password1 = firstPassword.getText().toString();

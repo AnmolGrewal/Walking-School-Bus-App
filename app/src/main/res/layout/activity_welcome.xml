@@ -34,7 +34,7 @@
         <ImageView
             android:id="@+id/anmol_imageView"
             android:layout_width="match_parent"
-            android:contentDescription="@string/anmol_backgroundimagewelcome"
+            android:contentDescription="@string/anmol_backgroundImageWelcome"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/walkingbus" />
     </LinearLayout>
