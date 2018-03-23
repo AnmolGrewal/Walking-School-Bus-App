@@ -182,7 +182,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
             //Name:
             TextView makeName = itemView.findViewById(R.id.jacky_user_name_dynamic);
-            makeName.setText(currentUser.getAddress());
+            makeName.setText(currentUser.getName());
 
             //Email
             TextView makeEmail = itemView.findViewById(R.id.jacky_user_email_dynamic);
