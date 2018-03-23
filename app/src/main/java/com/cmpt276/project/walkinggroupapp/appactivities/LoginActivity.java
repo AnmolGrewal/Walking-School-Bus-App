@@ -83,8 +83,8 @@ public class LoginActivity extends AppCompatActivity {
 
         if(savedIsLogout.equals("false") && savedEmail != null && savedPassword != null) {
             //login using data from preferences
-            mLoginButton.setVisibility(View.INVISIBLE);
-            mRegisterButton.setVisibility(View.INVISIBLE);
+            //mLoginButton.setVisibility(View.INVISIBLE);
+            //mRegisterButton.setVisibility(View.INVISIBLE);
             mPasswordEditText.setText(savedPassword);
             mEmailEditText.setText(savedEmail);
             ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);

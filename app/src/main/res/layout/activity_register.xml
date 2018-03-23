@@ -98,48 +98,51 @@
         android:layout_width="288dp"
         android:layout_height="40dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="82dp"
-        android:layout_marginStart="14dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498" />
 
     <TextView
         android:id="@+id/anmol_secondPasswordText"
-        android:layout_width="116dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="2dp"
+        android:layout_width="120dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="252dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="8dp"
         android:labelFor="@+id/anmol_secondPasswordUser"
         android:text="@string/anmol_confirm_password"
-        app:layout_constraintBottom_toTopOf="@+id/anmol_secondPasswordUser"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/anmol_firstPasswordUser" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.564" />
 
     <EditText
         android:id="@+id/anmol_secondPasswordUser"
         android:layout_width="291dp"
         android:layout_height="41dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="79dp"
-        android:layout_marginStart="14dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.103"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.64" />
+        app:layout_constraintVertical_bias="0.634" />
 
     <Button
         android:id="@+id/anmol_nextButton"
@@ -176,14 +179,30 @@
         android:id="@+id/anmol_selectFollowingOptions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="77dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="60dp"
         android:layout_marginStart="56dp"
-        android:layout_marginTop="18dp"
-        android:text="Please Select One of the Following Options"
-        app:layout_constraintBottom_toTopOf="@+id/anmol_nextButton"
+        android:layout_marginTop="8dp"
+        android:text="You are a"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.802" />
+
+    <Spinner
+        android:id="@+id/anmol_teacherOrStudent"
+        android:layout_width="138dp"
+        android:layout_height="22dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/anmol_secondPasswordUser" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.801" />
 
 </android.support.constraint.ConstraintLayout>

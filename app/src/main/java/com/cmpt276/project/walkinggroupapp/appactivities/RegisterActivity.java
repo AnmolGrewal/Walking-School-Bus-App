@@ -7,15 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
-import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
 import static com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity.PREFERENCE_EMAIL;
 import static com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity.PREFERENCE_IS_LOGOUT;
@@ -29,17 +29,13 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText firstPassword;
     private EditText secondPassword;
     private EditText userNameInputed;
+    private Spinner teacherOrStudent;
     private String name;
     private String email;
     private String password1;
-    private int birthYear;
-    private int birthMonth;
-    private String address;
-    private String cellPhone;
-    private String homePhone;
-    private String grade;
-    private String teacherName;
-    private String emergencyContactInfo;
+    public static final String USER_EMAIL = "USER_EMAIL";
+    public static final String USER_PASS = "USER_PASS";
+    public static final String USER_NAME = "USER_NAME";
 
     private ModelManager modelManager;
 
@@ -53,6 +49,14 @@ public class RegisterActivity extends AppCompatActivity {
         setupIDs();
         setupHints();
         setupButtonClick();
+        setupSpinner();
+    }
+
+    private void setupSpinner() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.student_or_teacher, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        teacherOrStudent.setAdapter(adapter);
     }
 
     private void setupIDs() {
@@ -62,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
         secondPassword = findViewById(R.id.anmol_secondPasswordUser);
         userNameInputed = findViewById(R.id.anmol_nameUserInput);
         nextButton = findViewById(R.id.anmol_nextButton);
-        //TODO:Create Name editText as well
+        teacherOrStudent = findViewById(R.id.anmol_teacherOrStudent);
     }
 
     private void setupButtonClick() {
@@ -75,18 +79,21 @@ public class RegisterActivity extends AppCompatActivity {
                 if(password1.equals(password2)) {
                     email = emailAddress.getText().toString();
                     name = userNameInputed.getText().toString();
-                    //TODO: ANMOL NEEDS TO REPLACE THIS WITH ACTUAL UI TO GET INPUT
-                    birthYear = 2012;
-                    birthMonth = 12;
-                    address = "#1 big way, Surrey BC, H0H 0H0, Canada";
-                    cellPhone = "+1.778.098.7765";
-                    homePhone = "(604) 123-4567";
-                    grade = "Kindergarten";
-                    teacherName = "Mr.Big";
-                    emergencyContactInfo = "Call my mom! She knows how to help.";
-                    ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> registerResponse(returnedNothing);
-                    modelManager.register(RegisterActivity.this, callback, name, email, password1,
-                            birthYear, birthMonth, address, cellPhone, homePhone, grade, teacherName, emergencyContactInfo);
+                    String checkTeacherStudent = teacherOrStudent.getSelectedItem().toString();
+                    if(checkTeacherStudent.equals("Student")) {
+                        Intent intent = RegisterActivityStudent.makeIntent(RegisterActivity.this);
+                        intent.putExtra(USER_EMAIL, email);
+                        intent.putExtra(USER_PASS, password1);
+                        intent.putExtra(USER_NAME, name);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = RegisterActivityParent.makeIntent(RegisterActivity.this);
+                        intent.putExtra(USER_EMAIL, email);
+                        intent.putExtra(USER_PASS, password1);
+                        intent.putExtra(USER_NAME, name);
+                        startActivity(intent);
+                    }
                 }
                 else
                 {
