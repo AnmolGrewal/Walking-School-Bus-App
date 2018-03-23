@@ -6,12 +6,12 @@
 
 
     <TextView
-        android:id="@+id/jacky_message_title_static"
+        android:id="@+id/jacky_message_id_static"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:text="@string/jacky_static_message_title"
+        android:text="Message ID:"
         android:textSize="16sp" />
 
     <TextView
@@ -19,33 +19,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/jacky_message_title_static"
-        android:text="@string/jacky_from_static"
+        android:layout_below="@+id/jacky_message_id_static"
+        android:text="From:"
         android:textSize="16sp" />
 
     <TextView
         android:id="@+id/jacky_from_dynamic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/jacky_message_title_static"
+        android:layout_below="@+id/jacky_message_id_static"
         android:layout_toEndOf="@+id/jacky_from_email_static"
-        android:text="@string/jacky_dyanmic_email"
+        android:text="Email"
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/message_decription_dynamic"
+        android:id="@+id/jacky_message_id_dynamic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/jacky_message_title_static"
-        android:text="@string/jacky_dynamic_message_description"
+        android:layout_toEndOf="@+id/jacky_message_id_static"
+        android:text="01"
         android:textSize="16sp" />
 
     <ImageView
-        android:id="@+id/jacky_image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/jacky_from_dynamic"
+        android:id="@+id/jacky_message_image_view"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
         app:srcCompat="@drawable/temp_pic" />
 </RelativeLayout>
