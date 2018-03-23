@@ -14,7 +14,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity;
-import com.cmpt276.project.walkinggroupapp.appactivities.RegisterActivityParent;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 

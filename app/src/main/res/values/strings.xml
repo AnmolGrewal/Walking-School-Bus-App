@@ -75,5 +75,8 @@
     <string name="anmol_home_phone_numberP">Home Phone Number</string>
     <string name="anmol_addressP">Address</string>
     <string name="anmol_month_you_were_born_inP">Month you were born in</string>
+    <string name="anmol_gradeText">Grade</string>
+    <string name="anmol_teacher_s_nameText">Teacher\'s Name</string>
+    <string name="anmol_emergency_contact_infoText">Emergency Contact Info</string>
 
 </resources>
