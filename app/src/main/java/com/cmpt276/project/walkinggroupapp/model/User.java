@@ -36,6 +36,9 @@ public class User {
     @JsonIgnore
     private boolean isParent = false;
 
+    @JsonIgnore
+    private boolean isViewingChild = false;
+
 
     public Long getId() {
         return id;
@@ -82,6 +85,11 @@ public class User {
     public boolean isParent() {return isParent;}
 
     public void setIsParent(boolean isParent) {this.isParent = isParent;}
+
+    //isViewingChild
+    public boolean isViewingChild() {return isViewingChild;}
+
+    public void setIsViewingChild(boolean isViewingChild) {this.isViewingChild = isViewingChild;}
 
     //Birth Month
     public int getBirthMonth() {

@@ -57,11 +57,14 @@ import static java.lang.Long.parseLong;
 
 
 /**
- * Map based on tutorial:https://www.raywenderlich.com/144066/introduction-google-maps-api-android and files provided by Professor Brian Fraser
+ * Map based on tutorials :
+ * https://www.raywenderlich.com/144066/introduction-google-maps-api-android
+ * https://www.youtube.com/playlist?list=PLgCYzUzKIBE-vInwQhGSdnbyJ62nixHCt
+ * and files provided by Professor Brian Fraser
  * *Activity for joining and viewing walking groups in google map
  */
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, LocationListener {
-
+    private static final String TAG = "MapActivity";
     private static final int DEFAULT_ZOOM = 11;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CHECK_SETTINGS = 2;
@@ -115,7 +118,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         mJoinGroupButton = findViewById(R.id.gerry_Join_Group_Button_map);
 
-        createLocationRequest();
+        //createLocationRequest();
 
 
     }
@@ -256,9 +259,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+
+        //ask for permission, get current location and zoom to it
         setUpMap();
+
+
+
         if (mLocationUpdateState) {
-            startLocationUpdates();
+            //startLocationUpdates();
         }
 
     }
@@ -277,7 +285,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     public void onLocationChanged(Location location) {
         mLastLocation = location;
         if (null != mLastLocation) {
-            placeMarkerCurrentLocation(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+            //placeMarkerCurrentLocation(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
         }
     }
 
@@ -310,7 +318,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         if (requestCode == REQUEST_CHECK_SETTINGS) {
             if (resultCode == RESULT_OK) {
                 mLocationUpdateState = true;
-                startLocationUpdates();
+                //startLocationUpdates();
             }
         }
     }
@@ -319,7 +327,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     @Override
     protected void onPause() {
         super.onPause();
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+       //LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
     //to restart the location update request.
@@ -327,7 +335,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     public void onResume() {
         super.onResume();
         if (mGoogleApiClient.isConnected() && !mLocationUpdateState) {
-            startLocationUpdates();
+            //startLocationUpdates();
         }
     }
 
@@ -513,7 +521,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
     //For creating intents outside of this Activity
-    public static Intent makeIntent(Context context, long editUserId){
+    public static Intent makeIntentForceChild(Context context, long editUserId){
         Intent intent = new Intent(context, MapActivity.class);
         intent.putExtra(USER_ID, editUserId);
         return intent;

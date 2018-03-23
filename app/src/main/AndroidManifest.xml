@@ -55,7 +55,8 @@
         <activity android:name=".appactivities.CreateGroupActivity" />
         <activity android:name=".appactivities.EditMonitoringUserProfileActivity" />
         <activity android:name=".appactivities.RegisterActivity" />
-        <activity android:name=".appactivities.HelpActivity"></activity>
+        <activity android:name=".appactivities.HelpActivity" />
+        <activity android:name=".appactivities.ParentDashboard"></activity>
     </application>
 
 </manifest>

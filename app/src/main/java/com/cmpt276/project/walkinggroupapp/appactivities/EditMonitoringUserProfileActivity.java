@@ -206,7 +206,7 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
                 modelManager.getUser().setIsParent(true);
 
                 //pass in userId of user to be "forced" to join a group
-                Intent intent = MapActivity.makeIntent(EditMonitoringUserProfileActivity.this, userId);
+                Intent intent = MapActivity.makeIntentForceChild(EditMonitoringUserProfileActivity.this, userId);
                 startActivity(intent);
             }
         });
