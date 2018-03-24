@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -16,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cmpt276.project.walkinggroupapp.R;
+import com.cmpt276.project.walkinggroupapp.fragments.sendMessageFragment;
 import com.cmpt276.project.walkinggroupapp.fragments.viewMessageFragment;
 import com.cmpt276.project.walkinggroupapp.model.Message;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
@@ -31,6 +31,9 @@ import java.util.List;
  *  Notice the complex List Adapter is based off from https://www.youtube.com/watch?v=WRANgDgM2Zg
  *  a video provided by the prof for assignment 2
  *  Code is adapted from Jacky.T  Assignment 2
+ *
+ *  Fragments are based off of the videos that Brian Fraser created
+ *  https://developer.android.com/guide/topics/ui/dialogs.html
  *
  *  When this activity is called we will make a call to the server inorder to retrieve a copy of all the messages sent to the current user.
  *  When we get the callback we will populate the list using the modified array adapter.
@@ -70,14 +73,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void sendMessage(){
-        ProxyBuilder.SimpleCallback<Message> sendCallBack = noResponse -> tempCallback(noResponse);
-        modelManager.sendMessageToParentsOf(MessageActivity.this, sendCallBack, "This is a test Message to see if it goes through", false);
-    }
-
-    private void tempCallback(Message response){
-        Log.i("MyApp", "Message sent");
-        ProxyBuilder.SimpleCallback<List<Message>> messageCallback = messageList -> getMessageList(messageList);
-        modelManager.getMessagesForUser(MessageActivity.this, messageCallback);
+        sendDialog();
     }
 
     private void populateMessageList() {
@@ -100,7 +96,6 @@ public class MessageActivity extends AppCompatActivity {
                 itemView = getLayoutInflater().inflate(R.layout.message_list_layout, parent, false);
             }
             //Find a user to add
-            Log.i("MyApp", "Inside Monitoring By");
             Message currentMessage = messageList.get(position);
             Long currentMessageId = currentMessage.getId();
             User fromUser = currentMessage.getFromUser();
@@ -146,7 +141,6 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void serverResponse(Void noResponse){
-        Log.i("MyApp", "Marked Message as Read");
         alertDialog();
         ProxyBuilder.SimpleCallback<List<Message>> messageCallback = messageList -> getMessageList(messageList);
         modelManager.getMessagesForUser(MessageActivity.this, messageCallback);
@@ -167,11 +161,14 @@ public class MessageActivity extends AppCompatActivity {
 
         dialog.setArguments(variables);
         dialog.show(manager, "MyApp");
-
-        Log.i("MyApp", "Just Show dialog");
     }
 
+    private void sendDialog(){
+        FragmentManager manager = getSupportFragmentManager();
+        sendMessageFragment dialog = new sendMessageFragment();
 
+        dialog.show(manager, "SendView");
+    }
 
     private void getMessageList(List<Message> sortedList){
         messageList = sortedList;
