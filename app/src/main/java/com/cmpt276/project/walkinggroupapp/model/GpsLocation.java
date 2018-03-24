@@ -8,18 +8,18 @@ import java.sql.Timestamp;
 
 public class GpsLocation {
 
-    private double lat;
-    private double lng;
+    private Double lat;
+    private Double lng;
     private Timestamp timestamp;
 
 
-    public double getLat() {return lat;}
+    public Double getLat() {return lat;}
 
-    public void setLat(double lat) {this.lat = lat;}
+    public void setLat(Double lat) {this.lat = lat;}
 
-    public double getLng() {return lng;}
+    public Double getLng() {return lng;}
 
-    public void setLng(double lng) {this.lng = lng;}
+    public void setLng(Double lng) {this.lng = lng;}
 
     public Timestamp getTimestamp() {return timestamp;}
 
