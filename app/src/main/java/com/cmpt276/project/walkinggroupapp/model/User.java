@@ -24,6 +24,7 @@ public class User {
     private String grade;
     private String teacherName;
     private String emergencyContactInfo;
+    private GpsLocation lastGpsLocation;
 
     private List<User> monitoredByUsers = new ArrayList<>();
     private List<User> monitorsUsers = new ArrayList<>();
@@ -149,6 +150,12 @@ public class User {
     }
 
     public void setEmergencyContactInfo(String emergencyContactInfo) { this.emergencyContactInfo = emergencyContactInfo; }
+
+    //lastGpsLocation
+    public GpsLocation getLastGpsLocation() {return lastGpsLocation;}
+
+    public void setLastGpsLocation(GpsLocation lastGpsLocation) {this.lastGpsLocation = lastGpsLocation;}
+
 
     public List<User> getMonitoredByUsers() {
         return monitoredByUsers;
