@@ -34,6 +34,9 @@ public interface WGServerProxy {
     @GET("/users/{id}")
     Call<User> getUserById(@Path("id") Long userId);
 
+    @POST("/users/{id}")
+    Call<User> editUserWithId(@Path("id") Long userId, @Body User user);
+
     @GET("/users/byEmail")
     Call<User> getUserByEmail(@Query("email") String email);
 
