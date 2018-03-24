@@ -547,8 +547,18 @@ public class ModelManager {
         Call<List<Message>> getUnreadMessagesForUserCaller = proxy.getUnreadMessagesForUser(user.getId());
 
         ProxyBuilder.callProxy(context, getReadMessagesForUserCaller, readMessages -> {
+
+            for(Message message: readMessages){
+                message.setRead(true);
+            }
+
             messages.addAll(readMessages);
             ProxyBuilder.callProxy(context, getUnreadMessagesForUserCaller, unreadMessages -> {
+
+                for(Message message: unreadMessages){
+                    message.setRead(false);
+                }
+
                 messages.addAll(unreadMessages);
                 java.util.Collections.sort(messages, new Comparator<Message>() {
                     // TODO: consider moving this to an actual class if it is needed somewhere else.
