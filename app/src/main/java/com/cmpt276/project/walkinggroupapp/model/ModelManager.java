@@ -499,15 +499,85 @@ public class ModelManager {
         });
     }
 
-    public void getUserById(Context context,ProxyBuilder.SimpleCallback<User> callback,long userId) {
+
+
+
+    public void getUser(Context context, ProxyBuilder.SimpleCallback<User> callback) {
+        Call<User> caller = proxy.getUserById(user.getId());
+        ProxyBuilder.callProxy(context, caller, returnedUser -> {
+            user = returnedUser;
+            callback.callback(user);
+        });
+    }
+
+    public void getUserById(Context context, ProxyBuilder.SimpleCallback<User> callback,long userId) {
         Call<User> caller = proxy.getUserById(userId);
         ProxyBuilder.callProxy(context, caller, callback);
 
     }
 
-    public User getUser() {
-        return user;
+    // this one is for editing local user.
+    public void editUser(Context context,
+                         ProxyBuilder.SimpleCallback<User> callback,
+                         String name, String emailAddress,
+                         int birthYear, int birthMonth,
+                         String address, String cellPhone,
+                         String homePhone, String grade,
+                         String teacherName, String emergencyContactInfo) {
+
+        User editedUser = new User();
+        editedUser.setName(name);
+        editedUser.setEmail(emailAddress);
+        editedUser.setBirthYear(birthYear);
+        editedUser.setBirthMonth(birthMonth);
+        editedUser.setAddress(address);
+        editedUser.setCellPhone(cellPhone);
+        editedUser.setHomePhone(homePhone);
+        editedUser.setGrade(grade);
+        editedUser.setTeacherName(teacherName);
+        editedUser.setEmergencyContactInfo(emergencyContactInfo);
+
+        Call<User> caller = proxy.editUserWithId(user.getId(), editedUser);
+        ProxyBuilder.callProxy(context, caller, returnedUser -> {
+            user = returnedUser;
+            callback.callback(user);
+        });
+
     }
+
+    // this one is for editing user with id (e.g. a child user).
+    public void editChildWithId(Context context,
+                                ProxyBuilder.SimpleCallback<User> callback,
+                                long userId,
+                                String name, String emailAddress, String password,
+                                int birthYear, int birthMonth,
+                                String address, String cellPhone,
+                                String homePhone, String grade,
+                                String teacherName, String emergencyContactInfo) {
+
+        User editedUser = new User();
+        editedUser.setName(name);
+        editedUser.setEmail(emailAddress);
+        editedUser.setBirthYear(birthYear);
+        editedUser.setBirthMonth(birthMonth);
+        editedUser.setAddress(address);
+        editedUser.setCellPhone(cellPhone);
+        editedUser.setHomePhone(homePhone);
+        editedUser.setGrade(grade);
+        editedUser.setTeacherName(teacherName);
+        editedUser.setEmergencyContactInfo(emergencyContactInfo);
+
+        Call<User> caller = proxy.editUserWithId(userId, editedUser);
+        ProxyBuilder.callProxy(context, caller, callback);
+
+    }
+
+
+
+
+
+
+
 
 
 
