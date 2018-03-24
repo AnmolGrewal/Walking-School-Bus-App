@@ -11,6 +11,6 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="16dp"
-        android:hint="Type in a message to send"
+        android:hint="@string/jacky_send_fragment_hint"
         android:inputType="text" />
 </LinearLayout>
