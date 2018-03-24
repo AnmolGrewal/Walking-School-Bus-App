@@ -26,7 +26,6 @@ import static com.cmpt276.project.walkinggroupapp.appactivities.RegisterActivity
 
 public class RegisterActivityStudent extends AppCompatActivity {
 
-    private static final String TAG = "RegisterActivityStudent";
     private String name;
     private String email;
     private String password1;
@@ -65,30 +64,30 @@ public class RegisterActivityStudent extends AppCompatActivity {
         userRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String temp = userBirthYear.getText().toString();
+                String temp = userBirthYear.getText().toString().trim();
                 try {
                     birthYear = Integer.parseInt(temp);
-                    Intent intent = getIntent();
-                    name = intent.getStringExtra(USER_NAME);
-                    email = intent.getStringExtra(USER_EMAIL);
-                    password1 = intent.getStringExtra(USER_PASS);
-                    //Get Birth Month
-                    int spinner_pos = userBirthMonth.getSelectedItemPosition();
-                    String[] month_values = getResources().getStringArray(R.array.months_values);
-                    birthMonth = Integer.valueOf(month_values[spinner_pos]);
-                    address = userAddress.getText().toString();
-                    cellPhone = userCellPhoneNumber.getText().toString();
-                    homePhone = userHomePhoneNumber.getText().toString();
-                    grade = userGrade.getText().toString();
-                    teacherName = userTeacherName.getText().toString();
-                    emergencyContactInfo = userEmergencyContactInfo.getText().toString();
-                    ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> registerResponse(returnedNothing);
-                    modelManager.register(RegisterActivityStudent.this, callback, name, email, password1,
-                            birthYear, birthMonth, address, cellPhone, homePhone, grade, teacherName, emergencyContactInfo);
                 } catch (NumberFormatException e) {
                     Toast.makeText(RegisterActivityStudent.this, "Birth Year Incorrect", Toast.LENGTH_SHORT)
                             .show();
                 }
+                Intent intent = getIntent();
+                name = intent.getStringExtra(USER_NAME);
+                email = intent.getStringExtra(USER_EMAIL);
+                password1 = intent.getStringExtra(USER_PASS);
+                //Get Birth Month
+                int spinner_pos = userBirthMonth.getSelectedItemPosition();
+                String[] month_values = getResources().getStringArray(R.array.months_values);
+                birthMonth = Integer.valueOf(month_values[spinner_pos]);
+                address = userAddress.getText().toString().trim();
+                cellPhone = userCellPhoneNumber.getText().toString().trim();
+                homePhone = userHomePhoneNumber.getText().toString().trim();
+                grade = userGrade.getText().toString().trim();
+                teacherName = userTeacherName.getText().toString().trim();
+                emergencyContactInfo = userEmergencyContactInfo.getText().toString().trim();
+                ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> registerResponse(returnedNothing);
+                modelManager.register(RegisterActivityStudent.this, callback, name, email, password1,
+                        birthYear, birthMonth, address, cellPhone, homePhone, grade, teacherName, emergencyContactInfo);
             }
         });
     }
@@ -127,7 +126,6 @@ public class RegisterActivityStudent extends AppCompatActivity {
     }
 
     private void registerResponse(Void returnedNothing) {
-        Log.w(TAG, "Sent server a create Account Request");
         Toast.makeText(RegisterActivityStudent.this,"Account Created",Toast.LENGTH_SHORT).show();
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
@@ -146,7 +144,6 @@ public class RegisterActivityStudent extends AppCompatActivity {
         //commit to preference
         editor.commit();
 
-        Log.w(TAG,"Saved Login on Account Creation");
         finishAffinity();
         Intent intent = LoginActivity.makeIntent(RegisterActivityStudent.this);
         startActivity(intent);
