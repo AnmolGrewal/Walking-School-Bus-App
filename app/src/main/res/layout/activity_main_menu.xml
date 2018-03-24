@@ -81,17 +81,22 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="bottom"
         android:orientation="vertical"
-        android:gravity="bottom">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/gerry_Logout_Button_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:text="@string/gerry_logout_main"/>
+            android:text="@string/gerry_logout_main" />
 
     </LinearLayout>
 
@@ -116,4 +121,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/jacky_add_monitoring_button" />
+
+    <Button
+        android:id="@+id/jacky_message_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:text="Message"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toStartOf="@+id/jacky_view_groups"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 </android.support.constraint.ConstraintLayout>
