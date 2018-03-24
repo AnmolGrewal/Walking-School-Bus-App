@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -37,6 +38,8 @@ import java.util.List;
 
 public class MessageActivity extends AppCompatActivity {
 
+    private Button btnSend;
+
     private ListView messageListView;
     private List<Message> messageList = new ArrayList<>();
 
@@ -47,8 +50,31 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
+        setupSendButton();
+
         modelManager = ModelManager.getInstance();
 
+        ProxyBuilder.SimpleCallback<List<Message>> messageCallback = messageList -> getMessageList(messageList);
+        modelManager.getMessagesForUser(MessageActivity.this, messageCallback);
+    }
+
+    private void setupSendButton(){
+        btnSend = findViewById(R.id.jacky_send_button);
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendMessage();
+            }
+        });
+    }
+
+    private void sendMessage(){
+        ProxyBuilder.SimpleCallback<Message> sendCallBack = noResponse -> tempCallback(noResponse);
+        modelManager.sendMessageToParentsOf(MessageActivity.this, sendCallBack, "This is a test Message to see if it goes through", false);
+    }
+
+    private void tempCallback(Message response){
+        Log.i("MyApp", "Message sent");
         ProxyBuilder.SimpleCallback<List<Message>> messageCallback = messageList -> getMessageList(messageList);
         modelManager.getMessagesForUser(MessageActivity.this, messageCallback);
     }
@@ -79,8 +105,13 @@ public class MessageActivity extends AppCompatActivity {
             User fromUser = currentMessage.getFromUser();
 
             //Icon
-            ImageView readImage = itemView.findViewById(R.id.jacky_message_image_view);
-            readImage.setImageResource(R.drawable.temp_pic);
+            if(currentMessage.isRead()) {
+                ImageView readImage = itemView.findViewById(R.id.jacky_message_image_view);
+                readImage.setImageResource(R.drawable.read_icon);
+            }else{
+                ImageView readImage = itemView.findViewById(R.id.jacky_message_image_view);
+                readImage.setImageResource(R.drawable.unread_icon);
+            }
 
             //Message id:
             TextView makeName = itemView.findViewById(R.id.jacky_message_id_dynamic);
@@ -88,14 +119,14 @@ public class MessageActivity extends AppCompatActivity {
 
             //Email
             TextView makeEmail = itemView.findViewById(R.id.jacky_from_dynamic);
-            makeEmail.setText(fromUser.getEmail());
+            makeEmail.setText(Long.toString(fromUser.getId()));
 
             return itemView;
         }
     }
 
     public static Intent makeIntent(Context context){
-        return new Intent(context, MainMenuActivity.class);
+        return new Intent(context, MessageActivity.class);
     }
 
 

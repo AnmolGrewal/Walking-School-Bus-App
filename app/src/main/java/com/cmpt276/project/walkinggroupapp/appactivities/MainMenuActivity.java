@@ -41,6 +41,7 @@ public class MainMenuActivity extends AppCompatActivity {
     private Button btnAddNewMonitoredByUser;
     private Button mLogoutButton;
     private Button btnViewGroup;
+    private Button btnMessage;
 
     private ListView monitorsUsersListView;
     private ListView monitoredByUsersListView;
@@ -76,6 +77,7 @@ public class MainMenuActivity extends AppCompatActivity {
             setupAddNewMonitoredByUserButton();
             setupViewGroupButton();
             setupLogoutButton();
+            setupMessageButton();
 
     }
 
@@ -89,6 +91,17 @@ public class MainMenuActivity extends AppCompatActivity {
 
         ProxyBuilder.SimpleCallback<List<User>> getMonitoredByUsersCallback = monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers);
         modelManager.getMonitoredByUsers(MainMenuActivity.this, getMonitoredByUsersCallback);
+    }
+
+    private void setupMessageButton(){
+        btnMessage = findViewById(R.id.jacky_message_button);
+        btnMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = MessageActivity.makeIntent(MainMenuActivity.this);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setupLogoutButton() {
