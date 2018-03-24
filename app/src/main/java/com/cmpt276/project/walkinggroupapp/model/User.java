@@ -24,6 +24,7 @@ public class User {
     private String grade;
     private String teacherName;
     private String emergencyContactInfo;
+    private GpsLocation lastGpsLocation;
 
     private List<User> monitoredByUsers = new ArrayList<>();
     private List<User> monitorsUsers = new ArrayList<>();
@@ -35,6 +36,9 @@ public class User {
 
     @JsonIgnore
     private boolean isParent = false;
+
+    @JsonIgnore
+    private boolean isViewingChild = false;
 
 
     public Long getId() {
@@ -82,6 +86,11 @@ public class User {
     public boolean isParent() {return isParent;}
 
     public void setIsParent(boolean isParent) {this.isParent = isParent;}
+
+    //isViewingChild
+    public boolean isViewingChild() {return isViewingChild;}
+
+    public void setIsViewingChild(boolean isViewingChild) {this.isViewingChild = isViewingChild;}
 
     //Birth Month
     public int getBirthMonth() {
@@ -141,6 +150,12 @@ public class User {
     }
 
     public void setEmergencyContactInfo(String emergencyContactInfo) { this.emergencyContactInfo = emergencyContactInfo; }
+
+    //lastGpsLocation
+    public GpsLocation getLastGpsLocation() {return lastGpsLocation;}
+
+    public void setLastGpsLocation(GpsLocation lastGpsLocation) {this.lastGpsLocation = lastGpsLocation;}
+
 
     public List<User> getMonitoredByUsers() {
         return monitoredByUsers;

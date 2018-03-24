@@ -7,15 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 
+import com.cmpt276.project.walkinggroupapp.RegisterActivityStudent;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
-import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
 import static com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity.PREFERENCE_EMAIL;
 import static com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity.PREFERENCE_IS_LOGOUT;
@@ -24,35 +25,35 @@ import static com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity.PR
 public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "RegisterActivity";
-    private Button confirmButton;
+    private Button nextButton;
     private EditText emailAddress;
     private EditText firstPassword;
     private EditText secondPassword;
     private EditText userNameInputed;
+    private Spinner teacherOrStudent;
     private String name;
     private String email;
     private String password1;
-    private int birthYear;
-    private int birthMonth;
-    private String address;
-    private String cellPhone;
-    private String homePhone;
-    private String grade;
-    private String teacherName;
-    private String emergencyContactInfo;
-
-    private ModelManager modelManager;
+    public static final String USER_EMAIL = "USER_EMAIL";
+    public static final String USER_PASS = "USER_PASS";
+    public static final String USER_NAME = "USER_NAME";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        modelManager = ModelManager.getInstance();
-
         setupIDs();
         setupHints();
         setupButtonClick();
+        setupSpinner();
+    }
+
+    private void setupSpinner() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.student_or_teacher, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        teacherOrStudent.setAdapter(adapter);
     }
 
     private void setupIDs() {
@@ -61,37 +62,43 @@ public class RegisterActivity extends AppCompatActivity {
         firstPassword = findViewById(R.id.anmol_firstPasswordUser);
         secondPassword = findViewById(R.id.anmol_secondPasswordUser);
         userNameInputed = findViewById(R.id.anmol_nameUserInput);
-        confirmButton = findViewById(R.id.anmol_confirmRegister);
-        //TODO:Create Name editText as well
+        nextButton = findViewById(R.id.anmol_nextButton);
+        teacherOrStudent = findViewById(R.id.anmol_teacherOrStudent);
     }
 
     private void setupButtonClick() {
-        confirmButton.setOnClickListener(new View.OnClickListener() {
+        nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 password1 = firstPassword.getText().toString();
                 String password2 = secondPassword.getText().toString();
-
-                if(password1.equals(password2)) {
-                    email = emailAddress.getText().toString();
-                    name = userNameInputed.getText().toString();
-                    //TODO: ANMOL NEEDS TO REPLACE THIS WITH ACTUAL UI TO GET INPUT
-                    birthYear = 2012;
-                    birthMonth = 12;
-                    address = "#1 big way, Surrey BC, H0H 0H0, Canada";
-                    cellPhone = "+1.778.098.7765";
-                    homePhone = "(604) 123-4567";
-                    grade = "Kindergarten";
-                    teacherName = "Mr.Big";
-                    emergencyContactInfo = "Call my mom! She knows how to help.";
-                    ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> registerResponse(returnedNothing);
-                    modelManager.register(RegisterActivity.this, callback, name, email, password1,
-                            birthYear, birthMonth, address, cellPhone, homePhone, grade, teacherName, emergencyContactInfo);
-                }
-                else
+                email = emailAddress.getText().toString();
+                name = userNameInputed.getText().toString();
+                if(name.length() >= 1 && email.length() >= 1)
                 {
-                    Toast.makeText(getApplicationContext(), R.string.anmol_passNoMatch, Toast.LENGTH_SHORT )
-                            .show();
+                    if(password1.equals(password2)) {
+                        String checkTeacherStudent = teacherOrStudent.getSelectedItem().toString();
+                        if(checkTeacherStudent.equals("Student")) {
+                            Intent intent = RegisterActivityStudent.makeIntent(RegisterActivity.this);
+                            intent.putExtra(USER_EMAIL, email);
+                            intent.putExtra(USER_PASS, password1);
+                            intent.putExtra(USER_NAME, name);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = RegisterActivityParent.makeIntent(RegisterActivity.this);
+                            intent.putExtra(USER_EMAIL, email);
+                            intent.putExtra(USER_PASS, password1);
+                            intent.putExtra(USER_NAME, name);
+                            startActivity(intent);
+                        }
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(), R.string.anmol_passNoMatch, Toast.LENGTH_SHORT )
+                                .show();
+                    }
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Please Fill All Fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -107,30 +114,6 @@ public class RegisterActivity extends AppCompatActivity {
     public static Intent makeIntent(Context context)
     {
         return new Intent(context, RegisterActivity.class);
-    }
-
-    private void registerResponse(Void returnedNothing) {
-        Log.w(TAG, "Sent server a create Account Request");
-        Toast.makeText(RegisterActivity.this,"Account Created",Toast.LENGTH_SHORT).show();
-
-        SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        //clear current data first
-        editor.clear();
-
-        //put current email and password to preferences
-        editor.putString(PREFERENCE_EMAIL,email);
-        editor.putString(PREFERENCE_PASSWORD,password1);
-
-        //Assume user does not logout--change this when user preses logout manually
-        editor.putString(PREFERENCE_IS_LOGOUT, "false");
-
-        //commit to preference
-        editor.commit();
-
-        Log.w(TAG,"Saved Login on Account Creation");
-        finish();
     }
 
 }
