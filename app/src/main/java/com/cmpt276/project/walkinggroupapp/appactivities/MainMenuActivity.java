@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
@@ -39,8 +38,10 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private Button btnAddNewMonitorsUser;
     private Button btnAddNewMonitoredByUser;
-    private Button mLogoutButton;
+    private Button btnLogout;
     private Button btnViewGroup;
+    private Button btnParentDashboard;
+
 
     private ListView monitorsUsersListView;
     private ListView monitoredByUsersListView;
@@ -76,6 +77,7 @@ public class MainMenuActivity extends AppCompatActivity {
             setupAddNewMonitoredByUserButton();
             setupViewGroupButton();
             setupLogoutButton();
+            setupParentDashboardButton();
 
     }
 
@@ -92,8 +94,8 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     private void setupLogoutButton() {
-        mLogoutButton = findViewById(R.id.gerry_Logout_Button_main);
-        mLogoutButton.setOnClickListener(new View.OnClickListener() {
+        btnLogout = findViewById(R.id.gerry_Logout_Button_main);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
@@ -112,6 +114,19 @@ public class MainMenuActivity extends AppCompatActivity {
                 //go to LoginActivity
                 finish();
 
+            }
+        });
+    }
+
+    private void setupParentDashboardButton () {
+        btnParentDashboard = findViewById(R.id.gerry_Parent_Dashboard_Button_main);
+        btnParentDashboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //go to Parent Dashboard Activity
+                Intent intent = new Intent(MainMenuActivity.this, ParentDashboard.class);
+                startActivity(intent);
             }
         });
     }
