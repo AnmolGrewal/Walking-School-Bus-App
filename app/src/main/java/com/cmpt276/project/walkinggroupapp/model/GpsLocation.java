@@ -1,5 +1,7 @@
 package com.cmpt276.project.walkinggroupapp.model;
 
+import java.sql.Timestamp;
+
 /**
  * Created by glang on 3/23/2018.
  */
@@ -8,7 +10,7 @@ public class GpsLocation {
 
     private double lat;
     private double lng;
-    private double timeStamp;
+    private Timestamp timestamp;
 
 
     public double getLat() {return lat;}
@@ -19,8 +21,8 @@ public class GpsLocation {
 
     public void setLng(double lng) {this.lng = lng;}
 
-    public double getTimeStamp() {return timeStamp;}
+    public Timestamp getTimestamp() {return timestamp;}
 
-    public void setTimeStamp(double timeStamp) {this.timeStamp = timeStamp;}
+    public void setTimestamp(Timestamp timestamp) {this.timestamp = timestamp;}
 
 }
