@@ -22,7 +22,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
@@ -57,11 +56,14 @@ import static java.lang.Long.parseLong;
 
 
 /**
- * Map based on tutorial:https://www.raywenderlich.com/144066/introduction-google-maps-api-android and files provided by Professor Brian Fraser
+ * Map based on tutorials :
+ * https://www.raywenderlich.com/144066/introduction-google-maps-api-android
+ * https://www.youtube.com/playlist?list=PLgCYzUzKIBE-vInwQhGSdnbyJ62nixHCt
+ * and files provided by Professor Brian Fraser
  * *Activity for joining and viewing walking groups in google map
  */
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, LocationListener {
-
+    private static final String TAG = "MapActivity";
     private static final int DEFAULT_ZOOM = 11;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CHECK_SETTINGS = 2;
@@ -115,7 +117,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         mJoinGroupButton = findViewById(R.id.gerry_Join_Group_Button_map);
 
-        createLocationRequest();
+        //createLocationRequest();
 
 
     }
@@ -131,134 +133,147 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         Log.i("App", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> onMapReady");
         mMap = googleMap;
 
-
-        //create map listener
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                //place marker
-                //placeMarkerOnMap(latLng);
-
-                //hide Join Button
-                mJoinGroupButton.setVisibility(View.INVISIBLE);
-            }
-        });
-
-
         //add zoom buttons
         mMap.getUiSettings().setZoomControlsEnabled(true);
         //allows clicking on marker to show its title
         mMap.setOnMarkerClickListener(this);
 
+        placeChildLocationMarker(new LatLng(37.28,-122.17));
 
-        //Get the existing walking groups in server
-        populateMapWithGroups();
-
-
+        if(!mModelManager.getUser().isViewingChild()) {
 
 
+            //Get the existing walking groups in server
+            populateMapWithGroups();
 
 
-        //Create Listeners for the markers
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
+            //Create Listeners for the markers
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
 
 
-                // if it is not the current location marker--has to be after mCurrentLocation has been initialized
-                if(!(marker.getSnippet().equals("Current Location"))) {
+                    // if it is not the current location marker--has to be after mCurrentLocation has been initialized
+                    if ( (!(marker.getSnippet().equals("Current Location"))) && (!(marker.getSnippet().equals("Child Current Location"))) ) {
 
-                    //get the Id of marker in long format
-                    String stringID = String.valueOf(marker.getTag());
-                    mClickedGroupId = parseLong(stringID);
+                        //get the Id of marker in long format
+                        String stringID = String.valueOf(marker.getTag());
+                        mClickedGroupId = parseLong(stringID);
 
 
-                    //show Join button
-                    mJoinGroupButton.setVisibility(View.VISIBLE);
+                        //show Join button
+                        mJoinGroupButton.setVisibility(View.VISIBLE);
 
+
+                    } else {
+                        //hide Join Button
+                        mJoinGroupButton.setVisibility(View.INVISIBLE);
+                    }
+
+
+                    return false;
+                }
+            });
+
+            //create map listener
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    //place marker
+                    //placeWalkingGroupMarker(latLng);
+
+                    //hide Join Button
+                    mJoinGroupButton.setVisibility(View.INVISIBLE);
 
                 }
-                else{
+            });
+
+
+            //create on camera move listener
+            mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+                @Override
+                public void onCameraMove() {
                     //hide Join Button
                     mJoinGroupButton.setVisibility(View.INVISIBLE);
                 }
+            });
 
 
+            //Join Button Listener
+            mJoinGroupButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                return false;
-            }
-        });
+                    //"Child" wanting to join group by him/herself
+                    if (!mModelManager.getUser().isParent()) {
+                        //Add the group to users list of walking group
+                        mCurrentUser = mModelManager.getUser();
+
+                        //get the walking group which is associated with marker--set it to mClickedGroup
+                        //then add user to be part of that group
+                        ProxyBuilder.SimpleCallback<List<User>> addUserToGroupCallback = serverPassedWalkingGroup -> addUserToClickedGroupResponse(serverPassedWalkingGroup);
+                        mModelManager.addUserToGroup(MapActivity.this, addUserToGroupCallback, mClickedGroupId, mCurrentUser.getId());
+                    }
+                    //"Parent" requesting for his/her child
+                    else {
+                        //set mCurrentUser to be the User with the UserId passed by the parent
+                        ProxyBuilder.SimpleCallback<User> getUserByIdCallback = serverPassedUser -> getUserByIdResponse(serverPassedUser);
+                        mModelManager.getUserById(MapActivity.this, getUserByIdCallback, mChildUserId);
 
 
-        //Join Button Listener
-        mJoinGroupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //"Child" wanting to join group by him/herself
-                if(!mModelManager.getUser().isParent()) {
-                    //Add the group to users list of walking group
-                    mCurrentUser = mModelManager.getUser();
-
-                    //get the walking group which is associated with marker--set it to mClickedGroup
-                    //then add user to be part of that group
-                    ProxyBuilder.SimpleCallback<List<User>> addUserToGroupCallback = serverPassedWalkingGroup -> addUserToClickedGroupResponse(serverPassedWalkingGroup);
-                    mModelManager.addUserToGroup(MapActivity.this, addUserToGroupCallback, mClickedGroupId, mCurrentUser.getId());
-                }
-                //"Parent" requesting for his/her child
-                else {
-                    //set mCurrentUser to be the User with the UserId passed by the parent
-                    ProxyBuilder.SimpleCallback<User> getUserByIdCallback = serverPassedUser -> getUserByIdResponse(serverPassedUser);
-                    mModelManager.getUserById(MapActivity.this,getUserByIdCallback,mChildUserId);
-
+                    }
 
                 }
-
-            }
-        });
+            });
 
 
-        //allow multi line statements on title and snippet of markers
-        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            //allow multi line statements on title and snippet of markers
+            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
-            @Override
-            public View getInfoWindow(Marker arg0) {
-                return null;
-            }
+                @Override
+                public View getInfoWindow(Marker arg0) {
+                    return null;
+                }
 
-            @Override
-            public View getInfoContents(Marker marker) {
+                @Override
+                public View getInfoContents(Marker marker) {
 
-                mContext = getApplicationContext();
+                    mContext = getApplicationContext();
 
-                LinearLayout info = new LinearLayout(mContext);
-                info.setOrientation(LinearLayout.VERTICAL);
+                    LinearLayout info = new LinearLayout(mContext);
+                    info.setOrientation(LinearLayout.VERTICAL);
 
-                TextView title = new TextView(mContext);
-                title.setTextColor(Color.BLACK);
-                title.setGravity(Gravity.CENTER);
-                title.setTypeface(null, Typeface.BOLD);
-                title.setText(marker.getTitle());
+                    TextView title = new TextView(mContext);
+                    title.setTextColor(Color.BLACK);
+                    title.setGravity(Gravity.CENTER);
+                    title.setTypeface(null, Typeface.BOLD);
+                    title.setText(marker.getTitle());
 
-                TextView snippet = new TextView(mContext);
-                snippet.setTextColor(Color.GRAY);
-                snippet.setText(marker.getSnippet());
+                    TextView snippet = new TextView(mContext);
+                    snippet.setTextColor(Color.GRAY);
+                    snippet.setText(marker.getSnippet());
 
-                info.addView(title);
-                info.addView(snippet);
+                    info.addView(title);
+                    info.addView(snippet);
 
-                return info;
-            }
-        });
+                    return info;
+                }
+            });
+        }
 
 
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+
+        //ask for permission, get current location and zoom to it
         setUpMap();
+
+
+
         if (mLocationUpdateState) {
-            startLocationUpdates();
+            //startLocationUpdates();
         }
 
     }
@@ -277,7 +292,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     public void onLocationChanged(Location location) {
         mLastLocation = location;
         if (null != mLastLocation) {
-            placeMarkerCurrentLocation(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+            //placeCurrentLocationMarker(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
         }
     }
 
@@ -310,7 +325,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         if (requestCode == REQUEST_CHECK_SETTINGS) {
             if (resultCode == RESULT_OK) {
                 mLocationUpdateState = true;
-                startLocationUpdates();
+                //startLocationUpdates();
             }
         }
     }
@@ -319,7 +334,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     @Override
     protected void onPause() {
         super.onPause();
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+       //LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
     //to restart the location update request.
@@ -327,7 +342,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     public void onResume() {
         super.onResume();
         if (mGoogleApiClient.isConnected() && !mLocationUpdateState) {
-            startLocationUpdates();
+            //startLocationUpdates();
         }
     }
 
@@ -352,7 +367,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             //gives you the most recent location currently available
             if (mLastLocation != null) {
                 LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                placeMarkerCurrentLocation(currentLocation);
+                placeCurrentLocationMarker(currentLocation);
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, DEFAULT_ZOOM));
             }
         }
@@ -360,7 +375,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
     //place a marker with non default icon
-    protected void placeMarkerOnMap(WalkingGroup walkingGroup) {
+    private void placeWalkingGroupMarker(WalkingGroup walkingGroup) {
         //extract location of group
         double latitude = walkingGroup.getRouteLatArray()[0];
         double longitude = walkingGroup.getRouteLngArray()[0];
@@ -378,13 +393,26 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
     //place a marker with default icon--Users current location
-    protected void placeMarkerCurrentLocation(LatLng location) {
+    private void placeCurrentLocationMarker(LatLng location) {
         MarkerOptions markerOptions = new MarkerOptions().position(location);
         String titleStr = getAddressOfMarker(location);
         markerOptions.title(titleStr);
         markerOptions.snippet("Current Location");
 
         mMap.addMarker(markerOptions);
+    }
+
+    //place marker for each of the child current walking group location
+    private void placeChildLocationMarker(LatLng location) {
+        MarkerOptions markerOptions = new MarkerOptions().position(location);
+        String titleStr = getAddressOfMarker(location);
+        markerOptions.title(titleStr);
+        markerOptions.snippet("Child Current Location");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+
+        Marker theMarker = mMap.addMarker(markerOptions);
+        //set the tag of marker to be the user id--use this to differentiate marker during marker click event
+        theMarker.setTag("test");
     }
 
 
@@ -475,7 +503,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         //Populate the map with all the markers
         for(int i = 0; i < mWalkingGroups.size(); i++ ) {
             WalkingGroup ithGroup = mWalkingGroups.get(i);
-            placeMarkerOnMap(ithGroup);
+            placeWalkingGroupMarker(ithGroup);
         }
     }
 
@@ -513,7 +541,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
     //For creating intents outside of this Activity
-    public static Intent makeIntent(Context context, long editUserId){
+    public static Intent makeIntentForceChild(Context context, long editUserId){
         Intent intent = new Intent(context, MapActivity.class);
         intent.putExtra(USER_ID, editUserId);
         return intent;
