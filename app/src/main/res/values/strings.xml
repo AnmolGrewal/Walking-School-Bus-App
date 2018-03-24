@@ -38,7 +38,7 @@
     <string name="anmol_confirm_password">Confirm Password</string>
     <string name="anmol_passNoMatch">The Passwords do not match</string>
     <string name="anmol_skip_button">skip Button</string>
-    <string name="anmol_backgroundimagewelcome">backgroundimagewelcome</string>
+    <string name="anmol_backgroundImageWelcome">backgroundImageWelcome</string>
     <string name="anmol_UserHintName">John Doe</string>
     <string name="anmol_nameRegister">Name</string>
     <string name="jacky_view_group_activity_create_group">Create Group</string>
@@ -69,5 +69,16 @@
     <string name="jacky_how_to_create_new_group">To create a group simply press create a group and enter the specfic coordinates that the group is meeting up at, also give your group a meaningful description</string>
     <string name="jacky_how_to_join_new_group">To join a group simple press join group button and select the group from the map.</string>
     <string name="jacky_edit_user_group_text">To edit the groups of the user you are monitoring simple press and hold on the user you want to edit and the rest of the steps to remove and add will be similar to the view group</string>
+    <string name="anmol_continue">Continue</string>
+    <string name="anmol_you_are_a">You are a</string>
+    <string name="anmol_year_you_were_born">Year you were born</string>
+    <string name="anmol_registerP">Register</string>
+    <string name="anmol_cell_phone_numberP">Cell Phone Number</string>
+    <string name="anmol_home_phone_numberP">Home Phone Number</string>
+    <string name="anmol_addressP">Address</string>
+    <string name="anmol_month_you_were_born_inP">Month you were born in</string>
+    <string name="anmol_gradeText">Grade</string>
+    <string name="anmol_teacher_s_nameText">Teacher\'s Name</string>
+    <string name="anmol_emergency_contact_infoText">Emergency Contact Info</string>
 
 </resources>
