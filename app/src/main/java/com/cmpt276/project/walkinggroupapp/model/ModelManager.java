@@ -592,6 +592,69 @@ public class ModelManager {
 
 
 
+    public void sendMessageToParentsOf(Context context,
+                                       ProxyBuilder.SimpleCallback<Message> callback,
+                                       String text,
+                                       boolean isEmergency) {
+
+        Message message = new Message();
+        message.setText(text);
+        message.setEmergency(isEmergency);
+        Call<Message> sendMessageToParentsCaller = proxy.sendMessageToParentsOf(user.getId(), message);
+        ProxyBuilder.callProxy(context, sendMessageToParentsCaller, callback);
+    }
+
+
+
+
+    // This part is mostly for message management.
+
+    // I don't think we actually need this method,
+    // I put it here just in case.
+    public void getMessageByMessageId(Context context,
+                                      ProxyBuilder.SimpleCallback<Message> callback,
+                                      long messageId) {
+        Call<Message> caller = proxy.getMessageById(messageId);
+        ProxyBuilder.callProxy(context, caller, callback);
+    }
+
+
+    // This method delete the message reference in server,
+    // i.e. it affects all users that can view this message;
+    // it should NOT be use in release build;
+    // I put this method here just for debugging purpose.
+//    public void deleteMessageByMessageId(Context context,
+//                                         ProxyBuilder.SimpleCallback<Void> callback,
+//                                         long messageId) {
+//        Call<Void> caller = proxy.deleteMessageById(messageId);
+//        ProxyBuilder.callProxy(context, caller, callback);
+//    }
+
+
+    public void markMessageAsRead(Context context,
+                                  ProxyBuilder.SimpleCallback<Void> callback,
+                                  long messageId) {
+        Call<User> caller = proxy.changeMessageStatus(messageId, user.getId(), true);
+        ProxyBuilder.callProxy(context, caller, returnedUser -> {
+            user = returnedUser;
+            callback.callback(null);
+        });
+    }
+
+
+    public void markMessageAsUnread(Context context,
+                                    ProxyBuilder.SimpleCallback<Void> callback,
+                                    long messageId) {
+        Call<User> caller = proxy.changeMessageStatus(messageId, user.getId(), false);
+        ProxyBuilder.callProxy(context, caller, returnedUser -> {
+            user = returnedUser;
+            callback.callback(null);
+        });
+    }
+
+
+
+
 
 
 
