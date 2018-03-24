@@ -2,10 +2,10 @@ package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,10 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.cmpt276.project.walkinggroupapp.R;
+import com.cmpt276.project.walkinggroupapp.fragments.viewMessageFragment;
 import com.cmpt276.project.walkinggroupapp.model.Message;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
@@ -42,6 +42,7 @@ public class MessageActivity extends AppCompatActivity {
 
     private ListView messageListView;
     private List<Message> messageList = new ArrayList<>();
+    private Message readMessage;
 
     private ModelManager modelManager;
 
@@ -125,13 +126,56 @@ public class MessageActivity extends AppCompatActivity {
         }
     }
 
+    private void registerReadMessage()                                                                                    //For clicking on list object
+    {
+        final ListView list = findViewById(R.id.jacky_message_list);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                readMessage = messageList.get(position);
+                if(readMessage.isRead() == false){
+                    readMessage.setRead(false);
+                    ProxyBuilder.SimpleCallback<Void> readCallback = readResponse -> serverResponse(readResponse);
+                    modelManager.markMessageAsRead(MessageActivity.this, readCallback, readMessage.getId());
+                }else{
+                    alertDialog();
+                }
+            }
+        });
+    }
+
+    private void serverResponse(Void noResponse){
+        Log.i("MyApp", "Marked Message as Read");
+        alertDialog();
+        ProxyBuilder.SimpleCallback<List<Message>> messageCallback = messageList -> getMessageList(messageList);
+        modelManager.getMessagesForUser(MessageActivity.this, messageCallback);
+    }
+
     public static Intent makeIntent(Context context){
         return new Intent(context, MessageActivity.class);
     }
+
+    private void alertDialog()
+    {
+        FragmentManager manager = getSupportFragmentManager();
+        viewMessageFragment dialog = new viewMessageFragment();
+
+        // Supply index input as an argument.
+        Bundle variables = new Bundle();
+        variables.putString("MessageForUser", readMessage.getText());
+
+        dialog.setArguments(variables);
+        dialog.show(manager, "MyApp");
+
+        Log.i("MyApp", "Just Show dialog");
+    }
+
 
 
     private void getMessageList(List<Message> sortedList){
         messageList = sortedList;
         populateMessageList();
+        registerReadMessage();
     }
 }
