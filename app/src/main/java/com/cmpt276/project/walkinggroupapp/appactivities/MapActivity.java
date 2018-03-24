@@ -140,7 +140,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         placeChildLocationMarker(new LatLng(37.28,-122.17));
 
-        if(!mModelManager.getUser().isViewingChild()) {
+        if(!mModelManager.getPrivateFieldUser().isViewingChild()) {
 
 
             //Get the existing walking groups in server
@@ -205,9 +205,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 public void onClick(View v) {
 
                     //"Child" wanting to join group by him/herself
-                    if (!mModelManager.getUser().isParent()) {
+                    if (!mModelManager.getPrivateFieldUser().isParent()) {
                         //Add the group to users list of walking group
-                        mCurrentUser = mModelManager.getUser();
+                        mCurrentUser = mModelManager.getPrivateFieldUser();
 
                         //get the walking group which is associated with marker--set it to mClickedGroup
                         //then add user to be part of that group
@@ -551,7 +551,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     //for extracting intent extras made from other Activities--only do this when parent forcing child
     private void extractDataFromIntent() {
 
-        if(mModelManager.getUser().isParent()) {
+        if(mModelManager.getPrivateFieldUser().isParent()) {
 
             Intent intent = getIntent();
             mChildUserId = intent.getLongExtra(USER_ID, 0);

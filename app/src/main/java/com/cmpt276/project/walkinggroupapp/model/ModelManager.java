@@ -27,7 +27,6 @@ public class ModelManager {
 
     private String token = null;
 
-
     private User user = null;
 
 
@@ -761,5 +760,12 @@ public class ModelManager {
 //    private void getMonitoredByUsersResponse(List<User> monitoredByUsers) {
 //        user.setMonitoredByUsers(monitoredByUsers);
 //    }
+
+
+
+    //get the private field user
+    public User getPrivateFieldUser() {
+        return user;
+    }
 
 }

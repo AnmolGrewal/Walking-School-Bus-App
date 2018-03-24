@@ -35,7 +35,7 @@ public class ParentDashboard extends AppCompatActivity {
             public void onClick(View v) {
 
                 //set property to false to let map know what to do
-                mModelManager.getUser().setIsViewingChild(true);
+                mModelManager.getPrivateFieldUser().setIsViewingChild(true);
 
                 //go to map activity
                 Intent intent = new Intent(ParentDashboard.this, MapActivity.class);
