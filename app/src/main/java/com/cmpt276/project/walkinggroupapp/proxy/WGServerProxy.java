@@ -114,6 +114,25 @@ public interface WGServerProxy {
     Call<Message> sendMessageToGroup(@Path("groupId") long groupId, @Body Message message);
 
 
+    @POST("/messages/toparentsof/{userId}")
+    Call<Message> sendMessageToParentsOf(@Path("userId") long userId, @Body Message message);
+
+
+
+
+    @GET("/messages/{id}")
+    Call<Message> getMessageById(@Path("id") long messageId);
+
+
+    @DELETE("/messages/{id}")
+    Call<Void> deleteMessageById(@Path("id") long messageId);
+
+
+
+    @POST("/messages/{messageId}/readby/{userId}")
+    Call<User> changeMessageStatus(@Path("messageId") long messageId, @Path("userId") long userId, @Body boolean isRead);
+
+
 
 
     /**
