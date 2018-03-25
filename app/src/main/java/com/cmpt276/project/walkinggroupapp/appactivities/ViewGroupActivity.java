@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
@@ -63,7 +62,7 @@ public class ViewGroupActivity extends AppCompatActivity {
 //        populateLeaderList();
 //        populateMemberList();
 
-//        registerLeaderListOnItemLongClick();
+//        registerLeaderListClick();
 //        registerMemberListOnItemLongClick();
 
 
@@ -87,7 +86,7 @@ public class ViewGroupActivity extends AppCompatActivity {
         }
         leadsGroups.add(returnedGroup);
         populateLeaderList();
-        registerLeaderListOnItemLongClick();
+        registerLeaderListClick();
     }
 
     private void getIdsOfGroupsYouAreMemberOfResponse(List<Long> groupIdsList) {
@@ -248,9 +247,18 @@ public class ViewGroupActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // go to GroupInfo Activity
+                Intent intent = new Intent(ViewGroupActivity.this, GroupInformation.class);
+                startActivity(intent);
+            }
+        });
     }
 
-    private void registerLeaderListOnItemLongClick()                                                                                    //For clicking on list object
+    private void registerLeaderListClick()                                                                                    //For clicking on list object
     {
         final ListView list = findViewById(R.id.jacky_leader_list);
 
@@ -284,7 +292,9 @@ public class ViewGroupActivity extends AppCompatActivity {
                 popupMenu.show();
                 return true;
             }
+
         });
+
     }
 
     private void leaveGroupYouAreMemberOf(int position){
