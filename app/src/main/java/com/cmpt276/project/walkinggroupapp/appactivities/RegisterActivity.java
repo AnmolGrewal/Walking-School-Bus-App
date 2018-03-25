@@ -2,10 +2,8 @@ package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -14,13 +12,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
-
-import com.cmpt276.project.walkinggroupapp.RegisterActivityStudent;
-import com.cmpt276.project.walkinggroupapp.model.ModelManager;
-
-import static com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity.PREFERENCE_EMAIL;
-import static com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity.PREFERENCE_IS_LOGOUT;
-import static com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity.PREFERENCE_PASSWORD;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -78,13 +69,13 @@ public class RegisterActivity extends AppCompatActivity {
                     if(password1.equals(password2)) {
                         String checkTeacherStudent = teacherOrStudent.getSelectedItem().toString();
                         if(checkTeacherStudent.equals("Student")) {
-                            Intent intent = RegisterActivityStudent.makeIntent(RegisterActivity.this);
+                            Intent intent = RegisterStudentActivity.makeIntent(RegisterActivity.this);
                             intent.putExtra(USER_EMAIL, email);
                             intent.putExtra(USER_PASS, password1);
                             intent.putExtra(USER_NAME, name);
                             startActivity(intent);
                         } else {
-                            Intent intent = RegisterActivityParent.makeIntent(RegisterActivity.this);
+                            Intent intent = RegisterParentActivity.makeIntent(RegisterActivity.this);
                             intent.putExtra(USER_EMAIL, email);
                             intent.putExtra(USER_PASS, password1);
                             intent.putExtra(USER_NAME, name);

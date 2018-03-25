@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -12,13 +11,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.cmpt276.project.walkinggroupapp.appactivities.MainMenuActivity;
-import com.cmpt276.project.walkinggroupapp.appactivities.RegisterActivityParent;
+import com.cmpt276.project.walkinggroupapp.appactivities.RegisterParentActivity;
+import com.cmpt276.project.walkinggroupapp.appactivities.RegisterStudentActivity;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
-
-import java.util.List;
 
 public class EditOwnProfile extends AppCompatActivity {
 
@@ -82,12 +79,12 @@ public class EditOwnProfile extends AppCompatActivity {
                 {
                         String checkTeacherStudent = teacherOrStudent.getSelectedItem().toString();
                         if(checkTeacherStudent.equals("Student")) {
-                            Intent intent = RegisterActivityStudent.makeIntent(EditOwnProfile.this);
+                            Intent intent = RegisterStudentActivity.makeIntent(EditOwnProfile.this);
                             intent.putExtra(USER_EMAIL, email);
                             intent.putExtra(USER_NAME, name);
                             startActivity(intent);
                         } else {
-                            Intent intent = RegisterActivityParent.makeIntent(EditOwnProfile.this);
+                            Intent intent = RegisterParentActivity.makeIntent(EditOwnProfile.this);
                             intent.putExtra(USER_EMAIL, email);
                             intent.putExtra(USER_NAME, name);
                             startActivity(intent);

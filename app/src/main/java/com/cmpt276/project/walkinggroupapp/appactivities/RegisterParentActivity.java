@@ -1,11 +1,11 @@
-package com.cmpt276.project.walkinggroupapp;
+package com.cmpt276.project.walkinggroupapp.appactivities;
+
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity;
+import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
@@ -24,7 +24,7 @@ import static com.cmpt276.project.walkinggroupapp.appactivities.RegisterActivity
 import static com.cmpt276.project.walkinggroupapp.appactivities.RegisterActivity.USER_NAME;
 import static com.cmpt276.project.walkinggroupapp.appactivities.RegisterActivity.USER_PASS;
 
-public class RegisterActivityStudent extends AppCompatActivity {
+public class RegisterParentActivity extends AppCompatActivity {
 
     private String name;
     private String email;
@@ -44,16 +44,13 @@ public class RegisterActivityStudent extends AppCompatActivity {
     private EditText userCellPhoneNumber;
     private EditText userAddress;
     private Button userRegister;
-    private EditText userGrade;
-    private EditText userTeacherName;
-    private EditText userEmergencyContactInfo;
 
     private ModelManager modelManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_student);
+        setContentView(R.layout.activity_register_parent);
 
         modelManager = ModelManager.getInstance();
 
@@ -68,7 +65,7 @@ public class RegisterActivityStudent extends AppCompatActivity {
                 try {
                     birthYear = Integer.parseInt(temp);
                 } catch (NumberFormatException e) {
-                    Toast.makeText(RegisterActivityStudent.this, "Birth Year Incorrect", Toast.LENGTH_SHORT)
+                    Toast.makeText(RegisterParentActivity.this, "Birth Year Incorrect", Toast.LENGTH_SHORT)
                             .show();
                 }
                 Intent intent = getIntent();
@@ -82,14 +79,30 @@ public class RegisterActivityStudent extends AppCompatActivity {
                 address = userAddress.getText().toString().trim();
                 cellPhone = userCellPhoneNumber.getText().toString().trim();
                 homePhone = userHomePhoneNumber.getText().toString().trim();
-                grade = userGrade.getText().toString().trim();
-                teacherName = userTeacherName.getText().toString().trim();
-                emergencyContactInfo = userEmergencyContactInfo.getText().toString().trim();
+                grade = null;
+                teacherName = null;
+                emergencyContactInfo = null;
                 ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> registerResponse(returnedNothing);
-                modelManager.register(RegisterActivityStudent.this, callback, name, email, password1,
+                modelManager.register(RegisterParentActivity.this, callback, name, email, password1,
                         birthYear, birthMonth, address, cellPhone, homePhone, grade, teacherName, emergencyContactInfo);
             }
         });
+    }
+
+    private void setupHints() {
+        userAddress.setHint("#1 big house way, Surrey BC, H0H 0H0, Canada");
+        userBirthYear.setHint("2005");
+        userHomePhoneNumber.setHint("(604) 123-4567");
+        userCellPhoneNumber.setHint("+1.778.098.7765");
+    }
+
+    private void setupIds() {
+        userBirthMonth = findViewById(R.id.anmol_monthBornUserP);
+        userBirthYear = findViewById(R.id.anmol_yearBornUserP);
+        userHomePhoneNumber = findViewById(R.id.anmol_homePhoneUserP);
+        userCellPhoneNumber = findViewById(R.id.anmol_cellPhoneUserP);
+        userAddress = findViewById(R.id.anmol_addressUserP);
+        userRegister = findViewById(R.id.anmol_registerP);
     }
 
     private void setupMonths() {
@@ -99,34 +112,12 @@ public class RegisterActivityStudent extends AppCompatActivity {
         userBirthMonth.setAdapter(adapter);
     }
 
-    private void setupHints() {
-        userAddress.setHint("#1 big house way, Surrey BC, H0H 0H0, Canada");
-        userBirthYear.setHint("2005");
-        userHomePhoneNumber.setHint("(604) 123-4567");
-        userCellPhoneNumber.setHint("+1.778.098.7765");
-        userTeacherName.setHint("Mr. Big");
-        userGrade.setHint("Kindergarten");
-        userEmergencyContactInfo.setHint("Call my mom! She knows how to help.");
-    }
-
-    private void setupIds() {
-        userAddress = findViewById(R.id.anmol_addressUserC);
-        userBirthMonth = findViewById(R.id.anmol_monthBornUserC);
-        userBirthYear = findViewById(R.id.anmol_yearBornUserC);
-        userCellPhoneNumber = findViewById(R.id.anmol_cellPhoneUserC);
-        userHomePhoneNumber = findViewById(R.id.anmol_homePhoneUserC);
-        userGrade = findViewById(R.id.anmol_gradeUserC);
-        userTeacherName = findViewById(R.id.anmol_userTeacherNameC);
-        userEmergencyContactInfo = findViewById(R.id.anmol_emergencyContactInfoUserC);
-        userRegister = findViewById(R.id.anmol_registerC);
-    }
-
     public static Intent makeIntent(Context context){
-        return new Intent(context, RegisterActivityStudent.class);
+        return new Intent(context, RegisterParentActivity.class);
     }
 
     private void registerResponse(Void returnedNothing) {
-        Toast.makeText(RegisterActivityStudent.this,"Account Created",Toast.LENGTH_SHORT).show();
+        Toast.makeText(RegisterParentActivity.this,"Account Created",Toast.LENGTH_SHORT).show();
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -145,7 +136,7 @@ public class RegisterActivityStudent extends AppCompatActivity {
         editor.commit();
 
         finishAffinity();
-        Intent intent = LoginActivity.makeIntent(RegisterActivityStudent.this);
+        Intent intent = LoginActivity.makeIntent(RegisterParentActivity.this);
         startActivity(intent);
     }
 
@@ -155,3 +146,4 @@ public class RegisterActivityStudent extends AppCompatActivity {
         finish();
     }
 }
+
