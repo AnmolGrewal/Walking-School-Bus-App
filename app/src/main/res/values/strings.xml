@@ -80,5 +80,6 @@
     <string name="anmol_gradeText">Grade</string>
     <string name="anmol_teacher_s_nameText">Teacher\'s Name</string>
     <string name="anmol_emergency_contact_infoText">Emergency Contact Info</string>
+    <string name="edit_profile">Edit Profile</string>
 
 </resources>

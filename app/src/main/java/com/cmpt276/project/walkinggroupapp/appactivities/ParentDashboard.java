@@ -6,13 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.cmpt276.project.walkinggroupapp.EditOwnProfile;
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 
 public class ParentDashboard extends AppCompatActivity {
 
     private Button mViewMapButton;
-
+    private Button editProfileUser;
     private ModelManager mModelManager;
 
 
@@ -25,6 +26,18 @@ public class ParentDashboard extends AppCompatActivity {
         mModelManager = ModelManager.getInstance();
 
         setupViewMapButton();
+        setupEditUser();
+    }
+
+    private void setupEditUser() {
+        editProfileUser = findViewById(R.id.anmol_editOwnProfile);
+        editProfileUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = EditOwnProfile.makeIntent(ParentDashboard.this);
+                startActivity(intent);
+            }
+        });
     }
 
 

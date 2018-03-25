@@ -1,11 +1,9 @@
-package com.cmpt276.project.walkinggroupapp.appactivities;
+package com.cmpt276.project.walkinggroupapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,16 +11,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.cmpt276.project.walkinggroupapp.R;
+import com.cmpt276.project.walkinggroupapp.appactivities.RegisterActivityParent;
 
-import com.cmpt276.project.walkinggroupapp.RegisterActivityStudent;
-import com.cmpt276.project.walkinggroupapp.model.ModelManager;
-
-import static com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity.PREFERENCE_EMAIL;
-import static com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity.PREFERENCE_IS_LOGOUT;
-import static com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity.PREFERENCE_PASSWORD;
-
-public class RegisterActivity extends AppCompatActivity {
+public class EditOwnProfile extends AppCompatActivity {
 
     private Button nextButton;
     private EditText emailAddress;
@@ -40,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_edit_own_profile);
 
         setupIDs();
         setupHints();
@@ -78,13 +69,13 @@ public class RegisterActivity extends AppCompatActivity {
                     if(password1.equals(password2)) {
                         String checkTeacherStudent = teacherOrStudent.getSelectedItem().toString();
                         if(checkTeacherStudent.equals("Student")) {
-                            Intent intent = RegisterActivityStudent.makeIntent(RegisterActivity.this);
+                            Intent intent = RegisterActivityStudent.makeIntent(EditOwnProfile.this);
                             intent.putExtra(USER_EMAIL, email);
                             intent.putExtra(USER_PASS, password1);
                             intent.putExtra(USER_NAME, name);
                             startActivity(intent);
                         } else {
-                            Intent intent = RegisterActivityParent.makeIntent(RegisterActivity.this);
+                            Intent intent = RegisterActivityParent.makeIntent(EditOwnProfile.this);
                             intent.putExtra(USER_EMAIL, email);
                             intent.putExtra(USER_PASS, password1);
                             intent.putExtra(USER_NAME, name);
@@ -97,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 .show();
                     }
                 } else {
-                    Toast.makeText(RegisterActivity.this, "Please Fill All Fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditOwnProfile.this, "Please Fill All Fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -110,9 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
         secondPassword.setHint(R.string.anmol_setPasswordTwoHint);
     }
 
-    public static Intent makeIntent(Context context)
-    {
-        return new Intent(context, RegisterActivity.class);
+    public static Intent makeIntent(Context context){
+        return new Intent(context, EditOwnProfile.class);
     }
-
 }
