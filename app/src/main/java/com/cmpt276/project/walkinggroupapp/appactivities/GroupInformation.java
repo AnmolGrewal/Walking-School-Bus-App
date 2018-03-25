@@ -1,11 +1,14 @@
 package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Handler;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,6 +41,9 @@ public class GroupInformation extends AppCompatActivity {
     private Button mStopUploadButton;
 
     private boolean mIsUpload;
+
+    private Double mLat;
+    private Double mLng;
 
 
     @Override
@@ -82,7 +88,8 @@ public class GroupInformation extends AppCompatActivity {
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-
+                mLat = location.getLatitude();
+                mLng = location.getLongitude();
             }
 
             @Override
@@ -97,7 +104,8 @@ public class GroupInformation extends AppCompatActivity {
 
             @Override
             public void onProviderDisabled(String provider) {
-
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
             }
         };
 
@@ -114,13 +122,43 @@ public class GroupInformation extends AppCompatActivity {
 
     }
 
-    private void getLastKnownLocation() {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        GpsLocation currentLocation = new GpsLocation(12.0,12.0,timestamp);
+    //handle the results of permission request pop-up
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case LOCATION_PERMISSION_REQUEST_CODE:
+                //if accept button clicked
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //finish this activity and reload it
+                    finish();
+                    startActivity(getIntent());
+                }
+                //deny button clicked
+                else if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED){
+                    finish();
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
-        Log.w(TAG, "getLocation()4");
-        ProxyBuilder.SimpleCallback<GpsLocation> setLastKnownLocationCallback = serverPassedLocation ->setLastKnownLocationResponse(serverPassedLocation);
-        mModelManager.setLastGpsLocation(GroupInformation.this, setLastKnownLocationCallback, mModelManager.getPrivateFieldUser().getId(), currentLocation );
+    private void getLastKnownLocation() {
+        if(mIsUpload) {
+
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+            GpsLocation currentLocation;
+
+            if (mLat != null && mLng != null) {
+                currentLocation = new GpsLocation(mLat, mLng, timestamp);
+            } else {
+                currentLocation = new GpsLocation(0.0, 0.0, timestamp);
+            }
+            Log.w(TAG, "getLocation()4");
+            ProxyBuilder.SimpleCallback<GpsLocation> setLastKnownLocationCallback = serverPassedLocation -> setLastKnownLocationResponse(serverPassedLocation);
+            mModelManager.setLastGpsLocation(GroupInformation.this, setLastKnownLocationCallback, mModelManager.getPrivateFieldUser().getId(), currentLocation);
+        }
 
     }
 
