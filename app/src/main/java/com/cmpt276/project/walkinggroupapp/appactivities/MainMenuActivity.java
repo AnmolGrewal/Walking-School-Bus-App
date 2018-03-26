@@ -34,7 +34,9 @@ import java.util.List;
 
 public class MainMenuActivity extends AppCompatActivity {
 
-    private static final String PREFERENCE_IS_LOGOUT = "saved.logout.key";
+    public static final String PREFERENCE_EMAIL = "saved.email.key";
+    public static final String PREFERENCE_PASSWORD = "saved.password.key";
+    public static final String PREFERENCE_IS_LOGOUT = "saved.logout.key";
 
     private Button btnAddNewMonitorsUser;
     private Button btnAddNewMonitoredByUser;
@@ -104,6 +106,9 @@ public class MainMenuActivity extends AppCompatActivity {
                 editor.clear();
                 //set the Logout string to show user logged out
                 editor.putString(PREFERENCE_IS_LOGOUT, "true");
+
+                editor.putString(PREFERENCE_EMAIL, null);
+                editor.putString(PREFERENCE_PASSWORD, null);
 
                 //commit to preference
                 editor.commit();

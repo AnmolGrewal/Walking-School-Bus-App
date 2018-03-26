@@ -31,7 +31,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button mLoginButton;
     private Button mRegisterButton;
-    private Button mMapTestButton;
+
+//    private Button mMapTestButton;
+    
     private Button mHelpButton;
     private TextView mForgotPasswordTextView;
     private EditText mPasswordEditText;
