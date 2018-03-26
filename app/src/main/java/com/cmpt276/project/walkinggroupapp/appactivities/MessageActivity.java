@@ -46,6 +46,7 @@ import java.util.List;
 public class MessageActivity extends AppCompatActivity {
 
     private Button btnSend;
+    private Button btnPanic;
 
     private ListView messageListView;
     private List<Message> messageList = new ArrayList<>();
@@ -58,6 +59,7 @@ public class MessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_message);
 
         setupSendButton();
+        setupPanicButton();
 
         modelManager = ModelManager.getInstance();
 
@@ -75,8 +77,22 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
+    private void setupPanicButton(){
+        btnPanic = findViewById(R.id.jacky_panic_button);
+        btnPanic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendDialog(true);
+            }
+        });
+    }
+
+    private void sendPanicMessageResponse(Message noResponse){
+        Log.i("MyApp", "Sent Panic Message");
+    }
+
     private void sendMessage(){
-        sendDialog();
+        sendDialog(false);
     }
 
     private void populateMessageList() {
@@ -93,16 +109,23 @@ public class MessageActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            //Find a message to add
+            Message currentMessage = messageList.get(position);
+            Long currentMessageId = currentMessage.getId();
+            User fromUser = currentMessage.getFromUser();
+            WalkingGroup toGroup = currentMessage.getToGroup();
+
             //Make sure We are given a view
             View itemView = convertView;
             if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.message_list_layout, parent, false);
             }
-            //Find a user to add
-            Message currentMessage = messageList.get(position);
-            Long currentMessageId = currentMessage.getId();
-            User fromUser = currentMessage.getFromUser();
-            WalkingGroup toGroup = currentMessage.getToGroup();
+
+            if(currentMessage.isEmergency() == true){
+                itemView.setBackgroundResource(R.color.colorAccent);
+            }else{
+                itemView.setBackgroundResource(R.color.white);
+            }
 
             //Icon
             if(currentMessage.isRead()) {
@@ -176,6 +199,9 @@ public class MessageActivity extends AppCompatActivity {
                                     markMessageUnread(readMessage.getId());
                                 }
                                 break;
+                            case R.id.jacky_delete_message:
+                                deleteMessage(readMessage.getId());
+                                break;
                         }
                         return true;
                     }
@@ -202,6 +228,17 @@ public class MessageActivity extends AppCompatActivity {
         modelManager.getMessagesForUser(MessageActivity.this, messageCallback);
     }
 
+    private void deleteMessage(Long messageId){
+        ProxyBuilder.SimpleCallback<Void> readCallback = readResponse -> deleteMessageResponse(readResponse);
+        modelManager.deleteMessageByMessageId(MessageActivity.this, readCallback, messageId);
+    }
+
+    private void deleteMessageResponse(Void noResponse){
+        ProxyBuilder.SimpleCallback<List<Message>> messageCallback = messageList -> getMessageList(messageList);
+        modelManager.getMessagesForUser(MessageActivity.this, messageCallback);
+    }
+
+
 
     public static Intent makeIntent(Context context){
         return new Intent(context, MessageActivity.class);
@@ -220,10 +257,15 @@ public class MessageActivity extends AppCompatActivity {
         dialog.show(manager, "MyApp");
     }
 
-    private void sendDialog(){
+    private void sendDialog(boolean isEmergency){
         FragmentManager manager = getSupportFragmentManager();
         sendMessageFragment dialog = new sendMessageFragment();
 
+        // Supply index input as an argument.
+        Bundle variables = new Bundle();
+        variables.putBoolean("IsEmergencyMessage", isEmergency);
+
+        dialog.setArguments(variables);
         dialog.show(manager, "SendView");
     }
 
