@@ -44,7 +44,7 @@ public class sendMessageFragment extends AppCompatDialogFragment
                         {
                             message = "Blank Message";
                         }
-                        ProxyBuilder.SimpleCallback<Message> sendCallBack = noResponse -> tempCallback(noResponse);
+                        ProxyBuilder.SimpleCallback<Message> sendCallBack = noResponse -> sendMessageToParentsResponse(noResponse);
                         modelManager.sendMessageToParentsOf(getActivity(), sendCallBack, message, false);
                         break;
                 }
@@ -59,7 +59,7 @@ public class sendMessageFragment extends AppCompatDialogFragment
                 .create();
     }
 
-    private void tempCallback(Message response){
+    private void sendMessageToParentsResponse(Message response){
         Log.i("MyApp", "Message sent as: " + message);
     }
 

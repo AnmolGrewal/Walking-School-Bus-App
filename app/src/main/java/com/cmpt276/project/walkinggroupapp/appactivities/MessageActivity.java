@@ -131,7 +131,7 @@ public class MessageActivity extends AppCompatActivity {
                 readMessage = messageList.get(position);
                 if(readMessage.isRead() == false){
                     readMessage.setRead(false);
-                    ProxyBuilder.SimpleCallback<Void> readCallback = readResponse -> serverResponse(readResponse);
+                    ProxyBuilder.SimpleCallback<Void> readCallback = readResponse -> markMessageReadResponse(readResponse);
                     modelManager.markMessageAsRead(MessageActivity.this, readCallback, readMessage.getId());
                 }else{
                     alertDialog();
@@ -140,7 +140,7 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
-    private void serverResponse(Void noResponse){
+    private void markMessageReadResponse(Void noResponse){
         alertDialog();
         ProxyBuilder.SimpleCallback<List<Message>> messageCallback = messageList -> getMessageList(messageList);
         modelManager.getMessagesForUser(MessageActivity.this, messageCallback);
