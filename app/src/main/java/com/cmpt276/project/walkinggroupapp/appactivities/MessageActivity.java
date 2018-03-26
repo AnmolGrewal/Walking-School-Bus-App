@@ -49,7 +49,6 @@ public class MessageActivity extends AppCompatActivity {
 
     private ListView messageListView;
     private List<Message> messageList = new ArrayList<>();
-    private Message readMessage;
 
     private ModelManager modelManager;
 
@@ -141,13 +140,13 @@ public class MessageActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                readMessage = messageList.get(position);
+                Message readMessage = messageList.get(position);
                 if(readMessage.isRead() == false){
                     readMessage.setRead(false);
                     markMessageRead(readMessage.getId());
-                    alertDialog();
+                    alertDialog(readMessage);
                 }else{
-                    alertDialog();
+                    alertDialog(readMessage);
                 }
             }
         });
@@ -157,7 +156,7 @@ public class MessageActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
                 Log.i("MyApp", "Pressed Long" + position);
-                readMessage = messageList.get(position);
+                Message readMessage = messageList.get(position);
                 PopupMenu popupMenu = new PopupMenu(MessageActivity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_message_options, popupMenu.getMenu());
 
@@ -208,7 +207,7 @@ public class MessageActivity extends AppCompatActivity {
         return new Intent(context, MessageActivity.class);
     }
 
-    private void alertDialog()
+    private void alertDialog(Message readMessage)
     {
         FragmentManager manager = getSupportFragmentManager();
         viewMessageFragment dialog = new viewMessageFragment();
