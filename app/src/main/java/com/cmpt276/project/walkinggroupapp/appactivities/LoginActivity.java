@@ -56,6 +56,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        final SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
+        mEmail = sharedPreferences.getString(PREFERENCE_EMAIL, null);
+        mPassword = sharedPreferences.getString(PREFERENCE_PASSWORD,null);
+        String savedIsLogout = sharedPreferences.getString(PREFERENCE_IS_LOGOUT, "false");
         
         modelManager = ModelManager.getInstance();
         modelManager.setApiKey(getString(R.string.gerry_apikey));
@@ -71,7 +76,12 @@ public class LoginActivity extends AppCompatActivity {
         setupForgetPasswordTextViewOnClick();
 
 
-        loginRequest();
+        if (savedIsLogout.equals("false") && mEmail != null && mPassword != null) {
+            login();
+        }
+
+
+//        loginRequest();
     }
 
     public static Intent makeIntent(Context context)
@@ -95,8 +105,9 @@ public class LoginActivity extends AppCompatActivity {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
-                modelManager.login(LoginActivity.this, callback, mEmail, mPassword);
+                login();
+//                ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
+//                modelManager.login(LoginActivity.this, callback, mEmail, mPassword);
             }
         });
     }
@@ -185,7 +196,24 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    
+    private void login() {
+        ProxyBuilder.SimpleCallback<Void> onResponseCallback = returnedNothing -> loginResponse(returnedNothing);
+        modelManager.login(LoginActivity.this, onResponseCallback, mEmail, mPassword);
+    }
+
+    private void loginResponse(Void returnedNothing) {
+        Log.w(TAG, "Server replied to login request (no content was expected).");
+
+        //login success, save data to preference
+        SavePreferences();
+
+        //go to Main Menu
+        Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
+
+        intent = MainMenuActivity.makeIntent(LoginActivity.this);
+        startActivity(intent);
+        finish();
+    }
 
 
     private void loginRequest() {
@@ -211,20 +239,6 @@ public class LoginActivity extends AppCompatActivity {
             ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
             modelManager.login(LoginActivity.this, callback, savedEmail, savedPassword);
         }
-    }
-
-    private void loginResponse(Void returnedNothing) {
-        Log.w(TAG, "Server replied to login request (no content was expected).");
-
-        //login success, save data to preference
-        SavePreferences();
-
-        //go to Main Menu
-        Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
-
-        intent = MainMenuActivity.makeIntent(LoginActivity.this);
-        startActivity(intent);
-        finish();
     }
 
 
