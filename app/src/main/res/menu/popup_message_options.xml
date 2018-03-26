@@ -6,7 +6,11 @@
         android:id="@+id/jacky_mark_as_read"
         android:title="@string/jacky_mark_as_read_popup" />
     <item
-        android:id="@+id/jacky_mark_as_unread"
-        android:title="@string/jacky_mark_as_unread_popup" />
+    android:id="@+id/jacky_mark_as_unread"
+    android:title="@string/jacky_mark_as_unread_popup" />
+
+    <item
+        android:id="@+id/jacky_delete_message"
+        android:title="Delete" />
 
 </menu>
