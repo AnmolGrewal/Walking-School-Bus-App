@@ -270,7 +270,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void getMessageList(List<Message> sortedList){
-        int i = 0;
+        int i;
         Message compareMessage;
         Message currentMessages;
         for (i = 0; i < sortedList.size(); i++) {
