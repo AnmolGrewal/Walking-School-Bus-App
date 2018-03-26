@@ -42,9 +42,26 @@
 
     <ImageView
         android:id="@+id/jacky_message_image_view"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         app:srcCompat="@drawable/temp_pic" />
+
+    <TextView
+        android:id="@+id/jacky_group_id_static"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/jacky_from_email_static"
+        android:text="From Group: "
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/jacky_group_id_dynamic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/jacky_from_email_static"
+        android:layout_toEndOf="@+id/jacky_group_id_static"
+        android:textSize="16sp" />
 </RelativeLayout>

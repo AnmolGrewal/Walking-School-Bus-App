@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -12,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.cmpt276.project.walkinggroupapp.R;
@@ -20,6 +23,7 @@ import com.cmpt276.project.walkinggroupapp.fragments.viewMessageFragment;
 import com.cmpt276.project.walkinggroupapp.model.Message;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
+import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
 import java.util.ArrayList;
@@ -99,6 +103,7 @@ public class MessageActivity extends AppCompatActivity {
             Message currentMessage = messageList.get(position);
             Long currentMessageId = currentMessage.getId();
             User fromUser = currentMessage.getFromUser();
+            WalkingGroup toGroup = currentMessage.getToGroup();
 
             //Icon
             if(currentMessage.isRead()) {
@@ -117,6 +122,14 @@ public class MessageActivity extends AppCompatActivity {
             TextView makeEmail = itemView.findViewById(R.id.jacky_from_dynamic);
             makeEmail.setText(Long.toString(fromUser.getId()));
 
+            //Group ID:
+            TextView groupID = itemView.findViewById(R.id.jacky_group_id_dynamic);
+            if(toGroup == null){
+                groupID.setText("No Group");
+            }else{
+                groupID.setText(Long.toString(toGroup.getId()));
+            }
+
             return itemView;
         }
     }
@@ -131,17 +144,74 @@ public class MessageActivity extends AppCompatActivity {
                 readMessage = messageList.get(position);
                 if(readMessage.isRead() == false){
                     readMessage.setRead(false);
-                    ProxyBuilder.SimpleCallback<Void> readCallback = readResponse -> markMessageReadResponse(readResponse);
-                    modelManager.markMessageAsRead(MessageActivity.this, readCallback, readMessage.getId());
+                    markMessageRead(readMessage.getId());
+                    alertDialog();
                 }else{
                     alertDialog();
                 }
             }
         });
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
+                Log.i("MyApp", "Pressed Long" + position);
+                readMessage = messageList.get(position);
+                PopupMenu popupMenu = new PopupMenu(MessageActivity.this, viewClicked);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_message_options, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        switch(menuItem.getItemId())
+                        {
+                            case R.id.jacky_mark_as_read:
+                                if(readMessage.isRead() == false) {
+                                    markMessageRead(readMessage.getId());
+                                }
+                                break;
+                            case R.id.jacky_mark_as_unread:
+                                if(readMessage.isRead() == true) {
+                                    markMessageUnread(readMessage.getId());
+                                }
+                                break;
+                            case R.id.jacky_delete_message:
+                                deleteMessage(readMessage.getId());
+                                break;
+                        }
+                        return true;
+                    }
+
+                });
+                popupMenu.show();
+                return true;
+            }
+        });
     }
 
-    private void markMessageReadResponse(Void noResponse){
-        alertDialog();
+    private void markMessageRead(Long messageId){
+        ProxyBuilder.SimpleCallback<Void> readCallback = readResponse -> markMessageResponse(readResponse);
+        modelManager.markMessageAsRead(MessageActivity.this, readCallback, messageId);
+    }
+
+    private void markMessageUnread(Long messageId){
+        ProxyBuilder.SimpleCallback<Void> readCallback = readResponse -> markMessageResponse(readResponse);
+        modelManager.markMessageAsUnread(MessageActivity.this, readCallback, messageId);
+    }
+
+    private void deleteMessage(Long messageId){
+        ProxyBuilder.SimpleCallback<Void> readCallback = readResponse -> deleteMessageResponse(readResponse);
+        modelManager.deleteMessageByMessageId(MessageActivity.this, readCallback, messageId);
+    }
+
+    private void markMessageResponse(Void noResponse){
+        ProxyBuilder.SimpleCallback<List<Message>> messageCallback = messageList -> getMessageList(messageList);
+        modelManager.getMessagesForUser(MessageActivity.this, messageCallback);
+    }
+
+    private void deleteMessageResponse(Void noResponse){
         ProxyBuilder.SimpleCallback<List<Message>> messageCallback = messageList -> getMessageList(messageList);
         modelManager.getMessagesForUser(MessageActivity.this, messageCallback);
     }
@@ -171,6 +241,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void getMessageList(List<Message> sortedList){
+        messageList.clear();
         messageList = sortedList;
         populateMessageList();
         registerReadMessage();
