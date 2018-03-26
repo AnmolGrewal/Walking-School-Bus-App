@@ -29,7 +29,6 @@ public class sendMessageFragment extends AppCompatDialogFragment
     private EditText userMessageEditText;
     private ModelManager modelManager;
     private boolean isEmergency;
-    private List<WalkingGroup> memberOfGroups;
 
     @Override
     public Dialog onCreateDialog(Bundle saveInstanceState)
@@ -77,7 +76,6 @@ public class sendMessageFragment extends AppCompatDialogFragment
     }
 
     private void getGroupsResponse(List<Long> groupId){
-        memberOfGroups = new ArrayList<>();
         for (Long id: groupId) {
             ProxyBuilder.SimpleCallback<Message> sendCallBack = noResponse -> sendMessageResponse(noResponse);
             modelManager.sendMessageToGroup(getActivity(), sendCallBack, id,message, true);
