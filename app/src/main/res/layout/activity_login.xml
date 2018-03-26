@@ -7,110 +7,96 @@
     tools:context="com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity">
 
 
+    <EditText
+        android:id="@+id/gerry_Email_EditText_login"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="64dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/gerry_email_login"
+        android:inputType="textWebEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/gerry_Password_EditText_login"
+        android:layout_width="256"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/gerry_password_login"
+        android:inputType="textWebPassword"
+        app:layout_constraintEnd_toEndOf="@+id/gerry_Email_EditText_login"
+        app:layout_constraintStart_toStartOf="@+id/gerry_Email_EditText_login"
+        app:layout_constraintTop_toBottomOf="@+id/gerry_Email_EditText_login" />
+
+    <Button
+        android:id="@+id/gerry_Map_Button_login"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/gerry_test_map_welcome"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/gerry_Login_Button_login"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/gerry_login_login"
+        app:layout_constraintEnd_toEndOf="@+id/gerry_Password_EditText_login"
+        app:layout_constraintStart_toStartOf="@+id/gerry_Password_EditText_login"
+        app:layout_constraintTop_toBottomOf="@+id/gerry_Password_EditText_login" />
+
+    <TextView
+        android:id="@+id/gerry_ForgotPassword_TextView_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/gerry_forgot_password_login"
+        android:textAlignment="center"
+        android:textColor="@drawable/custom_text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gerry_Login_Button_login" />
+
+    <Button
+        android:id="@+id/gerry_Register_Button_login"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/gerry_register_login"
+        app:layout_constraintEnd_toEndOf="@+id/gerry_Login_Button_login"
+        app:layout_constraintStart_toStartOf="@+id/gerry_Login_Button_login"
+        app:layout_constraintTop_toBottomOf="@+id/gerry_ForgotPassword_TextView_login" />
+
     <Button
         android:id="@+id/jacky_help_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="57dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/jacky_help_button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="75dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingEnd="50dp"
-            android:paddingStart="50dp">
-
-
-            <EditText
-                android:id="@+id/gerry_Email_EditText_login"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="@string/gerry_email_login"
-                android:inputType="textWebEmailAddress" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:paddingEnd="50dp"
-            android:paddingStart="50dp">
-
-
-            <EditText
-                android:id="@+id/gerry_Password_EditText_login"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="@string/gerry_password_login"
-                android:inputType="textWebPassword" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/gerry_Login_Button_login"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/gerry_login_login" />
-
-            <TextView
-                android:id="@+id/gerry_ForgotPassword_TextView_login"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:text="@string/gerry_forgot_password_login"
-                android:textColor="@drawable/custom_text_color" />
-
-
-            <Button
-                android:id="@+id/gerry_Register_Button_login"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                android:text="@string/gerry_register_login" />
-
-            <Button
-                android:id="@+id/gerry_Map_Button_login"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                android:text="@string/gerry_test_map_welcome"
-                android:visibility="gone" />
-
-        </LinearLayout>
-    </LinearLayout>
+        app:layout_constraintEnd_toEndOf="@+id/gerry_Register_Button_login"
+        app:layout_constraintStart_toStartOf="@+id/gerry_Register_Button_login"
+        app:layout_constraintTop_toBottomOf="@+id/gerry_Register_Button_login" />
 
 </android.support.constraint.ConstraintLayout>
