@@ -68,9 +68,15 @@ public class LoginActivity extends AppCompatActivity {
         setupRegisterButton();
         setupLoginButton();
         setupHelpButton();
+        setupForgetPasswordTextViewOnClick();
 
 
         loginRequest();
+    }
+
+    public static Intent makeIntent(Context context)
+    {
+        return new Intent(context, LoginActivity.class);
     }
 
     private void setupRegisterButton() {
@@ -106,74 +112,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void loginRequest() {
-        //test creating user
-        //CreateUserTest();
-
-        //If user did not logout -- auto login
-        //Load Saved data from preferences
-        final SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
-        String savedEmail = sharedPreferences.getString(PREFERENCE_EMAIL, null);
-        String savedPassword = sharedPreferences.getString(PREFERENCE_PASSWORD,null);
-        String savedIsLogout = sharedPreferences.getString(PREFERENCE_IS_LOGOUT, "false");
-        //set mEmail and mPassword since SavePReference() relies on them
-        mEmail = savedEmail;
-        mPassword = savedPassword;
-
-        if(savedIsLogout.equals("false") && savedEmail != null && savedPassword != null) {
-            //login using data from preferences
-            //mLoginButton.setVisibility(View.INVISIBLE);
-            //mRegisterButton.setVisibility(View.INVISIBLE);
-            mPasswordEditText.setText(savedPassword);
-            mEmailEditText.setText(savedEmail);
-            ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
-            modelManager.login(LoginActivity.this, callback, savedEmail, savedPassword);
-        }
-    }
-
-    private void loginResponse(Void returnedNothing) {
-        Log.w(TAG, "Server replied to login request (no content was expected).");
-
-        //login success, save data to preference
-        SavePreferences();
-
-        //go to Main Menu
-        Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
-
-        intent = MainMenuActivity.makeIntent(LoginActivity.this);
-        startActivity(intent);
-        finish();
-    }
-
-
-
-    private void registerViews() {
-
-//        //login button
-//        mLoginButton = findViewById(R.id.gerry_Login_Button_login);
-//        mLoginButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                //login using data from editTexts
-//                ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
-//                modelManager.login(LoginActivity.this, callback, mEmail, mPassword);
-//
-//            }
-//        });
-
-//        //register button
-//        mRegisterButton = findViewById(R.id.gerry_Register_Button_login);
-//        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //go to register activity
-//                Intent registerActivity = RegisterActivity.makeIntent(getApplicationContext());
-//                startActivity(registerActivity);
-//            }
-//        });
-
-        //forgot password textView
+    private void setupForgetPasswordTextViewOnClick() {
         mForgotPasswordTextView = findViewById(R.id.gerry_ForgotPassword_TextView_login);
         mForgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,6 +120,9 @@ public class LoginActivity extends AppCompatActivity {
                 //go to ForgotPassword Activity
             }
         });
+    }
+
+    private void registerViews() {
 
         //email editText
         mEmailEditText = findViewById(R.id.gerry_Email_EditText_login);
@@ -229,33 +171,60 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        //test map Button
-        mMapTestButton = findViewById(R.id.gerry_Map_Button_login);
-        mMapTestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //go to test map activity
-                Intent intentMap = new Intent(LoginActivity.this, MapActivity.class);
-                startActivity(intentMap);
-            }
-        });
-
-//        //Help button
-//        mHelpButton = findViewById(R.id.jacky_help_button);
-//        mHelpButton.setOnClickListener(new View.OnClickListener() {
+//        //test map Button
+//        mMapTestButton = findViewById(R.id.gerry_Map_Button_login);
+//        mMapTestButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
-//            public void onClick(View view) {
-//                //Go to help screen
-//                Intent intentHelp = HelpActivity.makeIntent(LoginActivity.this);
-//                startActivity(intentHelp);
+//            public void onClick(View v) {
+//                //go to test map activity
+//                Intent intentMap = new Intent(LoginActivity.this, MapActivity.class);
+//                startActivity(intentMap);
 //            }
 //        });
+
     }
 
 
-    public static Intent makeIntent(Context context)
-    {
-        return new Intent(context, LoginActivity.class);
+    
+
+
+    private void loginRequest() {
+        //test creating user
+        //CreateUserTest();
+
+        //If user did not logout -- auto login
+        //Load Saved data from preferences
+        final SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
+        String savedEmail = sharedPreferences.getString(PREFERENCE_EMAIL, null);
+        String savedPassword = sharedPreferences.getString(PREFERENCE_PASSWORD,null);
+        String savedIsLogout = sharedPreferences.getString(PREFERENCE_IS_LOGOUT, "false");
+        //set mEmail and mPassword since SavePReference() relies on them
+        mEmail = savedEmail;
+        mPassword = savedPassword;
+
+        if(savedIsLogout.equals("false") && savedEmail != null && savedPassword != null) {
+            //login using data from preferences
+            //mLoginButton.setVisibility(View.INVISIBLE);
+            //mRegisterButton.setVisibility(View.INVISIBLE);
+            mPasswordEditText.setText(savedPassword);
+            mEmailEditText.setText(savedEmail);
+            ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
+            modelManager.login(LoginActivity.this, callback, savedEmail, savedPassword);
+        }
+    }
+
+    private void loginResponse(Void returnedNothing) {
+        Log.w(TAG, "Server replied to login request (no content was expected).");
+
+        //login success, save data to preference
+        SavePreferences();
+
+        //go to Main Menu
+        Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
+
+        intent = MainMenuActivity.makeIntent(LoginActivity.this);
+        startActivity(intent);
+        finish();
     }
 
 
