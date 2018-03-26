@@ -197,49 +197,74 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void login() {
-        ProxyBuilder.SimpleCallback<Void> onResponseCallback = returnedNothing -> loginResponse(returnedNothing);
-        modelManager.login(LoginActivity.this, onResponseCallback, mEmail, mPassword);
+        mLoginButton.setEnabled(false);
+
+        Toast.makeText(LoginActivity.this,"Logging in...",Toast.LENGTH_SHORT).show();
+
+        ProxyBuilder.SimpleCallback<Void> onResponseCallback = returnedNothing -> loginSuccessResponse(returnedNothing);
+        ProxyBuilder.SimpleCallback<Void> onFailureCallback = returnedNothing -> loginFailResponse(returnedNothing);
+        modelManager.login(LoginActivity.this, onResponseCallback, onFailureCallback, mEmail, mPassword);
     }
 
-    private void loginResponse(Void returnedNothing) {
+    private void loginSuccessResponse(Void returnedNothing) {
         Log.w(TAG, "Server replied to login request (no content was expected).");
 
-        //login success, save data to preference
-        SavePreferences();
-
-        //go to Main Menu
         Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
+
+        SavePreferences();
 
         intent = MainMenuActivity.makeIntent(LoginActivity.this);
         startActivity(intent);
         finish();
     }
 
+    private void loginFailResponse(Void returnedNothing) {
+        mLoginButton.setEnabled(true);
 
-    private void loginRequest() {
-        //test creating user
-        //CreateUserTest();
+        Toast.makeText(LoginActivity.this,"Login failed, please try again.",Toast.LENGTH_SHORT).show();
 
-        //If user did not logout -- auto login
-        //Load Saved data from preferences
-        final SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
-        String savedEmail = sharedPreferences.getString(PREFERENCE_EMAIL, null);
-        String savedPassword = sharedPreferences.getString(PREFERENCE_PASSWORD,null);
-        String savedIsLogout = sharedPreferences.getString(PREFERENCE_IS_LOGOUT, "false");
-        //set mEmail and mPassword since SavePReference() relies on them
-        mEmail = savedEmail;
-        mPassword = savedPassword;
-
-        if(savedIsLogout.equals("false") && savedEmail != null && savedPassword != null) {
-            //login using data from preferences
-            //mLoginButton.setVisibility(View.INVISIBLE);
-            //mRegisterButton.setVisibility(View.INVISIBLE);
-            mPasswordEditText.setText(savedPassword);
-            mEmailEditText.setText(savedEmail);
-            ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
-            modelManager.login(LoginActivity.this, callback, savedEmail, savedPassword);
-        }
     }
+
+
+//    private void loginResponse(Void returnedNothing) {
+//        Log.w(TAG, "Server replied to login request (no content was expected).");
+//
+//        //login success, save data to preference
+//        SavePreferences();
+//
+//        //go to Main Menu
+//        Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
+//
+//        intent = MainMenuActivity.makeIntent(LoginActivity.this);
+//        startActivity(intent);
+//        finish();
+//    }
+
+
+//    private void loginRequest() {
+//        //test creating user
+//        //CreateUserTest();
+//
+//        //If user did not logout -- auto login
+//        //Load Saved data from preferences
+//        final SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
+//        String savedEmail = sharedPreferences.getString(PREFERENCE_EMAIL, null);
+//        String savedPassword = sharedPreferences.getString(PREFERENCE_PASSWORD,null);
+//        String savedIsLogout = sharedPreferences.getString(PREFERENCE_IS_LOGOUT, "false");
+//        //set mEmail and mPassword since SavePReference() relies on them
+//        mEmail = savedEmail;
+//        mPassword = savedPassword;
+//
+//        if(savedIsLogout.equals("false") && savedEmail != null && savedPassword != null) {
+//            //login using data from preferences
+//            //mLoginButton.setVisibility(View.INVISIBLE);
+//            //mRegisterButton.setVisibility(View.INVISIBLE);
+//            mPasswordEditText.setText(savedPassword);
+//            mEmailEditText.setText(savedEmail);
+//            ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
+//            modelManager.login(LoginActivity.this, callback, savedEmail, savedPassword);
+//        }
+//    }
 
 
     //save data using shared preferences

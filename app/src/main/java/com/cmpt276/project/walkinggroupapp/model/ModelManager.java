@@ -87,23 +87,26 @@ public class ModelManager {
 
 
     public void login(Context context,
-                      ProxyBuilder.SimpleCallback<Void> callback,
+                      ProxyBuilder.SimpleCallback<Void> onResponseCallback,
+                      ProxyBuilder.SimpleCallback<Void> onFailureCallback,
                       String emailAddress, String password) {
         user = new User();
         user.setEmail(emailAddress);
         user.setPassword(password);
         ProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
         Call<Void> caller = proxy.login(user);
-//        ProxyBuilder.callProxy(context, caller, callback);
-        ProxyBuilder.callProxy(context, caller, returnNothing -> {
-            Call<User> getUserCaller = proxy.getUserByEmail(user.getEmail());
-            ProxyBuilder.callProxy(context, getUserCaller, returnedUser -> {
-                user = returnedUser;
-                callback.callback(null);
-            });
-        });
-//        ProxyBuilder.callProxy(context, caller, returnedNothing -> loginResponse(returnedNothing));
-
+        ProxyBuilder.callProxy(
+                context,
+                caller,
+                returnNothing -> {
+                    Call<User> getUserCaller = proxy.getUserByEmail(user.getEmail());
+                    ProxyBuilder.callProxy(context, getUserCaller, returnedUser -> {
+                        user = returnedUser;
+                        onResponseCallback.callback(null);
+                    });
+                },
+                onFailureCallback
+        );
     }
 
     private void onReceiveToken(String token) {

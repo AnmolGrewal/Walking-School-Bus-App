@@ -145,6 +145,11 @@ public class ProxyBuilder {
                         message = "Unable to decode response (body or error's body).";
                     }
                     showFailure(message);
+
+                    // TODO
+                    if (onFailureCallback != null) {
+                        onFailureCallback.callback(null);
+                    }
                 }
             }
 
@@ -153,6 +158,7 @@ public class ProxyBuilder {
                 String message = "Server Error: " + t.getMessage();
                 showFailure(message);
 
+                // TODO
                 if (onFailureCallback != null) {
                     onFailureCallback.callback(null);
                 }
