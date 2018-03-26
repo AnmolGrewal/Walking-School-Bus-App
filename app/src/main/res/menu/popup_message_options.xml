@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/jacky_mark_as_read"
+        android:title="@string/jacky_mark_as_read_popup" />
+    <item
+        android:id="@+id/jacky_mark_as_unread"
+        android:title="@string/jacky_mark_as_unread_popup" />
+
+</menu>

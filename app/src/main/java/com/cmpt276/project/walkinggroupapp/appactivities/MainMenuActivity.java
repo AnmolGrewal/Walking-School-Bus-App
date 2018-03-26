@@ -42,6 +42,7 @@ public class MainMenuActivity extends AppCompatActivity {
     private Button btnAddNewMonitoredByUser;
     private Button btnLogout;
     private Button btnViewGroup;
+    private Button btnMessage;
     private Button btnParentDashboard;
 
 
@@ -79,6 +80,7 @@ public class MainMenuActivity extends AppCompatActivity {
             setupAddNewMonitoredByUserButton();
             setupViewGroupButton();
             setupLogoutButton();
+            setupMessageButton();
             setupParentDashboardButton();
 
     }
@@ -93,6 +95,17 @@ public class MainMenuActivity extends AppCompatActivity {
 
         ProxyBuilder.SimpleCallback<List<User>> getMonitoredByUsersCallback = monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers);
         modelManager.getMonitoredByUsers(MainMenuActivity.this, getMonitoredByUsersCallback);
+    }
+
+    private void setupMessageButton(){
+        btnMessage = findViewById(R.id.jacky_message_button);
+        btnMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = MessageActivity.makeIntent(MainMenuActivity.this);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setupLogoutButton() {
@@ -272,26 +285,26 @@ public class MainMenuActivity extends AppCompatActivity {
             {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
                 Log.i("MyApp", "Pressed Long" + position);
-                PopupMenu popupMenu = new PopupMenu(MainMenuActivity.this, viewClicked);
+                    PopupMenu popupMenu = new PopupMenu(MainMenuActivity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.monitoring_user_popup, popupMenu.getMenu());
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
 
-                        switch(menuItem.getItemId())
-                        {
-                            case R.id.cancel:
-                                break;
-                            case R.id.delete:
-                                removeMonitorsUserByPosition(position);
-                                break;
-                            case R.id.editGroup:
-                                editUserProfile(position);
-                                break;
+                            switch(menuItem.getItemId())
+                            {
+                                case R.id.cancel:
+                                    break;
+                                case R.id.delete:
+                                    removeMonitorsUserByPosition(position);
+                                    break;
+                                case R.id.editGroup:
+                                    editUserProfile(position);
+                                    break;
+                            }
+                            return true;
                         }
-                        return true;
-                    }
 
                 });
 

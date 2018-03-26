@@ -705,12 +705,13 @@ public class ModelManager {
     // i.e. it affects all users that can view this message;
     // it should NOT be use in release build;
     // I put this method here just for debugging purpose.
-//    public void deleteMessageByMessageId(Context context,
-//                                         ProxyBuilder.SimpleCallback<Void> callback,
-//                                         long messageId) {
-//        Call<Void> caller = proxy.deleteMessageById(messageId);
-//        ProxyBuilder.callProxy(context, caller, callback);
-//    }
+
+//public void deleteMessageByMessageId(Context context,
+//                                     ProxyBuilder.SimpleCallback<Void> callback,
+//                                     long messageId) {
+//       Call<Void> caller = proxy.deleteMessageById(messageId);
+//       ProxyBuilder.callProxy(context, caller, callback);
+//   }
 
 
     public void markMessageAsRead(Context context,
