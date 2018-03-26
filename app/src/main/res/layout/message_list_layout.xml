@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/jacky_from_email_static"
-        android:text="From Group: "
+        android:text="@string/jacky_from_group_text"
         android:textSize="16sp" />
 
     <TextView
