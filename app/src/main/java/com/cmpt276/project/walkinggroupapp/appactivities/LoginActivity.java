@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextView mForgotPasswordTextView;
     private EditText mPasswordEditText;
     private EditText mEmailEditText;
+
+    private ProgressBar loginProgressBar;
 
     private String mPassword;
     private String mEmail;
@@ -67,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
         modelManager = ModelManager.getInstance();
         modelManager.setApiKey(getString(R.string.gerry_apikey));
 
+        setupLoginProgressBar();
+
 
         //set up all buttons, texViews etc.
         registerViews();
@@ -90,6 +95,12 @@ public class LoginActivity extends AppCompatActivity {
     public static Intent makeIntent(Context context)
     {
         return new Intent(context, LoginActivity.class);
+    }
+
+
+    private void setupLoginProgressBar() {
+        loginProgressBar = findViewById(R.id.justin_loginProgressBar);
+        loginProgressBar.setVisibility(View.INVISIBLE);
     }
 
     private void setupRegisterButton() {
@@ -211,9 +222,14 @@ public class LoginActivity extends AppCompatActivity {
         ProxyBuilder.SimpleCallback<Void> onResponseCallback = returnedNothing -> loginSuccessResponse(returnedNothing);
         ProxyBuilder.SimpleCallback<Void> onFailureCallback = returnedNothing -> loginFailResponse(returnedNothing);
         modelManager.login(LoginActivity.this, onResponseCallback, onFailureCallback, mEmail, mPassword);
+
+        loginProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void loginSuccessResponse(Void returnedNothing) {
+        loginProgressBar.setVisibility(View.INVISIBLE);
+
+
         Log.w(TAG, "Server replied to login request (no content was expected).");
 
         Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
@@ -226,6 +242,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginFailResponse(Void returnedNothing) {
+        loginProgressBar.setVisibility(View.INVISIBLE);
+
         mLoginButton.setEnabled(true);
 
         Toast.makeText(LoginActivity.this,"Login failed, please try again.",Toast.LENGTH_SHORT).show();
