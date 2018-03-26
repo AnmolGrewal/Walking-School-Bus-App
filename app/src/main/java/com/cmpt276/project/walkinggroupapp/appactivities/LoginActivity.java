@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button mRegisterButton;
 
 //    private Button mMapTestButton;
-    
+
     private Button mHelpButton;
     private TextView mForgotPasswordTextView;
     private EditText mPasswordEditText;
@@ -78,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         setupForgetPasswordTextViewOnClick();
 
 
+        // this part is for auto-login.
         if (savedIsLogout.equals("false") && mEmail != null && mPassword != null) {
             login();
         }
@@ -108,8 +109,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 login();
-//                ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
-//                modelManager.login(LoginActivity.this, callback, mEmail, mPassword);
             }
         });
     }
@@ -139,6 +138,9 @@ public class LoginActivity extends AppCompatActivity {
 
         //email editText
         mEmailEditText = findViewById(R.id.gerry_Email_EditText_login);
+
+        mEmailEditText.setText(mEmail);
+
         mEmailEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -162,6 +164,9 @@ public class LoginActivity extends AppCompatActivity {
 
         //password editText
         mPasswordEditText = findViewById(R.id.gerry_Password_EditText_login);
+
+        mPasswordEditText.setText(mPassword);
+
         mPasswordEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
