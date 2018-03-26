@@ -13,7 +13,11 @@ import android.widget.EditText;
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.Message;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
+import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment that creates a dialog for the user to send a message to all their parents
@@ -24,10 +28,15 @@ public class sendMessageFragment extends AppCompatDialogFragment
     private String message;
     private EditText userMessageEditText;
     private ModelManager modelManager;
+    private boolean isEmergency;
+    private List<WalkingGroup> memberOfGroups;
 
     @Override
     public Dialog onCreateDialog(Bundle saveInstanceState)
     {
+        Bundle variables = getArguments();
+        isEmergency = variables.getBoolean("IsEmergencyMessage", false);
+
         modelManager = ModelManager.getInstance();
         //Create the activity to show
         View v = LayoutInflater.from(getActivity())
@@ -40,12 +49,20 @@ public class sendMessageFragment extends AppCompatDialogFragment
                     case DialogInterface.BUTTON_POSITIVE:
                         userMessageEditText = v.findViewById(R.id.jacky_user_send_message);
                         message = userMessageEditText.getText().toString();
-                        if(message.length() == 0)
-                        {
+                        if(message.length() == 0 && isEmergency == true) {
+                            message = "Panic Alert";
+                        }else if(message.length() == 0){
                             message = "Blank Message";
                         }
-                        ProxyBuilder.SimpleCallback<Message> sendCallBack = noResponse -> sendMessageToParentsResponse(noResponse);
-                        modelManager.sendMessageToParentsOf(getActivity(), sendCallBack, message, false);
+
+                        if(isEmergency == false){
+                            ProxyBuilder.SimpleCallback<Message> sendCallBack = noResponse -> sendMessageResponse(noResponse);
+                            modelManager.sendMessageToParentsOf(getActivity(), sendCallBack, message, false);
+                        }else{
+                            ProxyBuilder.SimpleCallback<List<Long>>getGroups = idOfGroups -> getGroupsResponse(idOfGroups);
+                            modelManager.getIdsOfGroupsYouAreMemberOf(getActivity(), getGroups);
+                        }
+
                         break;
                 }
             }
@@ -59,7 +76,15 @@ public class sendMessageFragment extends AppCompatDialogFragment
                 .create();
     }
 
-    private void sendMessageToParentsResponse(Message response){
+    private void getGroupsResponse(List<Long> groupId){
+        memberOfGroups = new ArrayList<>();
+        for (Long id: groupId) {
+            ProxyBuilder.SimpleCallback<Message> sendCallBack = noResponse -> sendMessageResponse(noResponse);
+            modelManager.sendMessageToGroup(getActivity(), sendCallBack, id,message, true);
+        }
+    }
+
+    private void sendMessageResponse(Message response){
         Log.i("MyApp", "Message sent as: " + message);
     }
 
