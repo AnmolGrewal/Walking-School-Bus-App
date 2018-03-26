@@ -60,11 +60,50 @@ public class LoginActivity extends AppCompatActivity {
         modelManager = ModelManager.getInstance();
         modelManager.setApiKey(getString(R.string.gerry_apikey));
 
-        // Build the server proxy--used for logging in
 
         //set up all buttons, texViews etc.
-        RegisterViews();
+        registerViews();
+
+
+        setupRegisterButton();
+        setupLoginButton();
+        setupHelpButton();
+
+
         loginRequest();
+    }
+
+    private void setupRegisterButton() {
+        mRegisterButton = findViewById(R.id.gerry_Register_Button_login);
+        mRegisterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent registerActivity = RegisterActivity.makeIntent(getApplicationContext());
+                startActivity(registerActivity);
+            }
+        });
+    }
+
+    private void setupLoginButton() {
+        mLoginButton = findViewById(R.id.gerry_Login_Button_login);
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
+                modelManager.login(LoginActivity.this, callback, mEmail, mPassword);
+            }
+        });
+    }
+
+    private void setupHelpButton() {
+        mHelpButton = findViewById(R.id.jacky_help_button);
+        mHelpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentHelp = HelpActivity.makeIntent(LoginActivity.this);
+                startActivity(intentHelp);
+            }
+        });
     }
 
     private void loginRequest() {
@@ -108,33 +147,31 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-    private void RegisterViews() {
+    private void registerViews() {
 
-        //login button
-        mLoginButton = findViewById(R.id.gerry_Login_Button_login);
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        //login button
+//        mLoginButton = findViewById(R.id.gerry_Login_Button_login);
+//        mLoginButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                //login using data from editTexts
+//                ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
+//                modelManager.login(LoginActivity.this, callback, mEmail, mPassword);
+//
+//            }
+//        });
 
-
-
-                //login using data from editTexts
-                ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
-                modelManager.login(LoginActivity.this, callback, mEmail, mPassword);
-
-            }
-        });
-
-        //register button
-        mRegisterButton = findViewById(R.id.gerry_Register_Button_login);
-        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //go to register activity
-                Intent registerActivity = RegisterActivity.makeIntent(getApplicationContext());
-                startActivity(registerActivity);
-            }
-        });
+//        //register button
+//        mRegisterButton = findViewById(R.id.gerry_Register_Button_login);
+//        mRegisterButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //go to register activity
+//                Intent registerActivity = RegisterActivity.makeIntent(getApplicationContext());
+//                startActivity(registerActivity);
+//            }
+//        });
 
         //forgot password textView
         mForgotPasswordTextView = findViewById(R.id.gerry_ForgotPassword_TextView_login);
@@ -142,6 +179,29 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //go to ForgotPassword Activity
+            }
+        });
+
+        //email editText
+        mEmailEditText = findViewById(R.id.gerry_Email_EditText_login);
+        mEmailEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if(s.length() != 0) {
+
+                    mEmail = s.toString();
+                }
             }
         });
 
@@ -169,29 +229,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        //email editText
-        mEmailEditText = findViewById(R.id.gerry_Email_EditText_login);
-        mEmailEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if(s.length() != 0) {
-
-                    mEmail = s.toString();
-                }
-            }
-        });
-
         //test map Button
         mMapTestButton = findViewById(R.id.gerry_Map_Button_login);
         mMapTestButton.setOnClickListener(new View.OnClickListener() {
@@ -203,16 +240,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        //Help button
-        mHelpButton = findViewById(R.id.jacky_help_button);
-        mHelpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Go to help screen
-                Intent intentHelp = HelpActivity.makeIntent(LoginActivity.this);
-                startActivity(intentHelp);
-            }
-        });
+//        //Help button
+//        mHelpButton = findViewById(R.id.jacky_help_button);
+//        mHelpButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //Go to help screen
+//                Intent intentHelp = HelpActivity.makeIntent(LoginActivity.this);
+//                startActivity(intentHelp);
+//            }
+//        });
     }
 
 
