@@ -32,9 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button mLoginButton;
     private Button mRegisterButton;
-
-//    private Button mMapTestButton;
-
+    
     private Button mHelpButton;
     private TextView mForgotPasswordTextView;
     private EditText mPasswordEditText;
@@ -44,11 +42,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private String mPassword;
     private String mEmail;
-
-    private Intent intent;
-
-
-
 
 
 
@@ -62,11 +55,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+//        loadSharedPreferences();
+
         final SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
         mEmail = sharedPreferences.getString(PREFERENCE_EMAIL, null);
         mPassword = sharedPreferences.getString(PREFERENCE_PASSWORD,null);
+//        String savedIsLogout = sharedPreferences.getString(PREFERENCE_IS_LOGOUT, "false");
         String savedIsLogout = sharedPreferences.getString(PREFERENCE_IS_LOGOUT, "false");
-        
+
         modelManager = ModelManager.getInstance();
         modelManager.setApiKey(getString(R.string.gerry_apikey));
 
@@ -91,6 +87,10 @@ public class LoginActivity extends AppCompatActivity {
 
 //        loginRequest();
     }
+
+//    private void loadSharedPreferences() {
+//
+//    }
 
     public static Intent makeIntent(Context context)
     {
@@ -236,7 +236,7 @@ public class LoginActivity extends AppCompatActivity {
 
         SavePreferences();
 
-        intent = MainMenuActivity.makeIntent(LoginActivity.this);
+        Intent intent = MainMenuActivity.makeIntent(LoginActivity.this);
         startActivity(intent);
         finish();
     }
