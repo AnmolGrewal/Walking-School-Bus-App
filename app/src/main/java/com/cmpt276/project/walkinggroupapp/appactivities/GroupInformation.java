@@ -15,10 +15,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.GpsLocation;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
+import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
 import java.sql.Timestamp;
@@ -45,6 +47,11 @@ public class GroupInformation extends AppCompatActivity {
     private Double mLat;
     private Double mLng;
 
+    private double mGroupUploadingLat;
+    private double mGroupUploadingLng;
+
+    private boolean mIsStoppingInTenMinutes = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +63,9 @@ public class GroupInformation extends AppCompatActivity {
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         setupLocationListener();
+
+        //get the destination of the User currently uploading location data
+        getGroupUploadingDestination();
 
         setupButtons();
     }
@@ -69,6 +79,7 @@ public class GroupInformation extends AppCompatActivity {
                 //start uploading user current location
                 mIsUpload = true;
                 getLastKnownLocation();
+                Toast.makeText(GroupInformation.this, "Started Uploading", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -78,6 +89,7 @@ public class GroupInformation extends AppCompatActivity {
             public void onClick(View v) {
                 //stop uploading location
                 mIsUpload = false;
+                Toast.makeText(GroupInformation.this, "Upload Stopped", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -104,6 +116,7 @@ public class GroupInformation extends AppCompatActivity {
 
             @Override
             public void onProviderDisabled(String provider) {
+                //let user go to settings to enable gps if it is disabled
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
             }
@@ -145,7 +158,7 @@ public class GroupInformation extends AppCompatActivity {
 
     private void getLastKnownLocation() {
         if(mIsUpload) {
-
+            Log.w(TAG, "getLocation()1");
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
             GpsLocation currentLocation;
@@ -155,17 +168,26 @@ public class GroupInformation extends AppCompatActivity {
             } else {
                 currentLocation = new GpsLocation(0.0, 0.0, timestamp);
             }
-            Log.w(TAG, "getLocation()4");
+            Log.w(TAG, "getLocation()2");
             ProxyBuilder.SimpleCallback<GpsLocation> setLastKnownLocationCallback = serverPassedLocation -> setLastKnownLocationResponse(serverPassedLocation);
             mModelManager.setLastGpsLocation(GroupInformation.this, setLastKnownLocationCallback, mModelManager.getPrivateFieldUser().getId(), currentLocation);
+            Log.w(TAG, "getLocation()3");
         }
 
     }
 
-
     private void setLastKnownLocationResponse(GpsLocation gpsLocation) {
         //double check here to make sure the returned gpsLocation  was the same as the one you passed to server
-        Log.w(TAG, "SET LOCATION SUCCESS, Recieved: " + gpsLocation.getLat() + " " + gpsLocation.getLng() + " " + gpsLocation.getTimestamp().toString());
+        Log.w(TAG, "SET LOCATION SUCCESS, Received: " + gpsLocation.getLat() + " " + gpsLocation.getLng() + " " + gpsLocation.getTimestamp().toString());
+
+        //check if destination is reached -> stop uploading location data
+        if( (Math.abs(gpsLocation.getLat() - mGroupUploadingLat) <= 0.01) && (Math.abs(gpsLocation.getLng() - mGroupUploadingLng) <= 0.01) && (!mIsStoppingInTenMinutes) ) {
+            stopUploadingInTenMinutes();
+
+            //So only 1 stop command is done once destination is reached
+            mIsStoppingInTenMinutes = true;
+        }
+
 
         //wait 30 seconds and request for current location again
         Handler handler = new Handler();
@@ -179,5 +201,42 @@ public class GroupInformation extends AppCompatActivity {
         }, delay);
 
     }
+
+
+
+    private void getGroupUploadingDestination() {
+        ProxyBuilder.SimpleCallback<WalkingGroup> getGroupUploadingDestinationCallBack = serverPassedWalkingGroup-> getGroupUploadingDestinationResponse(serverPassedWalkingGroup);
+        mModelManager.getWalkingGroupById(GroupInformation.this, getGroupUploadingDestinationCallBack, mModelManager.getPrivateFieldUser().getGroupIdOfUploadingGroup());
+    }
+
+    private void getGroupUploadingDestinationResponse(WalkingGroup walkingGroup) {
+
+       mGroupUploadingLat = walkingGroup.getRouteLatArray()[1];
+       mGroupUploadingLng = walkingGroup.getRouteLngArray()[1];
+
+        Log.w(TAG, "GET GROUP DESTINATION SUCCESS, Received: " + mGroupUploadingLat + " " + mGroupUploadingLng);
+
+
+    }
+
+
+    private void stopUploadingInTenMinutes() {
+        Log.w(TAG, "Destination Reached, stopping upload after 10 minutes");
+        Toast.makeText(GroupInformation.this, "Destination Reached, stopping upload after 10 minutes", Toast.LENGTH_SHORT).show();
+        //wait 10 minutes then stop uploading location data
+        Handler handler = new Handler();
+        int delay = 600000; //milliseconds,
+
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                //do something after 10 minutes
+                mIsUpload = false;
+                Log.w(TAG, "Stop Upload After 10 Minutes");
+            }
+        }, delay);
+
+    }
+
+
 
 }

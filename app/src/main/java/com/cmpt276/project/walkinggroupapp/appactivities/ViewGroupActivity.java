@@ -63,7 +63,7 @@ public class ViewGroupActivity extends AppCompatActivity {
 //        populateMemberList();
 
 //        registerLeaderListClick();
-//        registerMemberListOnItemLongClick();
+//        registerMemberListClick();
 
 
         setupCreateButton();
@@ -105,7 +105,7 @@ public class ViewGroupActivity extends AppCompatActivity {
         }
         memberOfGroups.add(returnedGroup);
         populateMemberList();
-        registerMemberListOnItemLongClick();
+        registerMemberListClick();
     }
 
     @Override
@@ -212,7 +212,7 @@ public class ViewGroupActivity extends AppCompatActivity {
         }
     }
 
-    private void registerMemberListOnItemLongClick()                                                                                    //For clicking on list object
+    private void registerMemberListClick()                                                                                    //For clicking on list object
     {
         final ListView list = findViewById(R.id.jacky_edit_user_member_list);
 
@@ -251,6 +251,11 @@ public class ViewGroupActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Get the Id of rhe group that is clicked
+                long groupId = memberOfGroups.get(position).getId();
+                modelManager.getPrivateFieldUser().setGroupIdOfUploadingGroup(groupId);
+
+
                 // go to GroupInfo Activity
                 Intent intent = new Intent(ViewGroupActivity.this, GroupInformation.class);
                 startActivity(intent);
