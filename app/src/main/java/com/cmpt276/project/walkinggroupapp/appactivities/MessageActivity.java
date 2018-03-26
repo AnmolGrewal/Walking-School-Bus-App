@@ -178,7 +178,6 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
-                Log.i("MyApp", "Pressed Long" + position);
                 Message readMessage = messageList.get(position);
                 PopupMenu popupMenu = new PopupMenu(MessageActivity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_message_options, popupMenu.getMenu());
@@ -273,24 +272,12 @@ public class MessageActivity extends AppCompatActivity {
         int i;
         Message compareMessage;
         Message currentMessages;
-        for (i = 0; i < sortedList.size(); i++) {
+        for (i = 0; i < sortedList.size()-1; i++) {
             currentMessages = sortedList.get(i);
-            if(i < sortedList.size() - 1)
-            {
-                Log.i("MyApp", "i: " + i + " ListSize: " + sortedList.size());
-                Log.i("MyApp", "Id1: " + Long.toString(currentMessages.getId()) + " ID2: " + Long.toString(sortedList.get(i+1).getId()));
-                compareMessage = sortedList.get(i + 1);
-                if(currentMessages.getId().equals(compareMessage.getId())){
-                    Log.i("MyApp", "Removed an object");
-                    sortedList.remove(i+1);
-                }else{
-                    Log.i("MyApp", "is This even ran");
-                }
-
-            }else{
-                Log.i("MyApp", "SameSize");
+            compareMessage = sortedList.get(i + 1);
+            if(currentMessages.getId().equals(compareMessage.getId())){
+                sortedList.remove(i+1);
             }
-            Log.i("MyApp", "Increment i");
         }
         messageList.clear();
         messageList = sortedList;
