@@ -143,7 +143,7 @@ public class RegisterStudentActivity extends AppCompatActivity {
         editor.putString(PREFERENCE_PASSWORD,password1);
 
         //Assume user does not logout--change this when user preses logout manually
-        editor.putString(PREFERENCE_IS_LOGOUT, "false");
+        editor.putBoolean(PREFERENCE_IS_LOGOUT, false);
 
         //commit to preference
         editor.commit();

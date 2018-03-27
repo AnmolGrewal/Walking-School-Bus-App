@@ -129,17 +129,13 @@ public class RegisterParentActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        //clear current data first
         editor.clear();
 
-        //put current email and password to preferences
         editor.putString(PREFERENCE_EMAIL,email);
         editor.putString(PREFERENCE_PASSWORD,password1);
 
-        //Assume user does not logout--change this when user preses logout manually
-        editor.putString(PREFERENCE_IS_LOGOUT, "false");
+        editor.putBoolean(PREFERENCE_IS_LOGOUT, false);
 
-        //commit to preference
         editor.commit();
 
         finishAffinity();
