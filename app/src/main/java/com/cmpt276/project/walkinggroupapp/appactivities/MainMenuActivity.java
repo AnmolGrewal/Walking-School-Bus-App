@@ -34,7 +34,9 @@ import java.util.List;
 
 public class MainMenuActivity extends AppCompatActivity {
 
-    private static final String PREFERENCE_IS_LOGOUT = "saved.logout.key";
+    public static final String PREFERENCE_EMAIL = "saved.email.key";
+    public static final String PREFERENCE_PASSWORD = "saved.password.key";
+    public static final String PREFERENCE_IS_LOGOUT = "saved.logout.key";
 
     private Button btnAddNewMonitorsUser;
     private Button btnAddNewMonitoredByUser;
@@ -117,6 +119,9 @@ public class MainMenuActivity extends AppCompatActivity {
                 editor.clear();
                 //set the Logout string to show user logged out
                 editor.putString(PREFERENCE_IS_LOGOUT, "true");
+
+                editor.putString(PREFERENCE_EMAIL, null);
+                editor.putString(PREFERENCE_PASSWORD, null);
 
                 //commit to preference
                 editor.commit();
@@ -289,12 +294,13 @@ public class MainMenuActivity extends AppCompatActivity {
 
                             switch(menuItem.getItemId())
                             {
-                                case R.id.cancel:
-                                    break;
                                 case R.id.delete:
                                     removeMonitorsUserByPosition(position);
                                     break;
                                 case R.id.editGroup:
+                                    editUserGroup(position);
+                                    break;
+                                case R.id.jacky_edit_user_information:
                                     editUserProfile(position);
                                     break;
                             }
@@ -348,9 +354,15 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
 
-    private void editUserProfile(int position) {
+    private void editUserGroup(int position) {
         long targetId = monitorsUsers.get(position).getId();
-        Intent intent = EditMonitoringUserProfileActivity.makeIntent(getApplicationContext(), targetId);
+        Intent intent = EditMonitoringUserGroupActivity.makeIntent(getApplicationContext(), targetId);
+        startActivity(intent);
+    }
+
+    private void editUserProfile(int position){
+        long targetId = monitorsUsers.get(position).getId();
+        Intent intent = EditOwnProfile.makeIntent(MainMenuActivity.this, targetId);
         startActivity(intent);
     }
 

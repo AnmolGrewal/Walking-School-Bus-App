@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.fragments.sendMessageFragment;
@@ -65,8 +64,8 @@ public class ViewGroupActivity extends AppCompatActivity {
 //        populateLeaderList();
 //        populateMemberList();
 
-//        registerLeaderListOnItemLongClick();
-//        registerMemberListOnItemLongClick();
+//        registerLeaderListClick();
+//        registerMemberListClick();
 
 
         setupCreateButton();
@@ -89,7 +88,7 @@ public class ViewGroupActivity extends AppCompatActivity {
         }
         leadsGroups.add(returnedGroup);
         populateLeaderList();
-        registerLeaderListOnItemLongClick();
+        registerLeaderListClick();
     }
 
     private void getIdsOfGroupsYouAreMemberOfResponse(List<Long> groupIdsList) {
@@ -108,7 +107,7 @@ public class ViewGroupActivity extends AppCompatActivity {
         }
         memberOfGroups.add(returnedGroup);
         populateMemberList();
-        registerMemberListOnItemLongClick();
+        registerMemberListClick();
     }
 
     @Override
@@ -215,7 +214,7 @@ public class ViewGroupActivity extends AppCompatActivity {
         }
     }
 
-    private void registerMemberListOnItemLongClick()                                                                                    //For clicking on list object
+    private void registerMemberListClick()                                                                                    //For clicking on list object
     {
         final ListView list = findViewById(R.id.jacky_edit_user_member_list);
 
@@ -250,9 +249,21 @@ public class ViewGroupActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Get the Id of the group that is clicked
+                long groupId = memberOfGroups.get(position).getId();
+
+                // go to GroupInfo Activity
+                Intent intent = GroupInformationActivity.makeIntent(ViewGroupActivity.this, groupId);
+                startActivity(intent);
+            }
+        });
     }
 
-    private void registerLeaderListOnItemLongClick()                                                                                    //For clicking on list object
+    private void registerLeaderListClick()                                                                                    //For clicking on list object
     {
         final ListView list = findViewById(R.id.jacky_leader_list);
 
@@ -289,7 +300,9 @@ public class ViewGroupActivity extends AppCompatActivity {
                 popupMenu.show();
                 return true;
             }
+
         });
+
     }
 
     private void leaveGroupYouAreMemberOf(int position){
