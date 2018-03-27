@@ -94,6 +94,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        //ask for permission
+        askPermission();
 
         mModelManager = ModelManager.getInstance();
 
@@ -346,6 +348,41 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         }
     }
 
+
+
+    private void askPermission() {
+        //Ask for USer Permission if USer has no ACCESS_FINE_LOCATION Permission
+        if (ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]
+                    {android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+
+
+        }
+
+    }
+
+
+    //handle the results of permissions
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case LOCATION_PERMISSION_REQUEST_CODE:
+                //if accept button clicked
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //finish this activity and reload it
+                    finish();
+                    startActivity(getIntent());
+                }
+                //deny button clicked
+                else if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED){
+                    finish();
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
     private void setUpMap() {
 

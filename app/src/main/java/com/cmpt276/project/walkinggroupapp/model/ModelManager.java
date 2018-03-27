@@ -57,7 +57,7 @@ public class ModelManager {
     public void register(Context context,
                          ProxyBuilder.SimpleCallback<Void> callback,
                          String name, String emailAddress, String password,
-                         int birthYear, int birthMonth,
+                         Integer birthYear, Integer birthMonth,
                          String address, String cellPhone,
                          String homePhone, String grade,
                          String teacherName, String emergencyContactInfo ) {
@@ -68,8 +68,8 @@ public class ModelManager {
         newUser.setEmail(emailAddress);
         newUser.setPassword(password);
         //Testing
-        newUser.setBirthYear(birthYear);
         newUser.setBirthMonth(birthMonth);
+        newUser.setBirthYear(birthYear);
         newUser.setAddress(address);
         newUser.setCellPhone(cellPhone);
         newUser.setHomePhone(homePhone);
@@ -87,23 +87,26 @@ public class ModelManager {
 
 
     public void login(Context context,
-                      ProxyBuilder.SimpleCallback<Void> callback,
+                      ProxyBuilder.SimpleCallback<Void> onResponseCallback,
+                      ProxyBuilder.SimpleCallback<String> onFailureCallback,
                       String emailAddress, String password) {
         user = new User();
         user.setEmail(emailAddress);
         user.setPassword(password);
         ProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
         Call<Void> caller = proxy.login(user);
-//        ProxyBuilder.callProxy(context, caller, callback);
-        ProxyBuilder.callProxy(context, caller, returnNothing -> {
-            Call<User> getUserCaller = proxy.getUserByEmail(user.getEmail());
-            ProxyBuilder.callProxy(context, getUserCaller, returnedUser -> {
-                user = returnedUser;
-                callback.callback(null);
-            });
-        });
-//        ProxyBuilder.callProxy(context, caller, returnedNothing -> loginResponse(returnedNothing));
-
+        ProxyBuilder.callProxy(
+                context,
+                caller,
+                returnNothing -> {
+                    Call<User> getUserCaller = proxy.getUserByEmail(user.getEmail());
+                    ProxyBuilder.callProxy(context, getUserCaller, returnedUser -> {
+                        user = returnedUser;
+                        onResponseCallback.callback(null);
+                    });
+                },
+                onFailureCallback
+        );
     }
 
     private void onReceiveToken(String token) {
@@ -574,6 +577,21 @@ public class ModelManager {
 
 
 
+    //for setting and getting lastGpsLocation
+    public void getLastGpsLocation(Context context,
+                                   ProxyBuilder.SimpleCallback<GpsLocation> callback,
+                                   long userId) {
+        Call<GpsLocation> getLastGpsLocationCaller = proxy.getLastGpsLocation(userId);
+        ProxyBuilder.callProxy(context, getLastGpsLocationCaller, callback);
+    }
+
+    public void setLastGpsLocation(Context context,
+                                   ProxyBuilder.SimpleCallback<GpsLocation> callback,
+                                   long userId,
+                                   GpsLocation gpsLocation) {
+        Call<GpsLocation> setLastGpsLocationCaller = proxy.setLastGpsLocation(userId,gpsLocation );
+        ProxyBuilder.callProxy(context, setLastGpsLocationCaller, callback);
+    }
 
 
 

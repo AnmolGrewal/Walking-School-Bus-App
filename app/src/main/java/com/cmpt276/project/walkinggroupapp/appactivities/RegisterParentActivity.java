@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,13 +24,13 @@ import static com.cmpt276.project.walkinggroupapp.appactivities.RegisterActivity
 import static com.cmpt276.project.walkinggroupapp.appactivities.RegisterActivity.USER_NAME;
 import static com.cmpt276.project.walkinggroupapp.appactivities.RegisterActivity.USER_PASS;
 
-public class RegisterActivityParent extends AppCompatActivity {
+public class RegisterParentActivity extends AppCompatActivity {
 
     private String name;
     private String email;
     private String password1;
-    private int birthYear;
-    private int birthMonth;
+    private Integer birthYear;
+    private Integer birthMonth;
     private String address;
     private String cellPhone;
     private String homePhone;
@@ -62,12 +61,18 @@ public class RegisterActivityParent extends AppCompatActivity {
         userRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(userBirthMonth.getSelectedItemPosition() != 12) {
+                    int spinner_pos = userBirthMonth.getSelectedItemPosition();
+                    String[] month_values = getResources().getStringArray(R.array.months_values);
+                    birthMonth = Integer.valueOf(month_values[spinner_pos]);
+                } else {
+                    birthMonth = null;
+                }
                 String temp = userBirthYear.getText().toString().trim();
                 try {
                     birthYear = Integer.parseInt(temp);
                 } catch (NumberFormatException e) {
-                    Toast.makeText(RegisterActivityParent.this, "Birth Year Incorrect", Toast.LENGTH_SHORT)
-                            .show();
+                    birthYear = null;
                 }
                 Intent intent = getIntent();
                 name = intent.getStringExtra(USER_NAME);
@@ -84,7 +89,7 @@ public class RegisterActivityParent extends AppCompatActivity {
                 teacherName = null;
                 emergencyContactInfo = null;
                 ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> registerResponse(returnedNothing);
-                modelManager.register(RegisterActivityParent.this, callback, name, email, password1,
+                modelManager.register(RegisterParentActivity.this, callback, name, email, password1,
                         birthYear, birthMonth, address, cellPhone, homePhone, grade, teacherName, emergencyContactInfo);
             }
         });
@@ -111,14 +116,15 @@ public class RegisterActivityParent extends AppCompatActivity {
                 R.array.months, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userBirthMonth.setAdapter(adapter);
+        userBirthMonth.setSelection(12);
     }
 
     public static Intent makeIntent(Context context){
-        return new Intent(context, RegisterActivityParent.class);
+        return new Intent(context, RegisterParentActivity.class);
     }
 
     private void registerResponse(Void returnedNothing) {
-        Toast.makeText(RegisterActivityParent.this,"Account Created",Toast.LENGTH_SHORT).show();
+        Toast.makeText(RegisterParentActivity.this,"Account Created",Toast.LENGTH_SHORT).show();
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -137,7 +143,7 @@ public class RegisterActivityParent extends AppCompatActivity {
         editor.commit();
 
         finishAffinity();
-        Intent intent = LoginActivity.makeIntent(RegisterActivityParent.this);
+        Intent intent = LoginActivity.makeIntent(RegisterParentActivity.this);
         startActivity(intent);
     }
 
