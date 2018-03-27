@@ -40,8 +40,6 @@ public class User {
     @JsonIgnore
     private boolean isViewingChild = false;
 
-    @JsonIgnore
-    private long groupIdOfUploadingGroup;
 
 
     public Long getId() {
@@ -159,10 +157,6 @@ public class User {
 
     public void setLastGpsLocation(GpsLocation lastGpsLocation) {this.lastGpsLocation = lastGpsLocation;}
 
-    //groupIdOfUploadingGroup
-    public long getGroupIdOfUploadingGroup() {return groupIdOfUploadingGroup;}
-
-    public void setGroupIdOfUploadingGroup(long groupIdOfUploadingGroup) {this.groupIdOfUploadingGroup = groupIdOfUploadingGroup;}
 
     public List<User> getMonitoredByUsers() {
         return monitoredByUsers;

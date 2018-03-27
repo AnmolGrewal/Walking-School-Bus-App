@@ -251,13 +251,11 @@ public class ViewGroupActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Get the Id of rhe group that is clicked
+                //Get the Id of the group that is clicked
                 long groupId = memberOfGroups.get(position).getId();
-                modelManager.getPrivateFieldUser().setGroupIdOfUploadingGroup(groupId);
-
 
                 // go to GroupInfo Activity
-                Intent intent = new Intent(ViewGroupActivity.this, GroupInformation.class);
+                Intent intent = GroupInformation.makeIntent(ViewGroupActivity.this, groupId);
                 startActivity(intent);
             }
         });

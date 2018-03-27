@@ -1,6 +1,7 @@
 package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -34,6 +35,7 @@ import java.sql.Timestamp;
 public class GroupInformation extends AppCompatActivity {
     private static final String TAG = "GroupInfoActivity";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    public static final String GROUP_ID_INTENT_KEY = "group_id_intent_key";
 
     private ModelManager mModelManager;
 
@@ -52,11 +54,15 @@ public class GroupInformation extends AppCompatActivity {
 
     private boolean mIsStoppingInTenMinutes = false;
 
+    private long mCurrentGroupId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_information);
+
+        extractDataFromIntent();
 
         mModelManager = ModelManager.getInstance();
 
@@ -68,6 +74,7 @@ public class GroupInformation extends AppCompatActivity {
         getGroupUploadingDestination();
 
         setupButtons();
+
     }
 
     private void setupButtons() {
@@ -206,7 +213,7 @@ public class GroupInformation extends AppCompatActivity {
 
     private void getGroupUploadingDestination() {
         ProxyBuilder.SimpleCallback<WalkingGroup> getGroupUploadingDestinationCallBack = serverPassedWalkingGroup-> getGroupUploadingDestinationResponse(serverPassedWalkingGroup);
-        mModelManager.getWalkingGroupById(GroupInformation.this, getGroupUploadingDestinationCallBack, mModelManager.getPrivateFieldUser().getGroupIdOfUploadingGroup());
+        mModelManager.getWalkingGroupById(GroupInformation.this, getGroupUploadingDestinationCallBack, mCurrentGroupId);
     }
 
     private void getGroupUploadingDestinationResponse(WalkingGroup walkingGroup) {
@@ -234,6 +241,22 @@ public class GroupInformation extends AppCompatActivity {
                 Log.w(TAG, "Stop Upload After 10 Minutes");
             }
         }, delay);
+
+    }
+
+
+
+    //For creating intents outside of this Activity
+    public static Intent makeIntent(Context context, long groupId){
+        Intent intent = new Intent(context, GroupInformation.class);
+        intent.putExtra(GROUP_ID_INTENT_KEY, groupId);
+        return intent;
+    }
+
+    //for extracting intent extras from ViewGroup Activity
+    private void extractDataFromIntent() {
+        Intent intent = getIntent();
+        mCurrentGroupId = intent.getLongExtra(GROUP_ID_INTENT_KEY, 0);
 
     }
 
