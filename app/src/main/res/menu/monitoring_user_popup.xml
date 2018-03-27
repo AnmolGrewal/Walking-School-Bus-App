@@ -10,7 +10,7 @@
         android:title="@string/jacky_edit_group"/>
 
     <item
-        android:id="@+id/cancel"
-        android:title="@string/jacky_cancel_popup" />
+        android:id="@+id/jacky_edit_user_information"
+        android:title="Edit User" />
 
 </menu>
