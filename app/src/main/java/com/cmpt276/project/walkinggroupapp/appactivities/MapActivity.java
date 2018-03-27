@@ -64,7 +64,7 @@ import static java.lang.Long.parseLong;
  */
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, LocationListener {
     private static final String TAG = "MapActivity";
-    private static final int DEFAULT_ZOOM = 11;
+    private static final int DEFAULT_ZOOM = 13;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CHECK_SETTINGS = 2;
 
