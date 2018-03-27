@@ -93,5 +93,6 @@
     <string name="jacky_mark_as_read_popup">Mark as read</string>
     <string name="jacky_mark_as_unread_popup">Mark as unread</string>
     <string name="jacky_delete_delete_message">Delete</string>
+    <string name="jackt_edit_user_popup">Edit User</string>
 
 </resources>

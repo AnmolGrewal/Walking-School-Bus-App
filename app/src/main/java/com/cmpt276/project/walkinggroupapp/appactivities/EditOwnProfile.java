@@ -28,6 +28,7 @@ public class EditOwnProfile extends AppCompatActivity {
     private String email;
     public static final String USER_EMAIL = "USER_EMAIL";
     public static final String USER_NAME = "USER_NAME";
+    public static final String USER_ID = "UserID";
     User currentUser;
     private ModelManager modelManager;
 
@@ -102,5 +103,11 @@ public class EditOwnProfile extends AppCompatActivity {
 
     public static Intent makeIntent(Context context){
         return new Intent(context, EditOwnProfile.class);
+    }
+
+    public static Intent makeIntentToEditUserProfile(Context context, Long userId){
+        Intent intent = new Intent(context, EditOwnProfile.class);
+        intent.putExtra(USER_ID, userId);
+        return intent;
     }
 }
