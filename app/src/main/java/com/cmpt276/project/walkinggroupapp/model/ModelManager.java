@@ -577,6 +577,21 @@ public class ModelManager {
 
 
 
+    //for setting and getting lastGpsLocation
+    public void getLastGpsLocation(Context context,
+                                   ProxyBuilder.SimpleCallback<GpsLocation> callback,
+                                   long userId) {
+        Call<GpsLocation> getLastGpsLocationCaller = proxy.getLastGpsLocation(userId);
+        ProxyBuilder.callProxy(context, getLastGpsLocationCaller, callback);
+    }
+
+    public void setLastGpsLocation(Context context,
+                                   ProxyBuilder.SimpleCallback<GpsLocation> callback,
+                                   long userId,
+                                   GpsLocation gpsLocation) {
+        Call<GpsLocation> setLastGpsLocationCaller = proxy.setLastGpsLocation(userId,gpsLocation );
+        ProxyBuilder.callProxy(context, setLastGpsLocationCaller, callback);
+    }
 
 
 
