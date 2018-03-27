@@ -1,4 +1,4 @@
-package com.cmpt276.project.walkinggroupapp;
+package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,8 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.cmpt276.project.walkinggroupapp.appactivities.RegisterParentActivity;
-import com.cmpt276.project.walkinggroupapp.appactivities.RegisterStudentActivity;
+import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;

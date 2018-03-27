@@ -29,8 +29,8 @@ public class RegisterParentActivity extends AppCompatActivity {
     private String name;
     private String email;
     private String password1;
-    private int birthYear;
-    private int birthMonth;
+    private Integer birthYear;
+    private Integer birthMonth;
     private String address;
     private String cellPhone;
     private String homePhone;
@@ -61,12 +61,18 @@ public class RegisterParentActivity extends AppCompatActivity {
         userRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(userBirthMonth.getSelectedItemPosition() != 12) {
+                    int spinner_pos = userBirthMonth.getSelectedItemPosition();
+                    String[] month_values = getResources().getStringArray(R.array.months_values);
+                    birthMonth = Integer.valueOf(month_values[spinner_pos]);
+                } else {
+                    birthMonth = null;
+                }
                 String temp = userBirthYear.getText().toString().trim();
                 try {
                     birthYear = Integer.parseInt(temp);
                 } catch (NumberFormatException e) {
-                    Toast.makeText(RegisterParentActivity.this, "Birth Year Incorrect", Toast.LENGTH_SHORT)
-                            .show();
+                    birthYear = null;
                 }
                 Intent intent = getIntent();
                 name = intent.getStringExtra(USER_NAME);
@@ -110,6 +116,7 @@ public class RegisterParentActivity extends AppCompatActivity {
                 R.array.months, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userBirthMonth.setAdapter(adapter);
+        userBirthMonth.setSelection(12);
     }
 
     public static Intent makeIntent(Context context){

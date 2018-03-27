@@ -64,8 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String password2 = secondPassword.getText().toString();
                 email = emailAddress.getText().toString();
                 name = userNameInputed.getText().toString();
-                if(name.length() >= 1 && email.length() >= 1)
-                {
+                if(name.length() >= 1 && email.length() >= 1) {
                     if(password1.equals(password2)) {
                         String checkTeacherStudent = teacherOrStudent.getSelectedItem().toString();
                         if(checkTeacherStudent.equals("Student")) {

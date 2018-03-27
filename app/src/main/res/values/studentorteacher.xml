@@ -19,6 +19,7 @@
         <item>October</item>
         <item>November</item>
         <item>December</item>
+        <item>Please Select</item>
     </string-array>
 
     <string-array name="months_values">
@@ -34,5 +35,6 @@
         <item>10</item>
         <item>11</item>
         <item>12</item>
+        <item>13</item>
     </string-array>
 </resources>
