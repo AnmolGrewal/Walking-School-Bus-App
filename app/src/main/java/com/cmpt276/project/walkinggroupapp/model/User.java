@@ -38,7 +38,7 @@ public class User {
     private boolean isParent = false;
 
     @JsonIgnore
-    private boolean isViewingChild = false;
+    private boolean isViewingAllChild = false;
 
 
 
@@ -88,10 +88,10 @@ public class User {
 
     public void setIsParent(boolean isParent) {this.isParent = isParent;}
 
-    //isViewingChild
-    public boolean isViewingChild() {return isViewingChild;}
+    //isViewingAllChild
+    public boolean isViewingAllChild() {return isViewingAllChild;}
 
-    public void setIsViewingChild(boolean isViewingChild) {this.isViewingChild = isViewingChild;}
+    public void setIsViewingChild(boolean isViewingChild) {this.isViewingAllChild = isViewingChild;}
 
     //Birth Month
     public int getBirthMonth() {

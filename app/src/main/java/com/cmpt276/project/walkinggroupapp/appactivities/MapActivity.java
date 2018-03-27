@@ -68,7 +68,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CHECK_SETTINGS = 2;
 
-    public static final String USER_ID = "UserID";
+    public static final String USER_ID_FORCE_CHILD = "user_id_force_child";
+    public static final String USER_ID_VIEW_CHILD = "user_id_view_child";
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
@@ -86,6 +87,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private User mCurrentUser;
 
     private long mChildUserId;
+
+    private boolean isViewingAllChild = false;
 
 
 
@@ -140,9 +143,54 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         //allows clicking on marker to show its title
         mMap.setOnMarkerClickListener(this);
 
-        placeChildLocationMarker(new LatLng(37.28,-122.17));
 
-        if(!mModelManager.getPrivateFieldUser().isViewingChild()) {
+
+        //test location of child
+        if(mModelManager.getPrivateFieldUser().isViewingAllChild()) {
+            placeChildLocationMarker(new LatLng(37.28, -122.17));
+            placeChildLocationMarker(new LatLng(37.3, -122.17));
+            placeChildLocationMarker(new LatLng(37.28, -122.2));
+        }
+
+
+
+
+
+        //allow multi line statements on title and snippet of markers
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            @Override
+            public View getInfoWindow(Marker arg0) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                mContext = getApplicationContext();
+
+                LinearLayout info = new LinearLayout(mContext);
+                info.setOrientation(LinearLayout.VERTICAL);
+
+                TextView title = new TextView(mContext);
+                title.setTextColor(Color.BLACK);
+                title.setGravity(Gravity.CENTER);
+                title.setTypeface(null, Typeface.BOLD);
+                title.setText(marker.getTitle());
+
+                TextView snippet = new TextView(mContext);
+                snippet.setTextColor(Color.GRAY);
+                snippet.setText(marker.getSnippet());
+
+                info.addView(title);
+                info.addView(snippet);
+
+                return info;
+            }
+        });
+
+
+        if(!mModelManager.getPrivateFieldUser().isViewingAllChild()) {
 
 
             //Get the existing walking groups in server
@@ -228,39 +276,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 }
             });
 
-
-            //allow multi line statements on title and snippet of markers
-            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-
-                @Override
-                public View getInfoWindow(Marker arg0) {
-                    return null;
-                }
-
-                @Override
-                public View getInfoContents(Marker marker) {
-
-                    mContext = getApplicationContext();
-
-                    LinearLayout info = new LinearLayout(mContext);
-                    info.setOrientation(LinearLayout.VERTICAL);
-
-                    TextView title = new TextView(mContext);
-                    title.setTextColor(Color.BLACK);
-                    title.setGravity(Gravity.CENTER);
-                    title.setTypeface(null, Typeface.BOLD);
-                    title.setText(marker.getTitle());
-
-                    TextView snippet = new TextView(mContext);
-                    snippet.setTextColor(Color.GRAY);
-                    snippet.setText(marker.getSnippet());
-
-                    info.addView(title);
-                    info.addView(snippet);
-
-                    return info;
-                }
-            });
         }
 
 
@@ -580,9 +595,17 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     //For creating intents outside of this Activity
     public static Intent makeIntentForceChild(Context context, long editUserId){
         Intent intent = new Intent(context, MapActivity.class);
-        intent.putExtra(USER_ID, editUserId);
+        intent.putExtra(USER_ID_FORCE_CHILD, editUserId);
         return intent;
     }
+
+    public static Intent makeIntentViewChild(Context context, long editUserId){
+        Intent intent = new Intent(context, MapActivity.class);
+        intent.putExtra(USER_ID_FORCE_CHILD, editUserId);
+        return intent;
+    }
+
+
 
 
     //for extracting intent extras made from other Activities--only do this when parent forcing child
@@ -591,7 +614,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         if(mModelManager.getPrivateFieldUser().isParent()) {
 
             Intent intent = getIntent();
-            mChildUserId = intent.getLongExtra(USER_ID, 0);
+            mChildUserId = intent.getLongExtra(USER_ID_FORCE_CHILD, 0);
         }
 
     }

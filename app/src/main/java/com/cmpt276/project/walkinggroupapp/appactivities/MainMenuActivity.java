@@ -143,7 +143,7 @@ public class MainMenuActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //go to Parent Dashboard Activity
-                Intent intent = new Intent(MainMenuActivity.this, ParentDashboard.class);
+                Intent intent = new Intent(MainMenuActivity.this, ParentDashboardActivity.class);
                 startActivity(intent);
             }
         });

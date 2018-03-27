@@ -188,7 +188,7 @@ public class GroupInformationActivity extends AppCompatActivity {
         Log.w(TAG, "SET LOCATION SUCCESS, Received: " + gpsLocation.getLat() + " " + gpsLocation.getLng() + " " + gpsLocation.getTimestamp().toString());
 
         //check if destination is reached -> stop uploading location data
-        if( (Math.abs(gpsLocation.getLat() - mGroupUploadingLat) <= 0.01) && (Math.abs(gpsLocation.getLng() - mGroupUploadingLng) <= 0.01) && (!mIsStoppingInTenMinutes) ) {
+        if( (Math.abs(gpsLocation.getLat() - mGroupUploadingLat) <= 0.001) && (Math.abs(gpsLocation.getLng() - mGroupUploadingLng) <= 0.001) && (!mIsStoppingInTenMinutes) ) {
             stopUploadingInTenMinutes();
 
             //So only 1 stop command is done once destination is reached
