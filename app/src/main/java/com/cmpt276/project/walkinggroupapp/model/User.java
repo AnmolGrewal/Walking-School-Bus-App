@@ -41,6 +41,7 @@ public class User {
     private boolean isViewingChild = false;
 
 
+
     public Long getId() {
         return id;
     }
