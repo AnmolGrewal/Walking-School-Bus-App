@@ -31,7 +31,7 @@ import java.sql.Timestamp;
  *
  * Activity for viewing Information about a group and also uploading current location to server
  */
-public class GroupInformation extends AppCompatActivity {
+public class GroupInformationActivity extends AppCompatActivity {
     private static final String TAG = "GroupInfoActivity";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
