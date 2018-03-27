@@ -60,6 +60,7 @@
         <activity android:name=".appactivities.RegisterParentActivity" />
         <activity android:name=".appactivities.RegisterStudentActivity" />
         <activity android:name=".EditOwnProfile"></activity>
+        <activity android:name=".appactivities.MessageActivity"></activity>
     </application>
 
 </manifest>
