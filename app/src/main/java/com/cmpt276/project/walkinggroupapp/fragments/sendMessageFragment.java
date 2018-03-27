@@ -29,12 +29,19 @@ public class sendMessageFragment extends AppCompatDialogFragment
     private EditText userMessageEditText;
     private ModelManager modelManager;
     private boolean isEmergency;
+    private boolean isGroup;
+    private Long toGroupId;
 
     @Override
     public Dialog onCreateDialog(Bundle saveInstanceState)
     {
         Bundle variables = getArguments();
         isEmergency = variables.getBoolean("IsEmergencyMessage", false);
+        isGroup = variables.getBoolean("IsGroupMessage", false);
+        if(isGroup){
+            toGroupId = variables.getLong("GroupIdToSendMessage");
+        }
+
 
         modelManager = ModelManager.getInstance();
         //Create the activity to show
@@ -55,8 +62,13 @@ public class sendMessageFragment extends AppCompatDialogFragment
                         }
 
                         if(isEmergency == false){
-                            ProxyBuilder.SimpleCallback<Message> sendCallBack = noResponse -> sendMessageResponse(noResponse);
-                            modelManager.sendMessageToParentsOf(getActivity(), sendCallBack, message, false);
+                            if(isGroup){
+                                ProxyBuilder.SimpleCallback<Message> sendCallBack = noResponse -> sendMessageResponse(noResponse);
+                                modelManager.sendMessageToGroup(getActivity(), sendCallBack, toGroupId,message, false);
+                            }else{
+                                ProxyBuilder.SimpleCallback<Message> sendCallBack = noResponse -> sendMessageResponse(noResponse);
+                                modelManager.sendMessageToParentsOf(getActivity(), sendCallBack, message, false);
+                            }
                         }else{
                             ProxyBuilder.SimpleCallback<List<Long>>getGroups = idOfGroups -> getGroupsResponse(idOfGroups);
                             modelManager.getIdsOfGroupsYouAreMemberOf(getActivity(), getGroups);

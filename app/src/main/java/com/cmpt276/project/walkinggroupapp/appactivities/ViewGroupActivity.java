@@ -2,6 +2,7 @@ package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
+import com.cmpt276.project.walkinggroupapp.fragments.sendMessageFragment;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
@@ -275,6 +277,9 @@ public class ViewGroupActivity extends AppCompatActivity {
                             case R.id.delete:
                                 // TODO: delete the group here.
                                 break;
+                            case R.id.jacky_send_message_to_group:
+                                doSend(position);
+                                break;
                         }
                         return true;
                     }
@@ -299,6 +304,20 @@ public class ViewGroupActivity extends AppCompatActivity {
         memberOfGroups.clear();
         ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreMemberOfCallback = groupIdsList -> getIdsOfGroupsYouAreMemberOfResponse(groupIdsList);
         modelManager.getIdsOfGroupsYouAreMemberOf(ViewGroupActivity.this, getIdsOfGroupsYouAreMemberOfCallback);
+    }
+
+    private void doSend(int position){
+        WalkingGroup sendGroup = leadsGroups.get(position);
+        FragmentManager manager = getSupportFragmentManager();
+        sendMessageFragment dialog = new sendMessageFragment();
+
+        // Supply index input as an argument.
+        Bundle variables = new Bundle();
+        variables.putBoolean("IsGroupMessage", true);
+        variables.putLong("GroupIdToSendMessage", sendGroup.getId());
+
+        dialog.setArguments(variables);
+        dialog.show(manager, "SendView");
     }
 
 

@@ -8,5 +8,8 @@ xmlns:android="http://schemas.android.com/apk/res/android">
 <item
     android:id="@+id/cancel"
     android:title="@string/jacky_cancel_popup" />
+    <item
+        android:id="@+id/jacky_send_message_to_group"
+        android:title="Send Message" />
 
 </menu>
