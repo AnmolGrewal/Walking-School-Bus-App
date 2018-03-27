@@ -62,8 +62,8 @@ public class LoginActivity extends AppCompatActivity {
         final SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
         mEmail = sharedPreferences.getString(PREFERENCE_EMAIL, null);
         mPassword = sharedPreferences.getString(PREFERENCE_PASSWORD,null);
-        String savedIsLogout = sharedPreferences.getString(PREFERENCE_IS_LOGOUT, "true");
-//        isLogout = sharedPreferences.getBoolean(PREFERENCE_IS_LOGOUT, true);
+
+        isLogout = sharedPreferences.getBoolean(PREFERENCE_IS_LOGOUT, true);
 
         modelManager = ModelManager.getInstance();
         modelManager.setApiKey(getString(R.string.gerry_apikey));
@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         // this part is for auto-login.
-        if (savedIsLogout.equals("false") && mEmail != null && mPassword != null) {
+        if (!isLogout && mEmail != null && mPassword != null) {
             login();
         }
 
@@ -201,18 +201,6 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
-//        //test map Button
-//        mMapTestButton = findViewById(R.id.gerry_Map_Button_login);
-//        mMapTestButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //go to test map activity
-//                Intent intentMap = new Intent(LoginActivity.this, MapActivity.class);
-//                startActivity(intentMap);
-//            }
-//        });
-
     }
 
 
@@ -302,18 +290,13 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        //clear current data first
         editor.clear();
 
-        //put current email and password to preferences
         editor.putString(PREFERENCE_EMAIL,mEmail);
         editor.putString(PREFERENCE_PASSWORD,mPassword);
 
-        //Assume user does not logout--change this when user preses logout manually
-        editor.putString(PREFERENCE_IS_LOGOUT, "false");
-//        editor.putBoolean(PREFERENCE_IS_LOGOUT, false);
+        editor.putBoolean(PREFERENCE_IS_LOGOUT, false);
 
-        //commit to preference
         editor.commit();
 
         Log.w(TAG,"save using preferences success");

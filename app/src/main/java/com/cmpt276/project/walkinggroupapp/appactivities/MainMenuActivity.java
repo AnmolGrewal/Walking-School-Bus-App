@@ -117,19 +117,17 @@ public class MainMenuActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 editor.clear();
-                //set the Logout string to show user logged out
-                editor.putString(PREFERENCE_IS_LOGOUT, "true");
+
+                editor.putBoolean(PREFERENCE_IS_LOGOUT, true);
 
                 editor.putString(PREFERENCE_EMAIL, null);
                 editor.putString(PREFERENCE_PASSWORD, null);
 
-                //commit to preference
                 editor.commit();
 
                 Intent intent = LoginActivity.makeIntent(getApplicationContext());
                 startActivity(intent);
 
-                //go to LoginActivity
                 finish();
 
             }
