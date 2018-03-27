@@ -2,6 +2,7 @@ package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -100,6 +101,18 @@ public class MessageActivity extends AppCompatActivity {
         //Configure ListView
         messageListView = findViewById(R.id.jacky_message_list);
         messageListView.setAdapter(adapter);
+
+        //wait 60 seconds and request for current location again
+        Handler handler = new Handler();
+        int delay = 60000; //milliseconds
+
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                ProxyBuilder.SimpleCallback<List<Message>> messageCallback = messageList -> getMessageList(messageList);
+                modelManager.getMessagesForUser(MessageActivity.this, messageCallback);
+            }
+        }, delay);
+
     }
 
     private class messageAdapter extends ArrayAdapter<Message> {
