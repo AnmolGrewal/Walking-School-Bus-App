@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,19 +32,18 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button mLoginButton;
     private Button mRegisterButton;
-    private Button mMapTestButton;
+
     private Button mHelpButton;
     private TextView mForgotPasswordTextView;
     private EditText mPasswordEditText;
     private EditText mEmailEditText;
 
+    private ProgressBar loginProgressBar;
+
     private String mPassword;
     private String mEmail;
 
-    private Intent intent;
-
-
-
+    private boolean isLogout = true;
 
 
 
@@ -56,87 +56,88 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        
+
+//        loadSharedPreferences();
+
+        final SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
+        mEmail = sharedPreferences.getString(PREFERENCE_EMAIL, null);
+        mPassword = sharedPreferences.getString(PREFERENCE_PASSWORD,null);
+        String savedIsLogout = sharedPreferences.getString(PREFERENCE_IS_LOGOUT, "true");
+//        isLogout = sharedPreferences.getBoolean(PREFERENCE_IS_LOGOUT, true);
+
         modelManager = ModelManager.getInstance();
         modelManager.setApiKey(getString(R.string.gerry_apikey));
 
-        // Build the server proxy--used for logging in
+        setupLoginProgressBar();
+
 
         //set up all buttons, texViews etc.
-        RegisterViews();
-        loginRequest();
-    }
+        registerViews();
 
-    private void loginRequest() {
-        //test creating user
-        //CreateUserTest();
 
-        //If user did not logout -- auto login
-        //Load Saved data from preferences
-        final SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
-        String savedEmail = sharedPreferences.getString(PREFERENCE_EMAIL, null);
-        String savedPassword = sharedPreferences.getString(PREFERENCE_PASSWORD,null);
-        String savedIsLogout = sharedPreferences.getString(PREFERENCE_IS_LOGOUT, "false");
-        //set mEmail and mPassword since SavePReference() relies on them
-        mEmail = savedEmail;
-        mPassword = savedPassword;
+        setupRegisterButton();
+        setupLoginButton();
+        setupHelpButton();
+        setupForgetPasswordTextViewOnClick();
 
-        if(savedIsLogout.equals("false") && savedEmail != null && savedPassword != null) {
-            //login using data from preferences
-            //mLoginButton.setVisibility(View.INVISIBLE);
-            //mRegisterButton.setVisibility(View.INVISIBLE);
-            mPasswordEditText.setText(savedPassword);
-            mEmailEditText.setText(savedEmail);
-            ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
-            modelManager.login(LoginActivity.this, callback, savedEmail, savedPassword);
+
+        // this part is for auto-login.
+        if (savedIsLogout.equals("false") && mEmail != null && mPassword != null) {
+            login();
         }
+
+
+//        loginRequest();
     }
 
-    private void loginResponse(Void returnedNothing) {
-        Log.w(TAG, "Server replied to login request (no content was expected).");
+//    private void loadSharedPreferences() {
+//
+//    }
 
-        //login success, save data to preference
-        SavePreferences();
-
-        //go to Main Menu
-        Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
-
-        intent = MainMenuActivity.makeIntent(LoginActivity.this);
-        startActivity(intent);
-        finish();
+    public static Intent makeIntent(Context context)
+    {
+        return new Intent(context, LoginActivity.class);
     }
 
 
+    private void setupLoginProgressBar() {
+        loginProgressBar = findViewById(R.id.justin_loginProgressBar);
+        loginProgressBar.setVisibility(View.INVISIBLE);
+    }
 
-    private void RegisterViews() {
-
-        //login button
-        mLoginButton = findViewById(R.id.gerry_Login_Button_login);
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-
-                //login using data from editTexts
-                ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
-                modelManager.login(LoginActivity.this, callback, mEmail, mPassword);
-
-            }
-        });
-
-        //register button
+    private void setupRegisterButton() {
         mRegisterButton = findViewById(R.id.gerry_Register_Button_login);
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //go to register activity
                 Intent registerActivity = RegisterActivity.makeIntent(getApplicationContext());
                 startActivity(registerActivity);
             }
         });
+    }
 
-        //forgot password textView
+    private void setupLoginButton() {
+        mLoginButton = findViewById(R.id.gerry_Login_Button_login);
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login();
+            }
+        });
+    }
+
+    private void setupHelpButton() {
+        mHelpButton = findViewById(R.id.jacky_help_button);
+        mHelpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentHelp = HelpActivity.makeIntent(LoginActivity.this);
+                startActivity(intentHelp);
+            }
+        });
+    }
+
+    private void setupForgetPasswordTextViewOnClick() {
         mForgotPasswordTextView = findViewById(R.id.gerry_ForgotPassword_TextView_login);
         mForgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,9 +145,41 @@ public class LoginActivity extends AppCompatActivity {
                 //go to ForgotPassword Activity
             }
         });
+    }
+
+    private void registerViews() {
+
+        //email editText
+        mEmailEditText = findViewById(R.id.gerry_Email_EditText_login);
+
+        mEmailEditText.setText(mEmail);
+
+        mEmailEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if(s.length() != 0) {
+
+                    mEmail = s.toString();
+                }
+            }
+        });
 
         //password editText
         mPasswordEditText = findViewById(R.id.gerry_Password_EditText_login);
+
+        mPasswordEditText.setText(mPassword);
+
         mPasswordEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -169,57 +202,99 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        //email editText
-        mEmailEditText = findViewById(R.id.gerry_Email_EditText_login);
-        mEmailEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//        //test map Button
+//        mMapTestButton = findViewById(R.id.gerry_Map_Button_login);
+//        mMapTestButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //go to test map activity
+//                Intent intentMap = new Intent(LoginActivity.this, MapActivity.class);
+//                startActivity(intentMap);
+//            }
+//        });
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if(s.length() != 0) {
-
-                    mEmail = s.toString();
-                }
-            }
-        });
-
-        //test map Button
-        mMapTestButton = findViewById(R.id.gerry_Map_Button_login);
-        mMapTestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //go to test map activity
-                Intent intentMap = new Intent(LoginActivity.this, MapActivity.class);
-                startActivity(intentMap);
-            }
-        });
-
-        //Help button
-        mHelpButton = findViewById(R.id.jacky_help_button);
-        mHelpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Go to help screen
-                Intent intentHelp = HelpActivity.makeIntent(LoginActivity.this);
-                startActivity(intentHelp);
-            }
-        });
     }
 
 
-    public static Intent makeIntent(Context context)
-    {
-        return new Intent(context, LoginActivity.class);
+    private void login() {
+        mLoginButton.setEnabled(false);
+
+        Toast.makeText(LoginActivity.this,"Logging in...",Toast.LENGTH_SHORT).show();
+
+        ProxyBuilder.SimpleCallback<Void> onResponseCallback = returnedNothing -> loginSuccessResponse(returnedNothing);
+        ProxyBuilder.SimpleCallback<String> onFailureCallback = errorMessage -> loginFailResponse(errorMessage);
+        modelManager.login(LoginActivity.this, onResponseCallback, onFailureCallback, mEmail, mPassword);
+
+        loginProgressBar.setVisibility(View.VISIBLE);
     }
+
+    private void loginSuccessResponse(Void returnedNothing) {
+        loginProgressBar.setVisibility(View.INVISIBLE);
+
+
+        Log.w(TAG, "Server replied to login request (no content was expected).");
+
+        Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
+
+        SavePreferences();
+
+        Intent intent = MainMenuActivity.makeIntent(LoginActivity.this);
+        startActivity(intent);
+        finish();
+    }
+
+    private void loginFailResponse(String errorMessage) {
+        loginProgressBar.setVisibility(View.INVISIBLE);
+
+        mLoginButton.setEnabled(true);
+
+        Toast.makeText(LoginActivity.this,
+                "Login failed, please try again.\n\nError message:\n" + errorMessage,
+                Toast.LENGTH_LONG)
+                .show();
+
+    }
+
+
+//    private void loginResponse(Void returnedNothing) {
+//        Log.w(TAG, "Server replied to login request (no content was expected).");
+//
+//        //login success, save data to preference
+//        SavePreferences();
+//
+//        //go to Main Menu
+//        Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
+//
+//        intent = MainMenuActivity.makeIntent(LoginActivity.this);
+//        startActivity(intent);
+//        finish();
+//    }
+
+
+//    private void loginRequest() {
+//        //test creating user
+//        //CreateUserTest();
+//
+//        //If user did not logout -- auto login
+//        //Load Saved data from preferences
+//        final SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
+//        String savedEmail = sharedPreferences.getString(PREFERENCE_EMAIL, null);
+//        String savedPassword = sharedPreferences.getString(PREFERENCE_PASSWORD,null);
+//        String savedIsLogout = sharedPreferences.getString(PREFERENCE_IS_LOGOUT, "false");
+//        //set mEmail and mPassword since SavePReference() relies on them
+//        mEmail = savedEmail;
+//        mPassword = savedPassword;
+//
+//        if(savedIsLogout.equals("false") && savedEmail != null && savedPassword != null) {
+//            //login using data from preferences
+//            //mLoginButton.setVisibility(View.INVISIBLE);
+//            //mRegisterButton.setVisibility(View.INVISIBLE);
+//            mPasswordEditText.setText(savedPassword);
+//            mEmailEditText.setText(savedEmail);
+//            ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> loginResponse(returnedNothing);
+//            modelManager.login(LoginActivity.this, callback, savedEmail, savedPassword);
+//        }
+//    }
 
 
     //save data using shared preferences
@@ -236,6 +311,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //Assume user does not logout--change this when user preses logout manually
         editor.putString(PREFERENCE_IS_LOGOUT, "false");
+//        editor.putBoolean(PREFERENCE_IS_LOGOUT, false);
 
         //commit to preference
         editor.commit();
