@@ -86,7 +86,7 @@ public class GroupInformationActivity extends AppCompatActivity {
                 //start uploading user current location
                 mIsUpload = true;
                 getLastKnownLocation();
-                Toast.makeText(GroupInformation.this, "Started Uploading", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GroupInformationActivity.this, "Started Uploading", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -96,7 +96,7 @@ public class GroupInformationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //stop uploading location
                 mIsUpload = false;
-                Toast.makeText(GroupInformation.this, "Upload Stopped", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GroupInformationActivity.this, "Upload Stopped", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -177,7 +177,7 @@ public class GroupInformationActivity extends AppCompatActivity {
             }
             Log.w(TAG, "getLocation()2");
             ProxyBuilder.SimpleCallback<GpsLocation> setLastKnownLocationCallback = serverPassedLocation -> setLastKnownLocationResponse(serverPassedLocation);
-            mModelManager.setLastGpsLocation(GroupInformation.this, setLastKnownLocationCallback, mModelManager.getPrivateFieldUser().getId(), currentLocation);
+            mModelManager.setLastGpsLocation(GroupInformationActivity.this, setLastKnownLocationCallback, mModelManager.getPrivateFieldUser().getId(), currentLocation);
             Log.w(TAG, "getLocation()3");
         }
 
@@ -213,7 +213,7 @@ public class GroupInformationActivity extends AppCompatActivity {
 
     private void getGroupUploadingDestination() {
         ProxyBuilder.SimpleCallback<WalkingGroup> getGroupUploadingDestinationCallBack = serverPassedWalkingGroup-> getGroupUploadingDestinationResponse(serverPassedWalkingGroup);
-        mModelManager.getWalkingGroupById(GroupInformation.this, getGroupUploadingDestinationCallBack, mCurrentGroupId);
+        mModelManager.getWalkingGroupById(GroupInformationActivity.this, getGroupUploadingDestinationCallBack, mCurrentGroupId);
     }
 
     private void getGroupUploadingDestinationResponse(WalkingGroup walkingGroup) {
@@ -229,7 +229,7 @@ public class GroupInformationActivity extends AppCompatActivity {
 
     private void stopUploadingInTenMinutes() {
         Log.w(TAG, "Destination Reached, stopping upload after 10 minutes");
-        Toast.makeText(GroupInformation.this, "Destination Reached, stopping upload after 10 minutes", Toast.LENGTH_SHORT).show();
+        Toast.makeText(GroupInformationActivity.this, "Destination Reached, stopping upload after 10 minutes", Toast.LENGTH_SHORT).show();
         //wait 10 minutes then stop uploading location data
         Handler handler = new Handler();
         int delay = 600000; //milliseconds,
@@ -248,7 +248,7 @@ public class GroupInformationActivity extends AppCompatActivity {
 
     //For creating intents outside of this Activity
     public static Intent makeIntent(Context context, long groupId){
-        Intent intent = new Intent(context, GroupInformation.class);
+        Intent intent = new Intent(context, GroupInformationActivity.class);
         intent.putExtra(GROUP_ID_INTENT_KEY, groupId);
         return intent;
     }

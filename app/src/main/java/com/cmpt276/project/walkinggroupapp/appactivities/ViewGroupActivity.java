@@ -255,7 +255,7 @@ public class ViewGroupActivity extends AppCompatActivity {
                 long groupId = memberOfGroups.get(position).getId();
 
                 // go to GroupInfo Activity
-                Intent intent = GroupInformation.makeIntent(ViewGroupActivity.this, groupId);
+                Intent intent = GroupInformationActivity.makeIntent(ViewGroupActivity.this, groupId);
                 startActivity(intent);
             }
         });
