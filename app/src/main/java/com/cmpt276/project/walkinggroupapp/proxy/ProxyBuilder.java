@@ -113,7 +113,7 @@ public class ProxyBuilder {
             final Context context,
             Call<T> caller,
             final SimpleCallback<T> onResponseCallback,
-            final SimpleCallback<T> onFailureCallback) {
+            final SimpleCallback<String> onFailureCallback) {
         caller.enqueue(new Callback<T>() {
             @Override
             public void onResponse(Call<T> call, retrofit2.Response<T> response) {
@@ -136,6 +136,8 @@ public class ProxyBuilder {
                         onResponseCallback.callback(body);
                     }
                 } else {
+
+
                     String message;
                     try {
                         message = "CALL TO SERVER FAILED:\n" + response.errorBody().string();
@@ -144,11 +146,11 @@ public class ProxyBuilder {
                         e.printStackTrace();
                         message = "Unable to decode response (body or error's body).";
                     }
-                    showFailure(message);
 
-                    // TODO
-                    if (onFailureCallback != null) {
-                        onFailureCallback.callback(null);
+                    if (onFailureCallback == null) {
+                        showFailure(message);
+                    } else {
+                        onFailureCallback.callback(message);
                     }
                 }
             }
@@ -156,11 +158,11 @@ public class ProxyBuilder {
             @Override
             public void onFailure(Call<T> call, Throwable t) {
                 String message = "Server Error: " + t.getMessage();
-                showFailure(message);
 
-                // TODO
-                if (onFailureCallback != null) {
-                    onFailureCallback.callback(null);
+                if (onFailureCallback == null) {
+                    showFailure(message);
+                } else {
+                    onFailureCallback.callback(message);
                 }
             }
             private void showFailure(String message) {

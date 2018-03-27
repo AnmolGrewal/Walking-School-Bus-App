@@ -88,7 +88,7 @@ public class ModelManager {
 
     public void login(Context context,
                       ProxyBuilder.SimpleCallback<Void> onResponseCallback,
-                      ProxyBuilder.SimpleCallback<Void> onFailureCallback,
+                      ProxyBuilder.SimpleCallback<String> onFailureCallback,
                       String emailAddress, String password) {
         user = new User();
         user.setEmail(emailAddress);

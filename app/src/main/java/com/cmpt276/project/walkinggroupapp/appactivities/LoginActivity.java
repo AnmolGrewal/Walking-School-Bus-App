@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button mLoginButton;
     private Button mRegisterButton;
-    
+
     private Button mHelpButton;
     private TextView mForgotPasswordTextView;
     private EditText mPasswordEditText;
@@ -42,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private String mPassword;
     private String mEmail;
+
+    private boolean isLogout = true;
 
 
 
@@ -60,8 +62,8 @@ public class LoginActivity extends AppCompatActivity {
         final SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
         mEmail = sharedPreferences.getString(PREFERENCE_EMAIL, null);
         mPassword = sharedPreferences.getString(PREFERENCE_PASSWORD,null);
-//        String savedIsLogout = sharedPreferences.getString(PREFERENCE_IS_LOGOUT, "false");
-        String savedIsLogout = sharedPreferences.getString(PREFERENCE_IS_LOGOUT, "false");
+        String savedIsLogout = sharedPreferences.getString(PREFERENCE_IS_LOGOUT, "true");
+//        isLogout = sharedPreferences.getBoolean(PREFERENCE_IS_LOGOUT, true);
 
         modelManager = ModelManager.getInstance();
         modelManager.setApiKey(getString(R.string.gerry_apikey));
@@ -220,7 +222,7 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(LoginActivity.this,"Logging in...",Toast.LENGTH_SHORT).show();
 
         ProxyBuilder.SimpleCallback<Void> onResponseCallback = returnedNothing -> loginSuccessResponse(returnedNothing);
-        ProxyBuilder.SimpleCallback<Void> onFailureCallback = returnedNothing -> loginFailResponse(returnedNothing);
+        ProxyBuilder.SimpleCallback<String> onFailureCallback = errorMessage -> loginFailResponse(errorMessage);
         modelManager.login(LoginActivity.this, onResponseCallback, onFailureCallback, mEmail, mPassword);
 
         loginProgressBar.setVisibility(View.VISIBLE);
@@ -241,12 +243,15 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    private void loginFailResponse(Void returnedNothing) {
+    private void loginFailResponse(String errorMessage) {
         loginProgressBar.setVisibility(View.INVISIBLE);
 
         mLoginButton.setEnabled(true);
 
-        Toast.makeText(LoginActivity.this,"Login failed, please try again.",Toast.LENGTH_SHORT).show();
+        Toast.makeText(LoginActivity.this,
+                "Login failed, please try again.\n\nError message:\n" + errorMessage,
+                Toast.LENGTH_LONG)
+                .show();
 
     }
 
@@ -306,6 +311,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //Assume user does not logout--change this when user preses logout manually
         editor.putString(PREFERENCE_IS_LOGOUT, "false");
+//        editor.putBoolean(PREFERENCE_IS_LOGOUT, false);
 
         //commit to preference
         editor.commit();
