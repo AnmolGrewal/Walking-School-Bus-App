@@ -68,12 +68,8 @@ public class ModelManager {
         newUser.setEmail(emailAddress);
         newUser.setPassword(password);
         //Testing
-        if(birthMonth != null) {
-            newUser.setBirthMonth(birthMonth);
-        }
-        if(birthYear != null) {
-            newUser.setBirthYear(birthYear);
-        }
+        newUser.setBirthMonth(birthMonth);
+        newUser.setBirthYear(birthYear);
         newUser.setAddress(address);
         newUser.setCellPhone(cellPhone);
         newUser.setHomePhone(homePhone);

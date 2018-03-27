@@ -16,8 +16,8 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private int birthYear;
-    private int birthMonth;
+    private Integer birthYear;
+    private Integer birthMonth;
     private String address;
     private String cellPhone;
     private String homePhone;
@@ -76,11 +76,11 @@ public class User {
     }
 
     //Birth Year
-    public int getBirthYear() {
+    public Integer getBirthYear() {
         return birthYear;
     }
 
-    public void setBirthYear(int birthYear) { this.birthYear = birthYear; }
+    public void setBirthYear(Integer birthYear) { this.birthYear = birthYear; }
 
     //isParent
     public boolean isParent() {return isParent;}
@@ -93,11 +93,11 @@ public class User {
     public void setIsViewingChild(boolean isViewingChild) {this.isViewingChild = isViewingChild;}
 
     //Birth Month
-    public int getBirthMonth() {
+    public Integer getBirthMonth() {
         return birthMonth;
     }
 
-    public void setBirthMonth(int birthMonth) {
+    public void setBirthMonth(Integer birthMonth) {
         this.birthMonth = birthMonth;
     }
 
