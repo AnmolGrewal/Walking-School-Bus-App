@@ -275,7 +275,7 @@ public class ViewGroupActivity extends AppCompatActivity {
                 Log.i("MyApp", "Pressed Long" + position);
 //                selectedPosition = position;
                 PopupMenu popupMenu = new PopupMenu(ViewGroupActivity.this, viewClicked);
-                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+                popupMenu.getMenuInflater().inflate(R.menu.popup_lead_group_options, popupMenu.getMenu());
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
                     @Override
