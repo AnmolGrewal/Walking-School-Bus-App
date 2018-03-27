@@ -13,10 +13,8 @@ import android.widget.EditText;
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.Message;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
-import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,21 +23,24 @@ import java.util.List;
 
 public class sendMessageFragment extends AppCompatDialogFragment
 {
+    public static final String IS_EMERGENCY = "isEmergency";
+    public static final String IS_TO_GROUP = "isToGroup";
+    public static final String GROUP_ID_TO_SEND_MESSAGE = "GroupIdToSendMessage";
     private String message;
     private EditText userMessageEditText;
     private ModelManager modelManager;
     private boolean isEmergency;
-    private boolean isGroup;
+    private boolean isToGroup;
     private Long toGroupId;
 
     @Override
     public Dialog onCreateDialog(Bundle saveInstanceState)
     {
         Bundle variables = getArguments();
-        isEmergency = variables.getBoolean("IsEmergencyMessage", false);
-        isGroup = variables.getBoolean("IsGroupMessage", false);
-        if(isGroup){
-            toGroupId = variables.getLong("GroupIdToSendMessage");
+        isEmergency = variables.getBoolean(IS_EMERGENCY, false);
+        isToGroup = variables.getBoolean(IS_TO_GROUP, false);
+        if(isToGroup){
+            toGroupId = variables.getLong(GROUP_ID_TO_SEND_MESSAGE);
         }
 
 
@@ -62,7 +63,7 @@ public class sendMessageFragment extends AppCompatDialogFragment
                         }
 
                         if(isEmergency == false){
-                            if(isGroup){
+                            if(isToGroup){
                                 ProxyBuilder.SimpleCallback<Message> sendCallBack = noResponse -> sendMessageResponse(noResponse);
                                 modelManager.sendMessageToGroup(getActivity(), sendCallBack, toGroupId,message, false);
                             }else{
@@ -70,8 +71,10 @@ public class sendMessageFragment extends AppCompatDialogFragment
                                 modelManager.sendMessageToParentsOf(getActivity(), sendCallBack, message, false);
                             }
                         }else{
-                            ProxyBuilder.SimpleCallback<List<Long>>getGroups = idOfGroups -> getGroupsResponse(idOfGroups);
-                            modelManager.getIdsOfGroupsYouAreMemberOf(getActivity(), getGroups);
+                            ProxyBuilder.SimpleCallback<Message> sendCallBack = noResponse -> sendMessageResponse(noResponse);
+                            modelManager.sendMessageToParentsOf(getActivity(), sendCallBack, message, true);
+                            //ProxyBuilder.SimpleCallback<List<Long>>getGroups = idOfGroups -> getGroupsResponse(idOfGroups);
+                            //modelManager.getIdsOfGroupsYouAreMemberOf(getActivity(), getGroups);
                         }
 
                         break;
@@ -87,12 +90,12 @@ public class sendMessageFragment extends AppCompatDialogFragment
                 .create();
     }
 
-    private void getGroupsResponse(List<Long> groupId){
-        for (Long id: groupId) {
-            ProxyBuilder.SimpleCallback<Message> sendCallBack = noResponse -> sendMessageResponse(noResponse);
-            modelManager.sendMessageToGroup(getActivity(), sendCallBack, id,message, true);
-        }
-    }
+//    private void getGroupsResponse(List<Long> groupId){
+//        for (Long id: groupId) {
+//            ProxyBuilder.SimpleCallback<Message> sendCallBack = noResponse -> sendMessageResponse(noResponse);
+//            modelManager.sendMessageToGroup(getActivity(), sendCallBack, id,message, true);
+//        }
+//    }
 
     private void sendMessageResponse(Message response){
         Log.i("MyApp", "Message sent as: " + message);

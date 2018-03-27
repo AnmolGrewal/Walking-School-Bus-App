@@ -326,7 +326,7 @@ public class ViewGroupActivity extends AppCompatActivity {
 
         // Supply index input as an argument.
         Bundle variables = new Bundle();
-        variables.putBoolean("IsGroupMessage", true);
+        variables.putBoolean("isToGroup", true);
         variables.putLong("GroupIdToSendMessage", sendGroup.getId());
 
         dialog.setArguments(variables);
