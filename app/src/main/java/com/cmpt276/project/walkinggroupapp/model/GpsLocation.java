@@ -8,6 +8,7 @@ import java.sql.Timestamp;
  * Created by glang on 3/23/2018.
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GpsLocation {
 
     private Double lat;
