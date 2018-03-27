@@ -34,7 +34,7 @@ import java.util.Objects;
  *  Code is adapted from Jacky.T  Assignment 2
  */
 
-public class EditMonitoringUserProfileActivity extends AppCompatActivity {
+public class EditMonitoringUserGroupActivity extends AppCompatActivity {
 
     public static final String USER_ID = "UserID";
 
@@ -60,7 +60,7 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
 
 
         ProxyBuilder.SimpleCallback<List<Long>> callback = groupIdsList -> getIdsOfGroupsAUserIsMemberOfResponse(groupIdsList);
-        modelManager.getIdsOfGroupsAUserIsMemberOf(EditMonitoringUserProfileActivity.this, callback, userId);
+        modelManager.getIdsOfGroupsAUserIsMemberOf(EditMonitoringUserGroupActivity.this, callback, userId);
 
 
         setupAddGroupButton();
@@ -78,13 +78,13 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
         // TODO
 //        createUser();
         ProxyBuilder.SimpleCallback<List<Long>> callback = groupIdsList -> getIdsOfGroupsAUserIsMemberOfResponse(groupIdsList);
-        modelManager.getIdsOfGroupsAUserIsMemberOf(EditMonitoringUserProfileActivity.this, callback, userId);
+        modelManager.getIdsOfGroupsAUserIsMemberOf(EditMonitoringUserGroupActivity.this, callback, userId);
     }
     private void getIdsOfGroupsAUserIsMemberOfResponse(List<Long> groupIdsList) {
         groupsList.clear();
         for (Long groupId: groupIdsList) {
             ProxyBuilder.SimpleCallback<WalkingGroup> callback = returnedGroup -> getMemberOfGroupResponse(returnedGroup);
-            modelManager.getWalkingGroupById(EditMonitoringUserProfileActivity.this, callback, groupId);
+            modelManager.getWalkingGroupById(EditMonitoringUserGroupActivity.this, callback, groupId);
         }
     }
 
@@ -100,7 +100,7 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
     }
 
     private void populateGroupsList() {
-        ArrayAdapter<WalkingGroup> adapter = new EditMonitoringUserProfileActivity.memberListAdapter();
+        ArrayAdapter<WalkingGroup> adapter = new EditMonitoringUserGroupActivity.memberListAdapter();
         //Configure ListView
         groupsListView = findViewById(R.id.jacky_edit_user_member_list);
         groupsListView.setAdapter(adapter);
@@ -109,7 +109,7 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
 
     private class memberListAdapter extends ArrayAdapter<WalkingGroup> {                                                 //Code for complexList based from Brian Frasers video
         public memberListAdapter() {
-            super(EditMonitoringUserProfileActivity.this, R.layout.group_layout, groupsList);
+            super(EditMonitoringUserGroupActivity.this, R.layout.group_layout, groupsList);
         }
 
         @Override
@@ -143,7 +143,7 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "Pressed Long to edit" + position, Toast.LENGTH_SHORT).show();
                 Log.i("MyApp", "Pressed Long" + position);
 //                selectedPosition = position;
-                PopupMenu popupMenu = new PopupMenu(EditMonitoringUserProfileActivity.this, viewClicked);
+                PopupMenu popupMenu = new PopupMenu(EditMonitoringUserGroupActivity.this, viewClicked);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_member_group, popupMenu.getMenu());
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
@@ -172,12 +172,12 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
     private void leaveGroup(int position){
         long groupId = groupsList.get(position).getId();
         ProxyBuilder.SimpleCallback<List<User>> callback = returnedMembersList -> removeFromGroupResponse(returnedMembersList);
-        modelManager.removeUserFromGroup(EditMonitoringUserProfileActivity.this, callback, groupId, userId);
+        modelManager.removeUserFromGroup(EditMonitoringUserGroupActivity.this, callback, groupId, userId);
     }
 
     private void removeFromGroupResponse(List<User> returnedMembersList) {
         ProxyBuilder.SimpleCallback<List<Long>> callback = groupIdsList -> getIdsOfGroupsAUserIsMemberOfResponse(groupIdsList);
-        modelManager.getIdsOfGroupsAUserIsMemberOf(EditMonitoringUserProfileActivity.this, callback, userId);
+        modelManager.getIdsOfGroupsAUserIsMemberOf(EditMonitoringUserGroupActivity.this, callback, userId);
     }
 
     private void extractDataFromIntent(){
@@ -191,7 +191,7 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
     }
 
     public static Intent makeIntent(Context context, long editUserId){
-        Intent intent = new Intent(context, EditMonitoringUserProfileActivity.class);
+        Intent intent = new Intent(context, EditMonitoringUserGroupActivity.class);
         intent.putExtra(USER_ID, editUserId);
         return intent;
     }
@@ -211,7 +211,7 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
                 user.setIsParent(true);
 
                 //pass in userId of user to be "forced" to join a group
-                Intent intent = MapActivity.makeIntentForceChild(EditMonitoringUserProfileActivity.this, userId);
+                Intent intent = MapActivity.makeIntentForceChild(EditMonitoringUserGroupActivity.this, userId);
                 startActivity(intent);
             }
         });

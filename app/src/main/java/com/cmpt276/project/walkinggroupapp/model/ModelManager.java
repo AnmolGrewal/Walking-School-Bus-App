@@ -57,7 +57,7 @@ public class ModelManager {
     public void register(Context context,
                          ProxyBuilder.SimpleCallback<Void> callback,
                          String name, String emailAddress, String password,
-                         int birthYear, int birthMonth,
+                         Integer birthYear, Integer birthMonth,
                          String address, String cellPhone,
                          String homePhone, String grade,
                          String teacherName, String emergencyContactInfo ) {
@@ -68,8 +68,8 @@ public class ModelManager {
         newUser.setEmail(emailAddress);
         newUser.setPassword(password);
         //Testing
-        newUser.setBirthYear(birthYear);
         newUser.setBirthMonth(birthMonth);
+        newUser.setBirthYear(birthYear);
         newUser.setAddress(address);
         newUser.setCellPhone(cellPhone);
         newUser.setHomePhone(homePhone);

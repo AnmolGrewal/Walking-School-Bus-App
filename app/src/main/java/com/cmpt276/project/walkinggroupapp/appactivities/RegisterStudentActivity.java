@@ -1,11 +1,10 @@
-package com.cmpt276.project.walkinggroupapp;
+package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.cmpt276.project.walkinggroupapp.appactivities.LoginActivity;
+import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
@@ -24,13 +23,13 @@ import static com.cmpt276.project.walkinggroupapp.appactivities.RegisterActivity
 import static com.cmpt276.project.walkinggroupapp.appactivities.RegisterActivity.USER_NAME;
 import static com.cmpt276.project.walkinggroupapp.appactivities.RegisterActivity.USER_PASS;
 
-public class RegisterActivityStudent extends AppCompatActivity {
+public class RegisterStudentActivity extends AppCompatActivity {
 
     private String name;
     private String email;
     private String password1;
-    private int birthYear;
-    private int birthMonth;
+    private Integer birthYear;
+    private Integer birthMonth;
     private String address;
     private String cellPhone;
     private String homePhone;
@@ -64,21 +63,25 @@ public class RegisterActivityStudent extends AppCompatActivity {
         userRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(userBirthMonth.getSelectedItemPosition() != 12) {
+                    int spinner_pos = userBirthMonth.getSelectedItemPosition();
+                    String[] month_values = getResources().getStringArray(R.array.months_values);
+                    birthMonth = Integer.valueOf(month_values[spinner_pos]);
+                } else {
+                    birthMonth = null;
+                }
                 String temp = userBirthYear.getText().toString().trim();
                 try {
                     birthYear = Integer.parseInt(temp);
                 } catch (NumberFormatException e) {
-                    Toast.makeText(RegisterActivityStudent.this, "Birth Year Incorrect", Toast.LENGTH_SHORT)
-                            .show();
+                    birthYear = null;
                 }
                 Intent intent = getIntent();
                 name = intent.getStringExtra(USER_NAME);
                 email = intent.getStringExtra(USER_EMAIL);
                 password1 = intent.getStringExtra(USER_PASS);
                 //Get Birth Month
-                int spinner_pos = userBirthMonth.getSelectedItemPosition();
-                String[] month_values = getResources().getStringArray(R.array.months_values);
-                birthMonth = Integer.valueOf(month_values[spinner_pos]);
+
                 address = userAddress.getText().toString().trim();
                 cellPhone = userCellPhoneNumber.getText().toString().trim();
                 homePhone = userHomePhoneNumber.getText().toString().trim();
@@ -86,7 +89,7 @@ public class RegisterActivityStudent extends AppCompatActivity {
                 teacherName = userTeacherName.getText().toString().trim();
                 emergencyContactInfo = userEmergencyContactInfo.getText().toString().trim();
                 ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> registerResponse(returnedNothing);
-                modelManager.register(RegisterActivityStudent.this, callback, name, email, password1,
+                modelManager.register(RegisterStudentActivity.this, callback, name, email, password1,
                         birthYear, birthMonth, address, cellPhone, homePhone, grade, teacherName, emergencyContactInfo);
             }
         });
@@ -97,6 +100,7 @@ public class RegisterActivityStudent extends AppCompatActivity {
                 R.array.months, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userBirthMonth.setAdapter(adapter);
+        userBirthMonth.setSelection(12);
     }
 
     private void setupHints() {
@@ -122,11 +126,11 @@ public class RegisterActivityStudent extends AppCompatActivity {
     }
 
     public static Intent makeIntent(Context context){
-        return new Intent(context, RegisterActivityStudent.class);
+        return new Intent(context, RegisterStudentActivity.class);
     }
 
     private void registerResponse(Void returnedNothing) {
-        Toast.makeText(RegisterActivityStudent.this,"Account Created",Toast.LENGTH_SHORT).show();
+        Toast.makeText(RegisterStudentActivity.this,"Account Created",Toast.LENGTH_SHORT).show();
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -145,7 +149,7 @@ public class RegisterActivityStudent extends AppCompatActivity {
         editor.commit();
 
         finishAffinity();
-        Intent intent = LoginActivity.makeIntent(RegisterActivityStudent.this);
+        Intent intent = LoginActivity.makeIntent(RegisterStudentActivity.this);
         startActivity(intent);
     }
 
