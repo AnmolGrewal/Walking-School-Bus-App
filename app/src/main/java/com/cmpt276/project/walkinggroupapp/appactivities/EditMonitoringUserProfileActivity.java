@@ -203,7 +203,12 @@ public class EditMonitoringUserProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //Parent forcing child to join group
-                modelManager.getPrivateFieldUser().setIsParent(true);
+                //set properties to let map know what to do
+                User user =  modelManager.getPrivateFieldUser();
+                user.setIsViewingAChild(false);
+                user.setIsJoining(false);
+                user.setIsViewingAllChild(false);
+                user.setIsParent(true);
 
                 //pass in userId of user to be "forced" to join a group
                 Intent intent = MapActivity.makeIntentForceChild(EditMonitoringUserProfileActivity.this, userId);

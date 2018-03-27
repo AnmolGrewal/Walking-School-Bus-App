@@ -3,15 +3,12 @@ package com.cmpt276.project.walkinggroupapp.appactivities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.cmpt276.project.walkinggroupapp.R;
@@ -54,8 +51,12 @@ public class ParentDashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //set property to false to let map know what to do
-                mModelManager.getPrivateFieldUser().setIsViewingChild(true);
+                //set properties to let map know what to do
+                User user =  mModelManager.getPrivateFieldUser();
+                user.setIsViewingAChild(false);
+                user.setIsJoining(false);
+                user.setIsViewingAllChild(true);
+                user.setIsParent(false);
 
                 //go to map activity
                 Intent intent = new Intent(ParentDashboardActivity.this, MapActivity.class);
@@ -115,9 +116,18 @@ public class ParentDashboardActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Get the Id of the group that is clicked
-                long UserId = mChildrenList.get(position).getId();
+                long userId = mChildrenList.get(position).getId();
+
+                //set properties to let map know what to do
+                User user =  mModelManager.getPrivateFieldUser();
+                user.setIsViewingAChild(true);
+                user.setIsJoining(false);
+                user.setIsViewingAllChild(false);
+                user.setIsParent(false);
 
                 // go to map activity-show the clicked user location
+                Intent intent = MapActivity.makeIntentViewChild(ParentDashboardActivity.this, userId);
+                startActivity(intent);
 
             }
         });

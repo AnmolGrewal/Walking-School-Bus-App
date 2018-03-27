@@ -38,7 +38,13 @@ public class User {
     private boolean isParent = false;
 
     @JsonIgnore
+    private boolean isJoining = false;
+
+    @JsonIgnore
     private boolean isViewingAllChild = false;
+
+    @JsonIgnore
+    private boolean isViewingAChild = false;
 
 
 
@@ -88,10 +94,20 @@ public class User {
 
     public void setIsParent(boolean isParent) {this.isParent = isParent;}
 
+    //is joining
+    public boolean isJoining() { return isJoining; }
+
+    public void setIsJoining(boolean joining) { isJoining = joining; }
+
     //isViewingAllChild
     public boolean isViewingAllChild() {return isViewingAllChild;}
 
-    public void setIsViewingChild(boolean isViewingChild) {this.isViewingAllChild = isViewingChild;}
+    public void setIsViewingAllChild(boolean isViewingChild) {this.isViewingAllChild = isViewingChild;}
+
+    //isViewingAChild
+    public boolean isViewingAChild() { return isViewingAChild; }
+
+    public void setIsViewingAChild(boolean viewingAChild) { isViewingAChild = viewingAChild; }
 
     //Birth Month
     public int getBirthMonth() {

@@ -86,9 +86,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     private User mCurrentUser;
 
-    private long mChildUserId;
+    private long mChildUserIdToForce;
+    private long mChildUserIdToView;
 
-    private boolean isViewingAllChild = false;
 
 
 
@@ -143,19 +143,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         //allows clicking on marker to show its title
         mMap.setOnMarkerClickListener(this);
 
-
-
-        //test location of child
-        if(mModelManager.getPrivateFieldUser().isViewingAllChild()) {
-            placeChildLocationMarker(new LatLng(37.28, -122.17));
-            placeChildLocationMarker(new LatLng(37.3, -122.17));
-            placeChildLocationMarker(new LatLng(37.28, -122.2));
-        }
-
-
-
-
-
         //allow multi line statements on title and snippet of markers
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
@@ -190,7 +177,22 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         });
 
 
-        if(!mModelManager.getPrivateFieldUser().isViewingAllChild()) {
+
+        //test location of all child
+        if(mModelManager.getPrivateFieldUser().isViewingAllChild()) {
+            placeChildLocationMarker(new LatLng(37.28, -122.17));
+            placeChildLocationMarker(new LatLng(37.3, -122.17));
+            placeChildLocationMarker(new LatLng(37.28, -122.2));
+        }
+
+        //test location of a child
+        if(mModelManager.getPrivateFieldUser().isViewingAChild()) {
+            placeChildLocationMarker(new LatLng(37.30, -122.19));
+        }
+
+
+        //parent forcing child to join group or User wanting to join group
+        if(mModelManager.getPrivateFieldUser().isParent() || mModelManager.getPrivateFieldUser().isJoining()) {
 
 
             //Get the existing walking groups in server
@@ -255,7 +257,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 public void onClick(View v) {
 
                     //"Child" wanting to join group by him/herself
-                    if (!mModelManager.getPrivateFieldUser().isParent()) {
+                    if (mModelManager.getPrivateFieldUser().isJoining()) {
                         //Add the group to users list of walking group
                         mCurrentUser = mModelManager.getPrivateFieldUser();
 
@@ -265,10 +267,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                         mModelManager.addUserToGroup(MapActivity.this, addUserToGroupCallback, mClickedGroupId, mCurrentUser.getId());
                     }
                     //"Parent" requesting for his/her child
-                    else {
+                    else if (mModelManager.getPrivateFieldUser().isParent()){
                         //set mCurrentUser to be the User with the UserId passed by the parent
                         ProxyBuilder.SimpleCallback<User> getUserByIdCallback = serverPassedUser -> getUserByIdResponse(serverPassedUser);
-                        mModelManager.getUserById(MapActivity.this, getUserByIdCallback, mChildUserId);
+                        mModelManager.getUserById(MapActivity.this, getUserByIdCallback, mChildUserIdToForce);
 
 
                     }
@@ -601,7 +603,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     public static Intent makeIntentViewChild(Context context, long editUserId){
         Intent intent = new Intent(context, MapActivity.class);
-        intent.putExtra(USER_ID_FORCE_CHILD, editUserId);
+        intent.putExtra(USER_ID_VIEW_CHILD, editUserId);
         return intent;
     }
 
@@ -614,7 +616,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         if(mModelManager.getPrivateFieldUser().isParent()) {
 
             Intent intent = getIntent();
-            mChildUserId = intent.getLongExtra(USER_ID_FORCE_CHILD, 0);
+            mChildUserIdToForce = intent.getLongExtra(USER_ID_FORCE_CHILD, 0);
+        }
+        else if(mModelManager.getPrivateFieldUser().isViewingAChild()) {
+
+            Intent intent = getIntent();
+            mChildUserIdToView = intent.getLongExtra(USER_ID_VIEW_CHILD, 0);
+
         }
 
     }
