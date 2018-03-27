@@ -82,6 +82,7 @@
     <string name="anmol_gradeText">Grade</string>
     <string name="anmol_teacher_s_nameText">Teacher\'s Name</string>
     <string name="anmol_emergency_contact_infoText">Emergency Contact Info</string>
+    <string name="edit_profile">Edit Profile</string>
     <string name="jacky_send_fragment_hint">Type in a message to send</string>
     <string name="jacky_view_groups_button_text">View Groups</string>
     <string name="jacky_messages_text">Messages:</string>
