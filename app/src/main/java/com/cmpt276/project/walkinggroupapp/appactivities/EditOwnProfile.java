@@ -105,7 +105,7 @@ public class EditOwnProfile extends AppCompatActivity {
         return new Intent(context, EditOwnProfile.class);
     }
 
-    public static Intent makeIntentToEditUserProfile(Context context, Long userId){
+    public static Intent makeIntent(Context context, Long userId){
         Intent intent = new Intent(context, EditOwnProfile.class);
         intent.putExtra(USER_ID, userId);
         return intent;
