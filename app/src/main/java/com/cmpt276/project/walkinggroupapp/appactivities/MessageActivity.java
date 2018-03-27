@@ -198,9 +198,6 @@ public class MessageActivity extends AppCompatActivity {
                                     markMessageUnread(readMessage.getId());
                                 }
                                 break;
-                            case R.id.jacky_delete_message:
-                                deleteMessage(readMessage.getId());
-                                break;
                         }
                         return true;
                     }
@@ -226,18 +223,6 @@ public class MessageActivity extends AppCompatActivity {
         ProxyBuilder.SimpleCallback<List<Message>> messageCallback = messageList -> getMessageList(messageList);
         modelManager.getMessagesForUser(MessageActivity.this, messageCallback);
     }
-
-    private void deleteMessage(Long messageId){
-        ProxyBuilder.SimpleCallback<Void> readCallback = readResponse -> deleteMessageResponse(readResponse);
-        modelManager.deleteMessageByMessageId(MessageActivity.this, readCallback, messageId);
-    }
-
-    private void deleteMessageResponse(Void noResponse){
-        ProxyBuilder.SimpleCallback<List<Message>> messageCallback = messageList -> getMessageList(messageList);
-        modelManager.getMessagesForUser(MessageActivity.this, messageCallback);
-    }
-
-
 
     public static Intent makeIntent(Context context){
         return new Intent(context, MessageActivity.class);
