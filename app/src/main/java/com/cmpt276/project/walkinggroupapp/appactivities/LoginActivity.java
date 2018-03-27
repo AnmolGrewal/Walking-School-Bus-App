@@ -57,21 +57,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        loadSharedPreferences();
+        loadSharedPreferences();
 
-        final SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
-        mEmail = sharedPreferences.getString(PREFERENCE_EMAIL, null);
-        mPassword = sharedPreferences.getString(PREFERENCE_PASSWORD,null);
-
-        isLogout = sharedPreferences.getBoolean(PREFERENCE_IS_LOGOUT, true);
-
-        modelManager = ModelManager.getInstance();
-        modelManager.setApiKey(getString(R.string.gerry_apikey));
 
         setupLoginProgressBar();
 
 
-        //set up all buttons, texViews etc.
         registerViews();
 
 
@@ -85,18 +76,39 @@ public class LoginActivity extends AppCompatActivity {
         if (!isLogout && mEmail != null && mPassword != null) {
             login();
         }
-
-
-//        loginRequest();
     }
-
-//    private void loadSharedPreferences() {
-//
-//    }
 
     public static Intent makeIntent(Context context)
     {
         return new Intent(context, LoginActivity.class);
+    }
+
+
+    private void loadSharedPreferences() {
+        final SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
+        mEmail = sharedPreferences.getString(PREFERENCE_EMAIL, null);
+        mPassword = sharedPreferences.getString(PREFERENCE_PASSWORD,null);
+
+        isLogout = sharedPreferences.getBoolean(PREFERENCE_IS_LOGOUT, true);
+
+        modelManager = ModelManager.getInstance();
+        modelManager.setApiKey(getString(R.string.gerry_apikey));
+    }
+
+    private void SavePreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.clear();
+
+        editor.putString(PREFERENCE_EMAIL, mEmail);
+        editor.putString(PREFERENCE_PASSWORD, mPassword);
+
+        editor.putBoolean(PREFERENCE_IS_LOGOUT, false);
+
+        editor.commit();
+
+        Log.w(TAG,"save using preferences success");
     }
 
 
@@ -118,6 +130,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setupLoginButton() {
         mLoginButton = findViewById(R.id.gerry_Login_Button_login);
+        mLoginButton.setEnabled(true);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,7 +218,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void login() {
-        mLoginButton.setEnabled(false);
 
         Toast.makeText(LoginActivity.this,"Logging in...",Toast.LENGTH_SHORT).show();
 
@@ -285,26 +297,28 @@ public class LoginActivity extends AppCompatActivity {
 //    }
 
 
-    //save data using shared preferences
-    private void SavePreferences() {
-        SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.clear();
-
-        editor.putString(PREFERENCE_EMAIL,mEmail);
-        editor.putString(PREFERENCE_PASSWORD,mPassword);
-
-        editor.putBoolean(PREFERENCE_IS_LOGOUT, false);
-
-        editor.commit();
-
-        Log.w(TAG,"save using preferences success");
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        //loginRequest();
+
+        loadSharedPreferences();
+
+
+        setupLoginProgressBar();
+
+
+        registerViews();
+
+
+        setupRegisterButton();
+        setupLoginButton();
+        setupHelpButton();
+        setupForgetPasswordTextViewOnClick();
+
+
+        // this part is for auto-login.
+        if (!isLogout && mEmail != null && mPassword != null) {
+            login();
+        }
     }
 }
