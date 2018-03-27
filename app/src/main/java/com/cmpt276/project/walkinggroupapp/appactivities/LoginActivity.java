@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
         modelManager.setApiKey(getString(R.string.gerry_apikey));
     }
 
-    private void SavePreferences() {
+    private void saveSharedPreferencesOnLoginSuccess() {
         SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -218,14 +218,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void login() {
+        loginProgressBar.setVisibility(View.VISIBLE);
 
         Toast.makeText(LoginActivity.this,"Logging in...",Toast.LENGTH_SHORT).show();
 
         ProxyBuilder.SimpleCallback<Void> onResponseCallback = returnedNothing -> loginSuccessResponse(returnedNothing);
         ProxyBuilder.SimpleCallback<String> onFailureCallback = errorMessage -> loginFailResponse(errorMessage);
         modelManager.login(LoginActivity.this, onResponseCallback, onFailureCallback, mEmail, mPassword);
-
-        loginProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void loginSuccessResponse(Void returnedNothing) {
@@ -236,7 +235,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
 
-        SavePreferences();
+        saveSharedPreferencesOnLoginSuccess();
 
         Intent intent = MainMenuActivity.makeIntent(LoginActivity.this);
         startActivity(intent);
@@ -260,7 +259,7 @@ public class LoginActivity extends AppCompatActivity {
 //        Log.w(TAG, "Server replied to login request (no content was expected).");
 //
 //        //login success, save data to preference
-//        SavePreferences();
+//        saveSharedPreferencesOnLoginSuccess();
 //
 //        //go to Main Menu
 //        Toast.makeText(LoginActivity.this,"Login Success",Toast.LENGTH_SHORT).show();
