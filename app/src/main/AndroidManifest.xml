@@ -53,7 +53,7 @@
         <activity android:name=".appactivities.MapActivity" />
         <activity android:name=".appactivities.ViewGroupActivity" />
         <activity android:name=".appactivities.CreateGroupActivity" />
-        <activity android:name=".appactivities.EditMonitoringUserProfileActivity" />
+        <activity android:name=".appactivities.EditMonitoringUserGroupActivity" />
         <activity android:name=".appactivities.RegisterActivity" />
         <activity android:name=".appactivities.HelpActivity" />
         <activity android:name=".appactivities.ParentDashboard" />

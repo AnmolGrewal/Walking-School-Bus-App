@@ -294,12 +294,13 @@ public class MainMenuActivity extends AppCompatActivity {
 
                             switch(menuItem.getItemId())
                             {
-                                case R.id.cancel:
-                                    break;
                                 case R.id.delete:
                                     removeMonitorsUserByPosition(position);
                                     break;
                                 case R.id.editGroup:
+                                    editUserGroup(position);
+                                    break;
+                                case R.id.jacky_edit_user_information:
                                     editUserProfile(position);
                                     break;
                             }
@@ -353,9 +354,15 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
 
-    private void editUserProfile(int position) {
+    private void editUserGroup(int position) {
         long targetId = monitorsUsers.get(position).getId();
-        Intent intent = EditMonitoringUserProfileActivity.makeIntent(getApplicationContext(), targetId);
+        Intent intent = EditMonitoringUserGroupActivity.makeIntent(getApplicationContext(), targetId);
+        startActivity(intent);
+    }
+
+    private void editUserProfile(int position){
+        long targetId = monitorsUsers.get(position).getId();
+        Intent intent = EditOwnProfile.makeIntent(MainMenuActivity.this, targetId);
         startActivity(intent);
     }
 
