@@ -12,6 +12,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -428,8 +429,17 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             //gives you the most recent location currently available
             if (mLastLocation != null) {
                 LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                placeCurrentLocationMarker(currentLocation);
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, DEFAULT_ZOOM));
+
+                //wait 1 sec before placing marker wait
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable(){
+                    public void run(){
+                        //do something after 1 sec
+                        placeCurrentLocationMarker(currentLocation);
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, DEFAULT_ZOOM));
+                    }
+                }, 600);
+
             }
         }
     }
@@ -470,7 +480,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         MarkerOptions markerOptions = new MarkerOptions().position(location);
         String titleStr = getAddressOfMarker(location);
         markerOptions.title(titleStr);
-        markerOptions.snippet("Name: " + user.getName() + "\n" + "Leader of a group");
+        markerOptions.snippet("Name: " + user.getName() + "\n" + "Leader of a group" + "\n" + "Updated at: " + user.getLastGpsLocation().getTimestamp().toString());
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
         Marker theMarker = mMap.addMarker(markerOptions);
