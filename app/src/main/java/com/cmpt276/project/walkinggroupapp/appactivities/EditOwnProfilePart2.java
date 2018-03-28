@@ -53,7 +53,7 @@ public class EditOwnProfilePart2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_student);
+        setContentView(R.layout.activity_edit_own_profile_part2);
 
         modelManager = ModelManager.getInstance();
 
