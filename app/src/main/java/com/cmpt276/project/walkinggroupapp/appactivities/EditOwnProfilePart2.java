@@ -93,13 +93,8 @@ public class EditOwnProfilePart2 extends AppCompatActivity {
                 emergencyContactInfo = userEmergencyContactInfo.getText().toString().trim();
                 //TODO: NEED HELP HERE JUSTIN THANKS!
                 ProxyBuilder.SimpleCallback<User> callback = setupNewInformation -> editInformation(setupNewInformation);
-                try {
-                    modelManager.editUser(EditOwnProfilePart2.this, callback, name, email,
+                modelManager.editUser(EditOwnProfilePart2.this, callback, name, email,
                             birthYear, birthMonth, address, cellPhone, homePhone, grade, teacherName, emergencyContactInfo);
-                } catch (NullPointerException e) {
-                    //Do Nothing
-                }
-
             }
         });
     }
@@ -114,19 +109,18 @@ public class EditOwnProfilePart2 extends AppCompatActivity {
     }
 
     private void setupUserInfo(User currentPulledUser) {
-        try {
-            userBirthMonth.setSelection(currentUser.getBirthMonth() - 1);
-            userBirthYear.setText(currentUser.getBirthYear());
-            userAddress.setText(currentUser.getAddress());
-            userCellPhoneNumber.setText(currentUser.getCellPhone());
-            userEmergencyContactInfo.setText(currentUser.getEmergencyContactInfo());
-            userGrade.setText(currentUser.getGrade());
-            userHomePhoneNumber.setText(currentUser.getHomePhone());
-            userTeacherName.setText(currentUser.getTeacherName());
-        } catch(NullPointerException e) {
-            //Do Nothing
-        }
-
+            try {
+                userBirthMonth.setSelection(currentUser.getBirthMonth() - 1);
+                userBirthYear.setText(currentUser.getBirthYear());
+                userAddress.setText(currentUser.getAddress());
+                userCellPhoneNumber.setText(currentUser.getCellPhone());
+                userEmergencyContactInfo.setText(currentUser.getEmergencyContactInfo());
+                userGrade.setText(currentUser.getGrade());
+                userHomePhoneNumber.setText(currentUser.getHomePhone());
+                userTeacherName.setText(currentUser.getTeacherName());
+            } catch (NullPointerException e) {
+                userBirthMonth.setSelection(12);
+            }
     }
 
     private void setupMonths() {

@@ -522,7 +522,7 @@ public class ModelManager {
     public void editUser(Context context,
                          ProxyBuilder.SimpleCallback<User> callback,
                          String name, String emailAddress,
-                         int birthYear, int birthMonth,
+                         Integer birthYear, Integer birthMonth,
                          String address, String cellPhone,
                          String homePhone, String grade,
                          String teacherName, String emergencyContactInfo) {
