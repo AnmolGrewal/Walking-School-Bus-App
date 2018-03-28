@@ -28,7 +28,7 @@ public class AddMonitoredByUserActivity extends AppCompatActivity {
 
     private Button addBtn;
 
-    private EditText editTextUserId;
+    private EditText editTextEmail;
 
 
 
@@ -62,16 +62,16 @@ public class AddMonitoredByUserActivity extends AppCompatActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editTextUserId = findViewById(R.id.jacky_add_by_user);
-                String userIdString = editTextUserId.getText().toString();
-                if(userIdString.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Please Enter a User ID", Toast.LENGTH_SHORT)
+                editTextEmail = findViewById(R.id.jacky_add_by_user);
+                String emailAddress = editTextEmail.getText().toString().trim();
+                if(emailAddress.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Please Enter an Email Address.", Toast.LENGTH_SHORT)
                             .show();
                 } else {
-                    long userId = Long.parseLong(userIdString);
+//                    long userId = Long.parseLong(emailAddress);
 
                     ProxyBuilder.SimpleCallback<List<User>> callback = monitoredByUsers -> addNewMonitoredByUserResponse(monitoredByUsers);
-                    modelManager.addNewMonitoredByUser(AddMonitoredByUserActivity.this, callback, userId);
+                    modelManager.addNewMonitoredByUserByEmail(AddMonitoredByUserActivity.this, callback, emailAddress);
                 }
             }
         });

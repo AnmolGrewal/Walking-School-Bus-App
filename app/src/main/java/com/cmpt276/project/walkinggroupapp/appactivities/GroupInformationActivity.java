@@ -45,7 +45,9 @@ import java.util.List;
 public class GroupInformationActivity extends AppCompatActivity {
     private static final String TAG = "GroupInfoActivity";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    public static final String GROUP_ID_INTENT_KEY = "group_id_intent_key";
+    private static final String GROUP_ID_INTENT_KEY = "group_id_intent_key";
+    private static  final float DESTINATION_DISTANCE_TOLERANCE = 40;// distance in meters to destination to  consider destination as reached
+
 
     private ListView mMemberOfGroupListView;
 
@@ -209,8 +211,18 @@ public class GroupInformationActivity extends AppCompatActivity {
         //double check here to make sure the returned gpsLocation  was the same as the one you passed to server
         Log.w(TAG, "SET LOCATION SUCCESS, Received: " + gpsLocation.getLat() + " " + gpsLocation.getLng() + " " + gpsLocation.getTimestamp().toString());
 
+        //current location
+        Location currentLocation = new Location("currentLocation");
+        currentLocation.setLatitude(mGroupUploadingLat);
+        currentLocation.setLongitude(mGroupUploadingLng);
+
+        //new location
+        Location newLocation = new Location("newLocation");
+        newLocation.setLatitude(gpsLocation.getLat());
+        newLocation.setLongitude(gpsLocation.getLng());
+
         //check if destination is reached -> stop uploading location data
-        if( (Math.abs(gpsLocation.getLat() - mGroupUploadingLat) <= 0.01) && (Math.abs(gpsLocation.getLng() - mGroupUploadingLng) <= 0.01) && (!mIsStoppingInTenMinutes) ) {
+        if(currentLocation.distanceTo(newLocation) <= DESTINATION_DISTANCE_TOLERANCE ) {
             stopUploadingInTenMinutes();
 
             //So only 1 stop command is done once destination is reached
