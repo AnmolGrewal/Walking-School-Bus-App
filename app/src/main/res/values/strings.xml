@@ -9,7 +9,8 @@
     <string name="gerry_welcome_screen_welcome">WELCOME SCREEN</string>
     <string name="gerry_test_map_welcome">TEST MAP</string>
     <string name="gerry_join_group_map">Join Group</string>
-    <string name="gerry_view_map_parent_dashboard">View Map</string>
+    <string name="gerry_view_map_parent_dashboard">View All Children</string>
+    <string name="gerry_children_list_parent_dashboard">Child List: Click To See Current Location</string>
     <string name="gerry_parent_dashboard_main">Parent Dashboard</string>
     <string name="gerry_upload_location_info">Upload Location</string>
     <string name="gerry_stop_upload_info">Stop Upload</string>
