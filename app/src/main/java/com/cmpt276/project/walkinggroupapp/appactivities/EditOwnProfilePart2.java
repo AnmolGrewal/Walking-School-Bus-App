@@ -63,7 +63,6 @@ public class EditOwnProfilePart2 extends AppCompatActivity {
 
         ProxyBuilder.SimpleCallback<User> getCurrentUser = monitoredByUsers -> setupUserInfo(monitoredByUsers);
         modelManager.getUser(EditOwnProfilePart2.this, getCurrentUser);
-
         userRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,18 +108,19 @@ public class EditOwnProfilePart2 extends AppCompatActivity {
     }
 
     private void setupUserInfo(User currentPulledUser) {
-            try {
-                userBirthMonth.setSelection(currentUser.getBirthMonth() - 1);
-                userBirthYear.setText(currentUser.getBirthYear());
-                userAddress.setText(currentUser.getAddress());
-                userCellPhoneNumber.setText(currentUser.getCellPhone());
-                userEmergencyContactInfo.setText(currentUser.getEmergencyContactInfo());
-                userGrade.setText(currentUser.getGrade());
-                userHomePhoneNumber.setText(currentUser.getHomePhone());
-                userTeacherName.setText(currentUser.getTeacherName());
+        currentUser = currentPulledUser;
+        try {
+            userBirthMonth.setSelection(currentUser.getBirthMonth() - 1);
+            userBirthYear.setText(currentUser.getBirthYear());
+            userAddress.setText(currentUser.getAddress());
+            userCellPhoneNumber.setText(currentUser.getCellPhone());
+            userEmergencyContactInfo.setText(currentUser.getEmergencyContactInfo());
+            userGrade.setText(currentUser.getGrade());
+            userHomePhoneNumber.setText(currentUser.getHomePhone());
+            userTeacherName.setText(currentUser.getTeacherName());
             } catch (NullPointerException e) {
                 userBirthMonth.setSelection(12);
-            }
+        }
     }
 
     private void setupMonths() {
