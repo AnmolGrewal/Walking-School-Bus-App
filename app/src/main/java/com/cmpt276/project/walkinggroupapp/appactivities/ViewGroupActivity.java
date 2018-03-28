@@ -304,6 +304,18 @@ public class ViewGroupActivity extends AppCompatActivity {
 
         });
 
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Get the Id of the group that is clicked
+                long groupId = leadsGroups.get(position).getId();
+
+                // go to GroupInfo Activity
+                Intent intent = GroupInformationActivity.makeIntent(ViewGroupActivity.this, groupId);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void leaveGroupYouAreMemberOf(int position){
