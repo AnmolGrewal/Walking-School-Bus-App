@@ -336,6 +336,7 @@ public class GroupInformationActivity extends AppCompatActivity {
         }
     }
 
+
     private void getUserDetail(User user){
         Log.i("MyApp" , "User id is: " + user.getId());
         mMemberOfGroup.add(user);
@@ -364,5 +365,15 @@ public class GroupInformationActivity extends AppCompatActivity {
     }
 
 
+
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mIsUpload = false;
+        Toast.makeText(GroupInformationActivity.this, "Upload Stopped", Toast.LENGTH_SHORT).show();
+        finish();
+    }
 
 }
