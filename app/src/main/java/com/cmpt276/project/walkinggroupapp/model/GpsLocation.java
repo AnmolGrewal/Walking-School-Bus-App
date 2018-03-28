@@ -15,7 +15,7 @@ public class GpsLocation {
     private Double lng;
     private Timestamp timestamp;
 
-    //Default constructor--prevent server error
+    //Default constructor--needed to prevent a certain server error
     public GpsLocation() {
 
     }

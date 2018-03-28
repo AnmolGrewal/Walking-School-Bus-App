@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
@@ -64,7 +65,7 @@ import static java.lang.Long.parseLong;
  */
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, LocationListener {
     private static final String TAG = "MapActivity";
-    private static final int DEFAULT_ZOOM = 13;
+    private static final int DEFAULT_ZOOM = 10;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_CHECK_SETTINGS = 2;
 
@@ -84,7 +85,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private List<WalkingGroup> mWalkingGroups;
     private long mClickedGroupId;
 
-    private User mCurrentUser;
+    private User mCurrentUserToJoin;
 
     private long mChildUserIdToForce;
     private long mChildUserIdToView;
@@ -180,14 +181,20 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         //test location of all child
         if(mModelManager.getPrivateFieldUser().isViewingAllChild()) {
-            placeChildLocationMarker(new LatLng(37.28, -122.17));
-            placeChildLocationMarker(new LatLng(37.3, -122.17));
-            placeChildLocationMarker(new LatLng(37.28, -122.2));
+            //get all the child of this user and display their location marker on map
+            getAllChildToView();
         }
 
         //test location of a child
         if(mModelManager.getPrivateFieldUser().isViewingAChild()) {
-            placeChildLocationMarker(new LatLng(37.30, -122.19));
+
+            //get the User the parent wishes to view and display its location marker on map
+            getUserByIdToView();
+
+            //get the location of the leaders of all the group the child is a part of
+            //display all their locations on the map
+            getGroupLeaders();
+
         }
 
 
@@ -259,17 +266,17 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     //"Child" wanting to join group by him/herself
                     if (mModelManager.getPrivateFieldUser().isJoining()) {
                         //Add the group to users list of walking group
-                        mCurrentUser = mModelManager.getPrivateFieldUser();
+                        mCurrentUserToJoin = mModelManager.getPrivateFieldUser();
 
                         //get the walking group which is associated with marker--set it to mClickedGroup
                         //then add user to be part of that group
                         ProxyBuilder.SimpleCallback<List<User>> addUserToGroupCallback = serverPassedWalkingGroup -> addUserToClickedGroupResponse(serverPassedWalkingGroup);
-                        mModelManager.addUserToGroup(MapActivity.this, addUserToGroupCallback, mClickedGroupId, mCurrentUser.getId());
+                        mModelManager.addUserToGroup(MapActivity.this, addUserToGroupCallback, mClickedGroupId, mCurrentUserToJoin.getId());
                     }
                     //"Parent" requesting for his/her child
                     else if (mModelManager.getPrivateFieldUser().isParent()){
-                        //set mCurrentUser to be the User with the UserId passed by the parent
-                        ProxyBuilder.SimpleCallback<User> getUserByIdCallback = serverPassedUser -> getUserByIdResponse(serverPassedUser);
+                        //set mCurrentUserToJoin to be the User with the UserId passed by the parent
+                        ProxyBuilder.SimpleCallback<User> getUserByIdCallback = serverPassedUser -> getUserByIdToAddResponse(serverPassedUser);
                         mModelManager.getUserById(MapActivity.this, getUserByIdCallback, mChildUserIdToForce);
 
 
@@ -428,7 +435,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
 
-    //place a marker with non default icon
+    //place a marker with non default icon--represents walking groups
     private void placeWalkingGroupMarker(WalkingGroup walkingGroup) {
         //extract location of group
         double latitude = walkingGroup.getRouteLatArray()[0];
@@ -457,16 +464,33 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
     //place marker for each of the child current walking group location
-    private void placeChildLocationMarker(LatLng location) {
+    private void placeLeaderLocationMarker(User user) {
+        LatLng location = new LatLng(user.getLastGpsLocation().getLat(), user.getLastGpsLocation().getLng());
+
         MarkerOptions markerOptions = new MarkerOptions().position(location);
         String titleStr = getAddressOfMarker(location);
         markerOptions.title(titleStr);
-        markerOptions.snippet("Child Current Location");
+        markerOptions.snippet("Name: " + user.getName() + "\n" + "Leader of a group");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+
+        Marker theMarker = mMap.addMarker(markerOptions);
+        //set the tag of marker to be the user id--use this to differentiate marker during marker click event
+        theMarker.setTag("Leader Marker");
+    }
+
+    //place marker for the location of a group leader
+    private void placeChildLocationMarker(User user) {
+        LatLng location = new LatLng(user.getLastGpsLocation().getLat(), user.getLastGpsLocation().getLng());
+
+        MarkerOptions markerOptions = new MarkerOptions().position(location);
+        String titleStr = getAddressOfMarker(location);
+        markerOptions.title(titleStr);
+        markerOptions.snippet("Name: " + user.getName() + "\n" + "Updated at: " + user.getLastGpsLocation().getTimestamp().toString());
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
         Marker theMarker = mMap.addMarker(markerOptions);
         //set the tag of marker to be the user id--use this to differentiate marker during marker click event
-        theMarker.setTag("test");
+        theMarker.setTag("Child Marker");
     }
 
 
@@ -550,6 +574,17 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         });
     }
 
+
+
+
+
+
+
+    private void populateMapWithGroups () {
+        ProxyBuilder.SimpleCallback<List<WalkingGroup>>  getWalkingGroupsCallback = serverPassedWalkingGroups -> getWalkingGroupsResponse(serverPassedWalkingGroups);
+        mModelManager.getAllWalkingGroups(MapActivity.this, getWalkingGroupsCallback);
+    }
+
     private void getWalkingGroupsResponse(List<WalkingGroup> passedWalkingGroups) {
 
         this.mWalkingGroups = passedWalkingGroups;
@@ -561,6 +596,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         }
     }
 
+
+
+
     private void addUserToClickedGroupResponse(List<User> passedGroup) {
         //already added user to the group
 
@@ -568,23 +606,98 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         finish();
     }
 
-
-    private void getUserByIdResponse(User passedUser) {
-        mCurrentUser = passedUser;
+    private void getUserByIdToAddResponse(User passedUser) {
+        mCurrentUserToJoin = passedUser;
 
         //add the group to the child
         //get the walking group which is associated with marker--set it to mClickedGroup
         //then add user to be part of that group
         ProxyBuilder.SimpleCallback<List<User>> addUserToGroupCallback = serverPassedWalkingGroup -> addUserToClickedGroupResponse(serverPassedWalkingGroup);
-        mModelManager.addUserToGroup(MapActivity.this, addUserToGroupCallback, mClickedGroupId, mCurrentUser.getId());
+        mModelManager.addUserToGroup(MapActivity.this, addUserToGroupCallback, mClickedGroupId, mCurrentUserToJoin.getId());
     }
 
 
-    private void populateMapWithGroups () {
-        ProxyBuilder.SimpleCallback<List<WalkingGroup>>  getWalkingGroupsCallback = serverPassedWalkingGroups -> getWalkingGroupsResponse(serverPassedWalkingGroups);
-        mModelManager.getAllWalkingGroups(MapActivity.this, getWalkingGroupsCallback);
+
+
+    private void getUserByIdToView() {
+        ProxyBuilder.SimpleCallback<User> getUserToViewCallback = serverPassedUser -> getUserByIdToViewResponse(serverPassedUser);
+        mModelManager.getUserById(MapActivity.this, getUserToViewCallback, mChildUserIdToView);
     }
 
+    private void getUserByIdToViewResponse(User passedUser) {
+
+        //show the child location marker in the map
+        if(passedUser.getLastGpsLocation().getTimestamp() != null || passedUser.getLastGpsLocation().getLat() != null || passedUser.getLastGpsLocation().getLng() != null) {
+            placeChildLocationMarker(passedUser);
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Child Has Not Uploaded Location Yet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    private void getAllChildToView() {
+        ProxyBuilder.SimpleCallback<List<User>> getAllChildToViewCallback = serverPassedChildList -> getAllChildToViewResponse(serverPassedChildList);
+        mModelManager.getMonitorsUsers(MapActivity.this, getAllChildToViewCallback);
+    }
+
+    private void getAllChildToViewResponse (List<User> passedListUser){
+
+        //loop through all the child and display their marker location on map
+        for(int i =0; i < passedListUser.size(); i++) {
+            User ithUser = passedListUser.get(i);
+
+            //show the ith child location marker in the map
+            if(ithUser.getLastGpsLocation().getTimestamp() != null || ithUser.getLastGpsLocation().getLat() != null || ithUser.getLastGpsLocation().getLng() != null) {
+                placeChildLocationMarker(ithUser);
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "child: " + ithUser.getName()+ " has not uploaded their location", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+    private void getGroupLeaders() {
+
+        //get all Id's of groups this user is a part of
+        ProxyBuilder.SimpleCallback<List<Long>> getAllIdOfCurrentGroupsCallback = serverPassedIdList -> getGroupLeadersResponses(serverPassedIdList);
+        mModelManager.getIdsOfGroupsAUserIsMemberOf(MapActivity.this, getAllIdOfCurrentGroupsCallback, mChildUserIdToView);
+
+    }
+
+    private void getGroupLeadersResponses(List<Long> passedIdList) {
+
+        //get the leader of the walking groups
+        for(int i =0 ;i < passedIdList.size(); i++) {
+            ProxyBuilder.SimpleCallback<WalkingGroup> getWalkingGroupLeaderCallback = serverPassedGroup -> getWalkingGroupLeaderResponse(serverPassedGroup);
+            mModelManager.getWalkingGroupById(MapActivity.this, getWalkingGroupLeaderCallback, passedIdList.get(i));
+        }
+
+    }
+
+    private void getWalkingGroupLeaderResponse(WalkingGroup passedGroup) {
+        //get the Leader of the group, if its not this user then get the leaders location if it exist
+        User groupLeader = passedGroup.getLeader();
+
+        if(groupLeader.getId() == mModelManager.getPrivateFieldUser().getId()) {
+            Toast.makeText(getApplicationContext(), "You are the leader of the group", Toast.LENGTH_SHORT).show();
+        }
+
+        ProxyBuilder.SimpleCallback<User> getLeaderInfoCallback = serverPassedLeaderId -> getLeaderLocationResponse(serverPassedLeaderId);
+        mModelManager.getUserById(MapActivity.this, getLeaderInfoCallback, groupLeader.getId());
+
+    }
+
+    private void getLeaderLocationResponse(User passedUser) {
+
+        //get the leaders location and display it on map
+        if (passedUser.getLastGpsLocation().getTimestamp() != null || passedUser.getLastGpsLocation().getLat() != null || passedUser.getLastGpsLocation().getLng() != null) {
+            placeLeaderLocationMarker(passedUser);
+        } else {
+            Toast.makeText(getApplicationContext(), "Group Leader has not uploaded location data", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
 
@@ -606,7 +719,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         intent.putExtra(USER_ID_VIEW_CHILD, editUserId);
         return intent;
     }
-
 
 
 
