@@ -92,9 +92,9 @@ public class EditOwnProfilePart2 extends AppCompatActivity {
                 teacherName = userTeacherName.getText().toString().trim();
                 emergencyContactInfo = userEmergencyContactInfo.getText().toString().trim();
                 //TODO: NEED HELP HERE JUSTIN THANKS!
-                ProxyBuilder.SimpleCallback<User> callback = returnedNothing -> registerResponse(c);
+                ProxyBuilder.SimpleCallback<User> callback = setupNewInformation -> editInformation(setupNewInformation);
                 try {
-                    modelManager.editUser(EditOwnProfilePart2.this, getCurrentUser, name, email,
+                    modelManager.editUser(EditOwnProfilePart2.this, callback, name, email,
                             birthYear, birthMonth, address, cellPhone, homePhone, grade, teacherName, emergencyContactInfo);
                 } catch (NullPointerException e) {
                     //Do Nothing
@@ -102,6 +102,15 @@ public class EditOwnProfilePart2 extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void editInformation(User monitoredByUsers) {
+        Toast.makeText(EditOwnProfilePart2.this,"Account Edited",Toast.LENGTH_SHORT).show();
+
+        /*
+        Intent intent = LoginActivity.makeIntent(EditOwnProfilePart2.this);
+        startActivity(intent);
+        */
     }
 
     private void setupUserInfo(User currentPulledUser) {
@@ -148,15 +157,6 @@ public class EditOwnProfilePart2 extends AppCompatActivity {
         userTeacherName = findViewById(R.id.anmol_userTeacherNameC);
         userEmergencyContactInfo = findViewById(R.id.anmol_emergencyContactInfoUserC);
         userRegister = findViewById(R.id.anmol_registerC);
-    }
-
-    private void registerResponse(Void returnedNothing) {
-        Toast.makeText(EditOwnProfilePart2.this,"Account Edited",Toast.LENGTH_SHORT).show();
-
-        /*
-        Intent intent = LoginActivity.makeIntent(EditOwnProfilePart2.this);
-        startActivity(intent);
-        */
     }
 
     @Override
