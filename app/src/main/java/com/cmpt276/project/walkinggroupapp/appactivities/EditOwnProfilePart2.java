@@ -100,11 +100,9 @@ public class EditOwnProfilePart2 extends AppCompatActivity {
 
     private void editInformation(User monitoredByUsers) {
         Toast.makeText(EditOwnProfilePart2.this,"Account Edited",Toast.LENGTH_SHORT).show();
-        finish();
-        /*
-        Intent intent = LoginActivity.makeIntent(EditOwnProfilePart2.this);
+        finishAffinity();
+        Intent intent = MainMenuActivity.makeIntent(EditOwnProfilePart2.this);
         startActivity(intent);
-        */
     }
 
     private void setupUserInfo(User currentPulledUser) {
