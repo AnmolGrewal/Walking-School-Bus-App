@@ -110,4 +110,11 @@ public class EditOwnProfile extends AppCompatActivity {
         intent.putExtra(USER_ID, userId);
         return intent;
     }
+
+    public static Intent makeIntent(Context context, Long userID, Boolean isEdit){
+        Intent intent = new Intent(context, EditOwnProfile.class);
+        intent.putExtra(USER_ID, userID);
+        intent.putExtra("isEdit", isEdit);
+        return intent;
+    }
 }
