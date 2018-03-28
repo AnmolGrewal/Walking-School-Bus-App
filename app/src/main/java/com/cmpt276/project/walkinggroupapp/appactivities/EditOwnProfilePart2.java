@@ -100,7 +100,7 @@ public class EditOwnProfilePart2 extends AppCompatActivity {
 
     private void editInformation(User monitoredByUsers) {
         Toast.makeText(EditOwnProfilePart2.this,"Account Edited",Toast.LENGTH_SHORT).show();
-
+        finish();
         /*
         Intent intent = LoginActivity.makeIntent(EditOwnProfilePart2.this);
         startActivity(intent);
@@ -110,8 +110,10 @@ public class EditOwnProfilePart2 extends AppCompatActivity {
     private void setupUserInfo(User currentPulledUser) {
         currentUser = currentPulledUser;
         try {
-            userBirthMonth.setSelection(currentUser.getBirthMonth() - 1);
-            userBirthYear.setText(currentUser.getBirthYear());
+            if(currentUser.getBirthMonth() != null) {
+                userBirthMonth.setSelection(currentUser.getBirthMonth() - 1);
+            }
+            userBirthYear.setText(currentUser.getBirthYear().toString());
             userAddress.setText(currentUser.getAddress());
             userCellPhoneNumber.setText(currentUser.getCellPhone());
             userEmergencyContactInfo.setText(currentUser.getEmergencyContactInfo());
