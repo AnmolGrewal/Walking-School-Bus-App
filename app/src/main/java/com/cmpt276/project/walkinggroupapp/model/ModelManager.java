@@ -172,9 +172,9 @@ public class ModelManager {
 //        return user.getMonitoredByUsers();
     }
 
-    public void addNewMonitorsUser(Context context,
-                                   ProxyBuilder.SimpleCallback<List<User>> callback,
-                                   long targetId) {
+    public void addNewMonitorsUserById(Context context,
+                                       ProxyBuilder.SimpleCallback<List<User>> callback,
+                                       long targetId) {
 //        updateUser();
         User newUser = new User();
         newUser.setId(targetId);
@@ -183,9 +183,20 @@ public class ModelManager {
         ProxyBuilder.callProxy(context, caller, callback);
     }
 
-    public void addNewMonitoredByUser(Context context,
-                                      ProxyBuilder.SimpleCallback<List<User>> callback,
-                                      long targetId) {
+    public void addNewMonitorsUserByEmail(Context context,
+                                       ProxyBuilder.SimpleCallback<List<User>> callback,
+                                       String emailAddress) {
+//        updateUser();
+        Call<User> getUserByEmailCaller = proxy.getUserByEmail(emailAddress);
+        ProxyBuilder.callProxy(context, getUserByEmailCaller, returnedUser -> {
+            Call<List<User>> caller = proxy.addNewMonitorsUser(user.getId(), returnedUser);
+            ProxyBuilder.callProxy(context, caller, callback);
+        });
+    }
+
+    public void addNewMonitoredByUserById(Context context,
+                                          ProxyBuilder.SimpleCallback<List<User>> callback,
+                                          long targetId) {
 //        updateUser();
         User newUser = new User();
         newUser.setId(targetId);

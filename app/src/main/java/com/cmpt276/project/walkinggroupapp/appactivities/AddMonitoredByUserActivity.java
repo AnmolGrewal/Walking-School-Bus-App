@@ -71,7 +71,7 @@ public class AddMonitoredByUserActivity extends AppCompatActivity {
                     long userId = Long.parseLong(userIdString);
 
                     ProxyBuilder.SimpleCallback<List<User>> callback = monitoredByUsers -> addNewMonitoredByUserResponse(monitoredByUsers);
-                    modelManager.addNewMonitoredByUser(AddMonitoredByUserActivity.this, callback, userId);
+                    modelManager.addNewMonitoredByUserById(AddMonitoredByUserActivity.this, callback, userId);
                 }
             }
         });
