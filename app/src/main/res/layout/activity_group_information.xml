@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cmpt276.project.walkinggroupapp.appactivities.GroupInformation">
+    tools:context="com.cmpt276.project.walkinggroupapp.appactivities.GroupInformationActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,20 +15,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Member of Group:"
+            android:text="@string/jacky_member_of_group_information"
             android:textSize="16sp" />
 
         <TextView
             android:id="@+id/jacky_group_description_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Desciption..."
             android:textSize="18sp" />
 
         <ListView
             android:id="@+id/jacky_user_of_group"
             android:layout_width="match_parent"
-            android:layout_height="410dp" />
+            android:layout_height="364dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
