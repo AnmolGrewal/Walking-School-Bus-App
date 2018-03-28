@@ -7,29 +7,56 @@
     tools:context="com.cmpt276.project.walkinggroupapp.appactivities.MainMenuActivity">
 
     <Button
+        android:id="@+id/jacky_view_groups"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/jacky_view_groups_button_text"
+        app:layout_constraintBottom_toTopOf="@+id/jacky_message_button"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/gerry_Logout_Button_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="@string/gerry_logout_main"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/gerry_Parent_Dashboard_Button_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/gerry_parent_dashboard_main"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/gerry_Logout_Button_main"
+        app:layout_constraintEnd_toStartOf="@+id/jacky_message_button"
+        app:layout_constraintStart_toEndOf="@+id/gerry_Logout_Button_main"
+        app:layout_constraintTop_toTopOf="@+id/gerry_Logout_Button_main" />
+
+    <Button
         android:id="@+id/jacky_add_monitoring_button"
         android:layout_width="80dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="290dp"
-        android:layout_marginTop="3dp"
         android:text="@string/jacky_add_mainmenu_top"
-        app:layout_constraintBottom_toTopOf="@+id/jacky_message_button"
         app:layout_constraintEnd_toEndOf="@+id/jacky_add_monitoring_by_button"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/jacky_add_monitoring_by_button"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.153" />
+        app:layout_constraintTop_toTopOf="@+id/linearLayout4" />
 
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="0dp"
-        android:layout_height="248dp"
+        android:layout_height="210dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/jacky_add_monitoring_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -53,13 +80,13 @@
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="25dp"
+        android:layout_height="210dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/jacky_add_monitoring_by_button"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
@@ -80,66 +107,24 @@
             tools:layout_editor_absoluteY="265dp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="bottom"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <Button
-            android:id="@+id/gerry_Logout_Button_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:text="@string/gerry_logout_main" />
-
-        <Button
-            android:id="@+id/gerry_Parent_Dashboard_Button_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:text="@string/gerry_parent_dashboard_main"
-            android:textSize="13sp" />
-
-        <Button
-            android:id="@+id/jacky_view_groups"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="1dp"
-            android:layout_weight="1"
-            android:text="@string/jacky_view_groups_button_text"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/jacky_add_monitoring_button" />
-
-    </LinearLayout>
-
     <Button
         android:id="@+id/jacky_add_monitoring_by_button"
-        android:layout_width="78dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="227dp"
-        android:layout_marginTop="220dp"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
         android:text="@string/jacky_add_button_mainmenu"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
     <Button
         android:id="@+id/jacky_message_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="122dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:text="View messages"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout3"
-        app:layout_constraintTop_toBottomOf="@+id/jacky_add_monitoring_button" />
+        app:layout_constraintBottom_toBottomOf="@+id/gerry_Parent_Dashboard_Button_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/gerry_Parent_Dashboard_Button_main" />
 
 </android.support.constraint.ConstraintLayout>
