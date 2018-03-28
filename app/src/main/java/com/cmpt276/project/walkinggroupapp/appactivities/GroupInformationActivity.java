@@ -15,16 +15,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.GpsLocation;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
+import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -37,7 +44,13 @@ public class GroupInformationActivity extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     public static final String GROUP_ID_INTENT_KEY = "group_id_intent_key";
 
+    private ListView mMemberOfGroupListView;
+
+    private List<User> mMemberOfGroup = new ArrayList<>();
+
     private ModelManager mModelManager;
+
+    private TextView mGroupDescription;
 
     private LocationManager mLocationManager;
 
@@ -74,6 +87,12 @@ public class GroupInformationActivity extends AppCompatActivity {
         getGroupUploadingDestination();
 
         setupButtons();
+
+        ProxyBuilder.SimpleCallback<WalkingGroup> getDetailsOfWalkingGroupCallback = walkingGroup -> getDetailsOfWalkingGroupResponse(walkingGroup);
+        mModelManager.getWalkingGroupById(GroupInformationActivity.this, getDetailsOfWalkingGroupCallback, mCurrentGroupId);
+
+        ProxyBuilder.SimpleCallback<List<User>> getIdsOfUserInGroupCallback = UserIdsList -> getIdsOfUserInGroupResponse(UserIdsList);
+        mModelManager.getAllMemberUsersByGroupId(GroupInformationActivity.this, getIdsOfUserInGroupCallback, mCurrentGroupId);
 
     }
 
@@ -244,6 +263,59 @@ public class GroupInformationActivity extends AppCompatActivity {
 
     }
 
+    private void populateMemberOfGroupsList() {
+        ArrayAdapter<User> adapter = new GroupInformationActivity.memberOfGroupAdapter();
+
+        //Configure ListView
+        mMemberOfGroupListView = findViewById(R.id.jacky_user_of_group);
+        mMemberOfGroupListView.setAdapter(adapter);
+    }
+
+    private class memberOfGroupAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
+        public memberOfGroupAdapter() {
+            super(GroupInformationActivity.this, R.layout.list_layout, mMemberOfGroup);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            //Make sure We are given a view
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = getLayoutInflater().inflate(R.layout.list_layout, parent, false);
+            }
+            //Find a user to add
+            User currentUser = mMemberOfGroup.get(position);
+
+            //Name:
+            TextView makeName = itemView.findViewById(R.id.jacky_user_name_dynamic);
+            makeName.setText(currentUser.getName());
+
+            //Email
+            TextView makeEmail = itemView.findViewById(R.id.jacky_user_email_dynamic);
+            makeEmail.setText(currentUser.getEmail());
+
+            return itemView;
+        }
+    }
+
+    private void getIdsOfUserInGroupResponse(List<User> listOfIds){
+        for(User user: listOfIds){
+            Log.i("MyApp" , "Send User id is: " + user.getId());
+            ProxyBuilder.SimpleCallback<User> getUserCallback = userDetail -> getUserDetail(userDetail);
+            mModelManager.getUserById(GroupInformationActivity.this, getUserCallback, user.getId());
+        }
+    }
+
+    private void getUserDetail(User user){
+        Log.i("MyApp" , "User id is: " + user.getId());
+        mMemberOfGroup.add(user);
+        populateMemberOfGroupsList();
+    }
+
+    private void getDetailsOfWalkingGroupResponse(WalkingGroup walkingGroup){
+        mGroupDescription = findViewById(R.id.jacky_group_description_info);
+        mGroupDescription.setText(walkingGroup.getGroupDescription());
+    }
 
 
     //For creating intents outside of this Activity
