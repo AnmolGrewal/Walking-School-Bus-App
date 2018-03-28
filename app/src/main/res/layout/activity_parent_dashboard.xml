@@ -4,25 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cmpt276.project.walkinggroupapp.appactivities.ParentDashboard">
+    tools:context="com.cmpt276.project.walkinggroupapp.appactivities.ParentDashboardActivity">
     
     
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "@string/gerry_children_list_parent_dashboard" />
+        <ListView
+            android:id="@+id/gerry_Children_List_parent_dashboard"
+            android:layout_width="330dp"
+            android:layout_height="190dp"
+            tools:layout_editor_absoluteX="15dp"
+            tools:layout_editor_absoluteY="35dp" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/gerry_ViewMap_Button_parent_dashboard"
-                android:text="@string/gerry_view_map_parent_dashboard"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/gerry_ViewMap_Button_parent_dashboard"
+            android:text="@string/gerry_view_map_parent_dashboard"
+            android:layout_gravity="center"/>
 
         <Button
             android:id="@+id/anmol_editOwnProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_gravity="center"
             android:text="Edit Profile" />
     </LinearLayout>
 

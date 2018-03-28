@@ -14,11 +14,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +45,9 @@ import java.util.List;
 public class GroupInformationActivity extends AppCompatActivity {
     private static final String TAG = "GroupInfoActivity";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    public static final String GROUP_ID_INTENT_KEY = "group_id_intent_key";
+    private static final String GROUP_ID_INTENT_KEY = "group_id_intent_key";
+    private static  final float DESTINATION_DISTANCE_TOLERANCE = 40;// distance in meters to destination to  consider destination as reached
+
 
     private ListView mMemberOfGroupListView;
 
@@ -206,8 +211,18 @@ public class GroupInformationActivity extends AppCompatActivity {
         //double check here to make sure the returned gpsLocation  was the same as the one you passed to server
         Log.w(TAG, "SET LOCATION SUCCESS, Received: " + gpsLocation.getLat() + " " + gpsLocation.getLng() + " " + gpsLocation.getTimestamp().toString());
 
+        //current location
+        Location currentLocation = new Location("currentLocation");
+        currentLocation.setLatitude(mGroupUploadingLat);
+        currentLocation.setLongitude(mGroupUploadingLng);
+
+        //new location
+        Location newLocation = new Location("newLocation");
+        newLocation.setLatitude(gpsLocation.getLat());
+        newLocation.setLongitude(gpsLocation.getLng());
+
         //check if destination is reached -> stop uploading location data
-        if( (Math.abs(gpsLocation.getLat() - mGroupUploadingLat) <= 0.01) && (Math.abs(gpsLocation.getLng() - mGroupUploadingLng) <= 0.01) && (!mIsStoppingInTenMinutes) ) {
+        if(currentLocation.distanceTo(newLocation) <= DESTINATION_DISTANCE_TOLERANCE ) {
             stopUploadingInTenMinutes();
 
             //So only 1 stop command is done once destination is reached
@@ -298,9 +313,24 @@ public class GroupInformationActivity extends AppCompatActivity {
         }
     }
 
+    private void registerViewUserOnItemClick()                                                                                    //For clicking on list object
+    {
+        final ListView list = findViewById(R.id.jacky_user_of_group);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // go to EditOwnProfile Activity
+                Log.i("MyApp", "Id being send it is: " + mMemberOfGroup.get(position).getId());
+                Intent intent = EditOwnProfile.makeIntent(GroupInformationActivity.this, mMemberOfGroup.get(position).getId(), false);
+                startActivity(intent);
+            }
+        });
+
+    }
+
     private void getIdsOfUserInGroupResponse(List<User> listOfIds){
         for(User user: listOfIds){
-            Log.i("MyApp" , "Send User id is: " + user.getId());
             ProxyBuilder.SimpleCallback<User> getUserCallback = userDetail -> getUserDetail(userDetail);
             mModelManager.getUserById(GroupInformationActivity.this, getUserCallback, user.getId());
         }
@@ -310,6 +340,7 @@ public class GroupInformationActivity extends AppCompatActivity {
         Log.i("MyApp" , "User id is: " + user.getId());
         mMemberOfGroup.add(user);
         populateMemberOfGroupsList();
+        registerViewUserOnItemClick();
     }
 
     private void getDetailsOfWalkingGroupResponse(WalkingGroup walkingGroup){

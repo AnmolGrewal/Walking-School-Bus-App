@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
@@ -26,7 +24,8 @@ public class EditOwnProfile extends AppCompatActivity {
     public static final String USER_EMAIL = "USER_EMAIL";
     public static final String USER_NAME = "USER_NAME";
     public static final String USER_ID = "UserID";
-    User currentUser;
+    private long userId;
+    User user;
     private ModelManager modelManager;
 
     @Override
@@ -36,18 +35,24 @@ public class EditOwnProfile extends AppCompatActivity {
 
         modelManager = ModelManager.getInstance();
 
+        getExtra();
         setupIDs();
         setupHints();
         setupButtonClick();
 
-        ProxyBuilder.SimpleCallback<User> getCurrentUser = monitoredByUsers -> setupUserInfo(monitoredByUsers);
-        modelManager.getUser(EditOwnProfile.this, getCurrentUser);
+        ProxyBuilder.SimpleCallback<User> getUserByIdCallback = monitoredByUsers -> setupUserInfo(monitoredByUsers);
+        modelManager.getUserById(EditOwnProfile.this, getUserByIdCallback, userId);
+    }
+
+    private void getExtra() {
+        Intent intent = getIntent();
+        userId = intent.getLongExtra(USER_ID, -1);
     }
 
     private void setupUserInfo(User currentPulledUser) {
-        currentUser = currentPulledUser;
-        emailAddress.setText(currentUser.getEmail());
-        userNameInputed.setText(currentUser.getName());
+        user = currentPulledUser;
+        emailAddress.setText(user.getEmail());
+        userNameInputed.setText(user.getName());
     }
 
     private void setupIDs() {
@@ -88,6 +93,13 @@ public class EditOwnProfile extends AppCompatActivity {
     public static Intent makeIntent(Context context, Long userId){
         Intent intent = new Intent(context, EditOwnProfile.class);
         intent.putExtra(USER_ID, userId);
+        return intent;
+    }
+
+    public static Intent makeIntent(Context context, Long userID, Boolean isEdit){
+        Intent intent = new Intent(context, EditOwnProfile.class);
+        intent.putExtra(USER_ID, userID);
+        intent.putExtra("isEdit", isEdit);
         return intent;
     }
 }
