@@ -60,8 +60,9 @@
         <activity android:name=".appactivities.GroupInformationActivity" />
         <activity android:name=".appactivities.RegisterParentActivity" />
         <activity android:name=".appactivities.RegisterStudentActivity" />
-        <activity android:name=".appactivities.EditOwnProfile"></activity>
-        <activity android:name=".appactivities.MessageActivity"></activity>
+        <activity android:name=".appactivities.EditOwnProfile" />
+        <activity android:name=".appactivities.MessageActivity" />
+        <activity android:name=".appactivities.EditOwnProfilePart2"></activity>
     </application>
 
 </manifest>

@@ -20,10 +20,7 @@ public class EditOwnProfile extends AppCompatActivity {
 
     private Button nextButton;
     private EditText emailAddress;
-    private EditText firstPassword;
-    private EditText secondPassword;
     private EditText userNameInputed;
-    private Spinner teacherOrStudent;
     private String name;
     private String email;
     public static final String USER_EMAIL = "USER_EMAIL";
@@ -42,7 +39,6 @@ public class EditOwnProfile extends AppCompatActivity {
         setupIDs();
         setupHints();
         setupButtonClick();
-        setupSpinner();
 
         ProxyBuilder.SimpleCallback<User> getCurrentUser = monitoredByUsers -> setupUserInfo(monitoredByUsers);
         modelManager.getUser(EditOwnProfile.this, getCurrentUser);
@@ -54,19 +50,11 @@ public class EditOwnProfile extends AppCompatActivity {
         userNameInputed.setText(currentUser.getName());
     }
 
-    private void setupSpinner() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.student_or_teacher, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        teacherOrStudent.setAdapter(adapter);
-    }
-
     private void setupIDs() {
         //Setting up EditTexts to be used later on
         emailAddress = findViewById(R.id.anmol_emailAddressUser);
         userNameInputed = findViewById(R.id.anmol_nameUserInput);
         nextButton = findViewById(R.id.anmol_nextButton);
-        teacherOrStudent = findViewById(R.id.anmol_teacherOrStudent);
     }
 
     private void setupButtonClick() {
@@ -77,18 +65,10 @@ public class EditOwnProfile extends AppCompatActivity {
                 name = userNameInputed.getText().toString();
                 if(name.length() >= 1 && email.length() >= 1)
                 {
-                        String checkTeacherStudent = teacherOrStudent.getSelectedItem().toString();
-                        if(checkTeacherStudent.equals("Student")) {
-                            Intent intent = RegisterStudentActivity.makeIntent(EditOwnProfile.this);
-                            intent.putExtra(USER_EMAIL, email);
-                            intent.putExtra(USER_NAME, name);
-                            startActivity(intent);
-                        } else {
-                            Intent intent = RegisterParentActivity.makeIntent(EditOwnProfile.this);
-                            intent.putExtra(USER_EMAIL, email);
-                            intent.putExtra(USER_NAME, name);
-                            startActivity(intent);
-                        }
+                    Intent intent = EditOwnProfilePart2.makeIntent(EditOwnProfile.this);
+                    intent.putExtra(USER_EMAIL, email);
+                    intent.putExtra(USER_NAME, name);
+                    startActivity(intent);
                 } else {
                     Toast.makeText(EditOwnProfile.this, "Please Fill All Fields", Toast.LENGTH_SHORT).show();
                 }
