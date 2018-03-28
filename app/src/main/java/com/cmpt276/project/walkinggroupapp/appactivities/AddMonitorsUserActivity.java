@@ -24,7 +24,7 @@ public class AddMonitorsUserActivity extends AppCompatActivity {
 
     private Button addBtn;
 
-    private EditText editTextUserId;
+    private EditText editTextEmail;
 
 
 
@@ -53,16 +53,16 @@ public class AddMonitorsUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Once clicked we get data from user input, find user, if found add else tell user error
-                editTextUserId = findViewById(R.id.jacky_add_user);
-                String userIdString = editTextUserId.getText().toString();
-                if(userIdString.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Please Enter a User ID", Toast.LENGTH_SHORT)
+                editTextEmail = findViewById(R.id.jacky_add_user);
+                String emailAddress = editTextEmail.getText().toString().trim();
+                if(emailAddress.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Please Enter an Email Address", Toast.LENGTH_SHORT)
                             .show();
                 }
                 else {
-                    long userId = Long.parseLong(userIdString);
+//                    long userId = Long.parseLong(emailAddress);
                     ProxyBuilder.SimpleCallback<List<User>> callback = monitorsUsers -> addNewMonitorsUserResponse(monitorsUsers);
-                    modelManager.addNewMonitorsUser(AddMonitorsUserActivity.this, callback, userId);
+                    modelManager.addNewMonitorsUserByEmail(AddMonitorsUserActivity.this, callback, emailAddress);
                 }
             }
         });

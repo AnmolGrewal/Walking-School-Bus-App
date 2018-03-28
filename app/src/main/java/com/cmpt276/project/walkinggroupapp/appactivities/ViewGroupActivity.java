@@ -137,8 +137,14 @@ public class ViewGroupActivity extends AppCompatActivity {
         joinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 //Parent not forcing child to join groups
-                modelManager.getPrivateFieldUser().setIsParent(false);
+                //set properties to let map know what to do
+                User user =  modelManager.getPrivateFieldUser();
+                user.setIsViewingAChild(false);
+                user.setIsJoining(true);
+                user.setIsViewingAllChild(false);
+                user.setIsParent(false);
 
                 //go to map activity
                 Intent intentMap = new Intent(ViewGroupActivity.this, MapActivity.class);
@@ -301,6 +307,18 @@ public class ViewGroupActivity extends AppCompatActivity {
                 return true;
             }
 
+        });
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Get the Id of the group that is clicked
+                long groupId = leadsGroups.get(position).getId();
+
+                // go to GroupInfo Activity
+                Intent intent = GroupInformationActivity.makeIntent(ViewGroupActivity.this, groupId);
+                startActivity(intent);
+            }
         });
 
     }

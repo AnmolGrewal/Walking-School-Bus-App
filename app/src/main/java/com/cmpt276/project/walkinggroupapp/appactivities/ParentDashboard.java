@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
+import com.cmpt276.project.walkinggroupapp.model.User;
 
 public class ParentDashboard extends AppCompatActivity {
 
@@ -46,8 +47,12 @@ public class ParentDashboard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //set property to false to let map know what to do
-                mModelManager.getPrivateFieldUser().setIsViewingChild(true);
+                //set properties to let map know what to do
+                User user =  mModelManager.getPrivateFieldUser();
+                user.setIsViewingAChild(false);
+                user.setIsJoining(false);
+                user.setIsViewingAllChild(true);
+                user.setIsParent(false);
 
                 //go to map activity
                 Intent intent = new Intent(ParentDashboard.this, MapActivity.class);

@@ -14,17 +14,27 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.GpsLocation;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
+import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -35,9 +45,17 @@ import java.sql.Timestamp;
 public class GroupInformationActivity extends AppCompatActivity {
     private static final String TAG = "GroupInfoActivity";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    public static final String GROUP_ID_INTENT_KEY = "group_id_intent_key";
+    private static final String GROUP_ID_INTENT_KEY = "group_id_intent_key";
+    private static  final float DESTINATION_DISTANCE_TOLERANCE = 40;// distance in meters to destination to  consider destination as reached
+
+
+    private ListView mMemberOfGroupListView;
+
+    private List<User> mMemberOfGroup = new ArrayList<>();
 
     private ModelManager mModelManager;
+
+    private TextView mGroupDescription;
 
     private LocationManager mLocationManager;
 
@@ -74,6 +92,12 @@ public class GroupInformationActivity extends AppCompatActivity {
         getGroupUploadingDestination();
 
         setupButtons();
+
+        ProxyBuilder.SimpleCallback<WalkingGroup> getDetailsOfWalkingGroupCallback = walkingGroup -> getDetailsOfWalkingGroupResponse(walkingGroup);
+        mModelManager.getWalkingGroupById(GroupInformationActivity.this, getDetailsOfWalkingGroupCallback, mCurrentGroupId);
+
+        ProxyBuilder.SimpleCallback<List<User>> getIdsOfUserInGroupCallback = UserIdsList -> getIdsOfUserInGroupResponse(UserIdsList);
+        mModelManager.getAllMemberUsersByGroupId(GroupInformationActivity.this, getIdsOfUserInGroupCallback, mCurrentGroupId);
 
     }
 
@@ -187,8 +211,18 @@ public class GroupInformationActivity extends AppCompatActivity {
         //double check here to make sure the returned gpsLocation  was the same as the one you passed to server
         Log.w(TAG, "SET LOCATION SUCCESS, Received: " + gpsLocation.getLat() + " " + gpsLocation.getLng() + " " + gpsLocation.getTimestamp().toString());
 
+        //current location
+        Location currentLocation = new Location("currentLocation");
+        currentLocation.setLatitude(mGroupUploadingLat);
+        currentLocation.setLongitude(mGroupUploadingLng);
+
+        //new location
+        Location newLocation = new Location("newLocation");
+        newLocation.setLatitude(gpsLocation.getLat());
+        newLocation.setLongitude(gpsLocation.getLng());
+
         //check if destination is reached -> stop uploading location data
-        if( (Math.abs(gpsLocation.getLat() - mGroupUploadingLat) <= 0.01) && (Math.abs(gpsLocation.getLng() - mGroupUploadingLng) <= 0.01) && (!mIsStoppingInTenMinutes) ) {
+        if(currentLocation.distanceTo(newLocation) <= DESTINATION_DISTANCE_TOLERANCE ) {
             stopUploadingInTenMinutes();
 
             //So only 1 stop command is done once destination is reached
@@ -244,6 +278,76 @@ public class GroupInformationActivity extends AppCompatActivity {
 
     }
 
+    private void populateMemberOfGroupsList() {
+        ArrayAdapter<User> adapter = new GroupInformationActivity.memberOfGroupAdapter();
+
+        //Configure ListView
+        mMemberOfGroupListView = findViewById(R.id.jacky_user_of_group);
+        mMemberOfGroupListView.setAdapter(adapter);
+    }
+
+    private class memberOfGroupAdapter extends ArrayAdapter<User> {                                                 //Code for complexList based from Brian Frasers video
+        public memberOfGroupAdapter() {
+            super(GroupInformationActivity.this, R.layout.list_layout, mMemberOfGroup);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            //Make sure We are given a view
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = getLayoutInflater().inflate(R.layout.list_layout, parent, false);
+            }
+            //Find a user to add
+            User currentUser = mMemberOfGroup.get(position);
+
+            //Name:
+            TextView makeName = itemView.findViewById(R.id.jacky_user_name_dynamic);
+            makeName.setText(currentUser.getName());
+
+            //Email
+            TextView makeEmail = itemView.findViewById(R.id.jacky_user_email_dynamic);
+            makeEmail.setText(currentUser.getEmail());
+
+            return itemView;
+        }
+    }
+
+    private void registerViewUserOnItemClick()                                                                                    //For clicking on list object
+    {
+        final ListView list = findViewById(R.id.jacky_user_of_group);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // go to EditOwnProfile Activity
+                Log.i("MyApp", "Id being send it is: " + mMemberOfGroup.get(position).getId());
+                Intent intent = EditOwnProfile.makeIntent(GroupInformationActivity.this, mMemberOfGroup.get(position).getId(), false);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    private void getIdsOfUserInGroupResponse(List<User> listOfIds){
+        for(User user: listOfIds){
+            ProxyBuilder.SimpleCallback<User> getUserCallback = userDetail -> getUserDetail(userDetail);
+            mModelManager.getUserById(GroupInformationActivity.this, getUserCallback, user.getId());
+        }
+    }
+
+
+    private void getUserDetail(User user){
+        Log.i("MyApp" , "User id is: " + user.getId());
+        mMemberOfGroup.add(user);
+        populateMemberOfGroupsList();
+        registerViewUserOnItemClick();
+    }
+
+    private void getDetailsOfWalkingGroupResponse(WalkingGroup walkingGroup){
+        mGroupDescription = findViewById(R.id.jacky_group_description_info);
+        mGroupDescription.setText(walkingGroup.getGroupDescription());
+    }
 
 
     //For creating intents outside of this Activity
@@ -261,5 +365,15 @@ public class GroupInformationActivity extends AppCompatActivity {
     }
 
 
+
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mIsUpload = false;
+        Toast.makeText(GroupInformationActivity.this, "Upload Stopped", Toast.LENGTH_SHORT).show();
+        finish();
+    }
 
 }

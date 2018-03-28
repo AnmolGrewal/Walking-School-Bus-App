@@ -9,14 +9,15 @@
     <string name="gerry_welcome_screen_welcome">WELCOME SCREEN</string>
     <string name="gerry_test_map_welcome">TEST MAP</string>
     <string name="gerry_join_group_map">Join Group</string>
-    <string name="gerry_view_map_parent_dashboard">View Map</string>
+    <string name="gerry_view_map_parent_dashboard">View All Children</string>
+    <string name="gerry_children_list_parent_dashboard">Child List: Click To See Current Location</string>
     <string name="gerry_parent_dashboard_main">Parent Dashboard</string>
     <string name="gerry_upload_location_info">Upload Location</string>
     <string name="gerry_stop_upload_info">Stop Upload</string>
     <string name="gerry_apikey">D71A0AC3-1AD3-42BE-87C1-83345D63B4D9</string>
     <string name="gerry_logout_main">Logout</string>
     <string name="jacky_enter_user_id_hint">Enter User ID</string>
-    <string name="jacky_enter_user_id">Enter User Id</string>
+    <string name="jacky_enter_email">Enter User Email</string>
     <string name="jacky_cancel_popup">Cancel</string>
     <string name="jacky_delete_popup">Delete</string>
     <string name="jacky_people_who_you_are_monitoring_text">People who you are monitoring</string>
@@ -94,5 +95,6 @@
     <string name="jacky_mark_as_unread_popup">Mark as unread</string>
     <string name="jacky_delete_delete_message">Delete</string>
     <string name="jackt_edit_user_popup">Edit User</string>
+    <string name="jacky_member_of_group_information">Member of Group:</string>
 
 </resources>
