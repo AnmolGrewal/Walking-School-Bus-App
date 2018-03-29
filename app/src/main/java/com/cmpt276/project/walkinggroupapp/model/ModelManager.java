@@ -653,6 +653,12 @@ public class ModelManager {
         ProxyBuilder.callProxy(context, getUnreadEmergencyMessagesForUserCaller, callback);
     }
 
+    public void getUnreadMessagesForUser(Context context,
+                                                    ProxyBuilder.SimpleCallback<List<Message>> callback){
+        Call<List<Message>> getUnreadMessageForUserCaller = proxy.getUnreadMessagesForUser(user.getId());
+        ProxyBuilder.callProxy(context, getUnreadMessageForUserCaller, callback);
+    }
+
     public void getMessagesForUser(Context context,
                                    ProxyBuilder.SimpleCallback<List<Message>> callback) {
 

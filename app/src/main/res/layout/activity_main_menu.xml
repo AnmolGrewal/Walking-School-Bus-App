@@ -10,9 +10,10 @@
         android:id="@+id/jacky_view_groups"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="148dp"
         android:layout_weight="1"
         android:text="@string/jacky_view_groups_button_text"
-        app:layout_constraintBottom_toTopOf="@+id/jacky_message_button"
+        app:layout_constraintBottom_toTopOf="@+id/gerry_Parent_Dashboard_Button_main"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
@@ -72,7 +73,7 @@
         <ListView
             android:id="@+id/jacky_monitoring_list"
             android:layout_width="330dp"
-            android:layout_height="190dp"
+            android:layout_height="180dp"
             tools:layout_editor_absoluteX="15dp"
             tools:layout_editor_absoluteY="35dp" />
     </LinearLayout>
@@ -102,7 +103,7 @@
         <ListView
             android:id="@+id/jacky_monitoing_by_list"
             android:layout_width="330dp"
-            android:layout_height="190dp"
+            android:layout_height="180dp"
             tools:layout_editor_absoluteX="15dp"
             tools:layout_editor_absoluteY="265dp" />
     </LinearLayout>
@@ -122,9 +123,25 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="1"
-        android:text="View messages"
+        android:text="@string/jacky_view_messages_button"
         app:layout_constraintBottom_toBottomOf="@+id/gerry_Parent_Dashboard_Button_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/gerry_Parent_Dashboard_Button_main" />
+
+    <TextView
+        android:id="@+id/jacky_unread_messages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/jacky_unread_messages_text"
+        app:layout_constraintBottom_toTopOf="@+id/jacky_message_button"
+        app:layout_constraintStart_toEndOf="@+id/jacky_view_groups" />
+
+    <TextView
+        android:id="@+id/jacky_number_of_unread"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/jacky_message_button"
+        app:layout_constraintStart_toEndOf="@+id/jacky_unread_messages" />
 
 </android.support.constraint.ConstraintLayout>
