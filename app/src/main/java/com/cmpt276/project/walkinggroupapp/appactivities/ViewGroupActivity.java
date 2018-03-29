@@ -286,9 +286,6 @@ public class ViewGroupActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem menuItem) {
 
                         switch (menuItem.getItemId()) {
-                            case R.id.cancel:
-//                                doCancel();
-                                break;
                             case R.id.delete:
                                 // TODO: delete the group here.
                                 break;
