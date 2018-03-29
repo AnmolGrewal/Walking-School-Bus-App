@@ -69,8 +69,16 @@ public class ViewChildProfileActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        progressBar.setVisibility(View.VISIBLE);
 
+        ProxyBuilder.SimpleCallback<User> getUserByIdCallback = returnedUser -> getUserByIdResponse(returnedUser);
+        ProxyBuilder.SimpleCallback<String> onFailureCallback = errorMessage -> onFailureResponse(errorMessage);
+        modelManager.getUserById(ViewChildProfileActivity.this, getUserByIdCallback, onFailureCallback, userId);
+    }
 
     public static Intent makeIntent(Context context, long userId) {
         Intent intent = new Intent(context, ViewChildProfileActivity.class);
