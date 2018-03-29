@@ -74,7 +74,7 @@ public class ViewChildProfileActivity extends AppCompatActivity {
 
 
     public static Intent makeIntent(Context context, long userId) {
-        Intent intent = new Intent(context, EditOwnProfile.class);
+        Intent intent = new Intent(context, ViewChildProfileActivity.class);
         intent.putExtra(USER_ID, userId);
         return intent;
     }
