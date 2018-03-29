@@ -17,6 +17,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.cmpt276.project.walkinggroupapp.R;
+import com.cmpt276.project.walkinggroupapp.model.Message;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
@@ -45,6 +46,7 @@ public class MainMenuActivity extends AppCompatActivity {
     private Button btnMessage;
     private Button btnParentDashboard;
 
+    private TextView unreadMessageTextView;
 
     private ListView monitorsUsersListView;
     private ListView monitoredByUsersListView;
@@ -82,6 +84,7 @@ public class MainMenuActivity extends AppCompatActivity {
             setupLogoutButton();
             setupMessageButton();
             setupParentDashboardButton();
+            setupNumberOfUnreadMessages();
 
     }
 
@@ -179,6 +182,16 @@ public class MainMenuActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void setupNumberOfUnreadMessages(){
+        unreadMessageTextView = findViewById(R.id.jacky_number_of_unread);
+        ProxyBuilder.SimpleCallback<List<Message>> getNumberOfUnreadCallback = numberOfUnread -> getNumberOfUnreadResponse(numberOfUnread);
+        modelManager.getUnreadMessagesForUser(MainMenuActivity.this, getNumberOfUnreadCallback);
+    }
+
+    private void getNumberOfUnreadResponse(List<Message> allUnread){
+        unreadMessageTextView.setText("" + allUnread.size());
     }
 
     private void getMonitorsUsersResponse(List<User> monitorsUsers) {
