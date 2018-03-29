@@ -123,7 +123,8 @@ public class ViewChildProfileActivity extends AppCompatActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = EditProfileActivity.makeIntent(getApplicationContext(), userId);
+                startActivity(intent);
             }
         });
     }
