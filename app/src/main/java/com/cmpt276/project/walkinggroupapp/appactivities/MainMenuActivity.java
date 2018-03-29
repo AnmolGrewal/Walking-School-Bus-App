@@ -187,12 +187,13 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private void setupNumberOfUnreadMessages(){
         unreadMessageTextView = findViewById(R.id.jacky_number_of_unread);
-        ProxyBuilder.SimpleCallback<List<Message>> getNumberOfUnreadCallback = numberOfUnread -> getNumberOfUnreadResponse(numberOfUnread);
-        modelManager.getUnreadMessagesForUser(MainMenuActivity.this, getNumberOfUnreadCallback);
+        ProxyBuilder.SimpleCallback<List<Message>> getUnreadMessagesCallback = unreadMessageList -> getUnreadMessagesResponse(unreadMessageList);
+        modelManager.getUnreadMessagesForUser(MainMenuActivity.this, getUnreadMessagesCallback);
     }
 
-    private void getNumberOfUnreadResponse(List<Message> allUnread){
-        unreadMessageTextView.setText("" + allUnread.size());
+    private void getUnreadMessagesResponse(List<Message> unreadMessageList){
+        String numberOfUnreadMessagesString = "" + unreadMessageList.size();
+        unreadMessageTextView.setText(numberOfUnreadMessagesString);
     }
 
     private void getMonitorsUsersResponse(List<User> monitorsUsers) {
