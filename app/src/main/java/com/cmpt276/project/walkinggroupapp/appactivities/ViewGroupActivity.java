@@ -60,13 +60,11 @@ public class ViewGroupActivity extends AppCompatActivity {
         ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreMemberOfCallback = groupIdsList -> getIdsOfGroupsYouAreMemberOfResponse(groupIdsList);
         modelManager.getIdsOfGroupsYouAreMemberOf(ViewGroupActivity.this, getIdsOfGroupsYouAreMemberOfCallback);
 
-
 //        populateLeaderList();
 //        populateMemberList();
 
 //        registerLeaderListClick();
 //        registerMemberListClick();
-
 
         setupCreateButton();
         setupJoinButton();
