@@ -107,7 +107,7 @@ public class MessageActivity extends AppCompatActivity {
         messageListView = findViewById(R.id.jacky_message_list);
         messageListView.setAdapter(adapter);
 
-        //wait 60 seconds and request for current location again
+        //wait 60 seconds and request for new messages -> from garry's code
         Handler handler = new Handler();
         int delay = 60000; //milliseconds
 
