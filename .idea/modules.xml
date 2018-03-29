@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://C:\Users\21jac_000\Desktop\walkinggroupapp\Project_itr2.iml" filepath="C:\Users\21jac_000\Desktop\walkinggroupapp\Project_itr2.iml" />
-      <module fileurl="file://\21jac_000\Desktop\walkinggroupapp\Project_itr2.iml" filepath="\21jac_000\Desktop\walkinggroupapp\Project_itr2.iml" />
+      <module fileurl="file:///21jac_000/Desktop/walkinggroupapp/Project_itr2.iml" filepath="/21jac_000/Desktop/walkinggroupapp/Project_itr2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Project_itr2.iml" filepath="$PROJECT_DIR$/Project_itr2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WalkingGroupApp.iml" filepath="$PROJECT_DIR$/WalkingGroupApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/walkinggroupapp.iml" filepath="$PROJECT_DIR$/.idea/walkinggroupapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/walkinggroupapp.iml" filepath="$PROJECT_DIR$/walkinggroupapp.iml" />
     </modules>
   </component>
