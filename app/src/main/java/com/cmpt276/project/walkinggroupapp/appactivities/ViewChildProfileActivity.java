@@ -146,6 +146,17 @@ public class ViewChildProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                //set properties to let map know what to do
+                User user =  modelManager.getPrivateFieldUser();
+                user.setIsViewingAChild(true);
+                user.setIsJoining(false);
+                user.setIsViewingAllChild(false);
+                user.setIsParent(false);
+
+                //go to map activity
+                Intent intent = MapActivity.makeIntentViewChild(ViewChildProfileActivity.this, userId);
+                startActivity(intent);
+
             }
         });
     }
