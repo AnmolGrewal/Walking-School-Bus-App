@@ -27,14 +27,15 @@ public class ParentDashboard extends AppCompatActivity {
 
         setupViewMapButton();
         setupEditUser();
+
     }
 
     private void setupEditUser() {
-        editProfileUser = findViewById(R.id.anmol_editOwnProfile);
+        editProfileUser = findViewById(R.id.anmol_editProfile);
         editProfileUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = EditOwnProfile.makeIntent(ParentDashboard.this);
+                Intent intent = EditProfileActivity.makeIntent(ParentDashboard.this);
                 startActivity(intent);
             }
         });

@@ -304,7 +304,6 @@ public class MainMenuActivity extends AppCompatActivity {
                             }
                             return true;
                         }
-
                 });
 
                 popupMenu.show();
@@ -360,7 +359,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private void editUserProfile(int position){
         long targetId = monitorsUsers.get(position).getId();
-        Intent intent = EditOwnProfile.makeIntent(MainMenuActivity.this, targetId);
+        Intent intent = EditProfileActivity.makeIntent(MainMenuActivity.this, targetId);
         startActivity(intent);
     }
 
