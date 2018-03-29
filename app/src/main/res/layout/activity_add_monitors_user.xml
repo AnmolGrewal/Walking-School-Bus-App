@@ -23,8 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:ems="10"
-        android:inputType="number"
-        android:hint="@string/jacky_enter_user_id"
+        android:hint="@string/jacky_enter_email"
+        android:inputType="textEmailAddress"
         app:layout_constraintBaseline_toBaselineOf="@+id/jacky_add_user_button"
         app:layout_constraintEnd_toStartOf="@+id/jacky_add_user_button"
         app:layout_constraintStart_toStartOf="parent" />
