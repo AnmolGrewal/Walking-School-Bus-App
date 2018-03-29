@@ -120,5 +120,6 @@
     <string name="jacky_view_messages_button">View messages</string>
     <string name="jacky_unread_messages_text">Unread Messages:</string>
     <string name="jacky_panic_message">Panic Message</string>
+    <string name="justin_view_profile_local">View Profile</string>
 
 </resources>
