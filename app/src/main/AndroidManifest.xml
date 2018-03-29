@@ -56,13 +56,14 @@
         <activity android:name=".appactivities.EditMonitoringUserGroupActivity" />
         <activity android:name=".appactivities.RegisterActivity" />
         <activity android:name=".appactivities.HelpActivity" />
-        <activity android:name=".appactivities.GroupInformationActivity"/>
-        <activity android:name=".appactivities.ParentDashboardActivity"/>
+        <activity android:name=".appactivities.GroupInformationActivity" />
+        <activity android:name=".appactivities.ParentDashboardActivity" />
         <activity android:name=".appactivities.ParentDashboard" />
         <activity android:name=".appactivities.RegisterParentActivity" />
         <activity android:name=".appactivities.RegisterStudentActivity" />
-        <activity android:name=".appactivities.EditOwnProfile"></activity>
-        <activity android:name=".appactivities.MessageActivity"></activity>
+        <activity android:name=".appactivities.EditOwnProfile" />
+        <activity android:name=".appactivities.MessageActivity" />
+        <activity android:name=".appactivities.ViewChildProfileActivity"></activity>
     </application>
 
 </manifest>
