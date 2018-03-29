@@ -281,8 +281,7 @@ public class MainMenuActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 long userId = monitorsUsers.get(position).getId();
 
-                // TODO:
-                Intent intent = new Intent();
+                Intent intent = ViewChildProfileActivity.makeIntent(MainMenuActivity.this, userId);
                 startActivity(intent);
             }
         });
