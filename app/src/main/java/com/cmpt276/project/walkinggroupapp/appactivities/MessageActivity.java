@@ -42,6 +42,11 @@ import java.util.List;
  *
  *  When this activity is called we will make a call to the server inorder to retrieve a copy of all the messages sent to the current user.
  *  When we get the callback we will populate the list using the modified array adapter.
+ *
+ *
+ *  Icons from:
+ *  https://www.iconfinder.com/icons/607563/communication_email_envelope_message_unread_icon#size=256
+ *  https://www.iconfinder.com/icons/321857/access_communication_creative_email_envelope_grid_information_internet_letter_line_mail_message_news_open_open-mail_read_see_shape_technology_view_icon#size=256
  */
 
 public class MessageActivity extends AppCompatActivity {
@@ -267,16 +272,6 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void getMessageList(List<Message> sortedList){
-        int i;
-        Message compareMessage;
-        Message currentMessages;
-        for (i = 0; i < sortedList.size()-1; i++) {
-            currentMessages = sortedList.get(i);
-            compareMessage = sortedList.get(i + 1);
-            if(currentMessages.getId().equals(compareMessage.getId())){
-                sortedList.remove(i+1);
-            }
-        }
         messageList.clear();
         messageList = sortedList;
         populateMessageList();
