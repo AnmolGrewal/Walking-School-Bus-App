@@ -191,7 +191,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     if(userTeacherName.getText().toString().trim().equals("")) {
                         teacherName = null;
                     } else {
-                        teacherName = userCellPhoneNumber.getText().toString().trim();
+                        teacherName = userTeacherName.getText().toString().trim();
                     }
 
                     if(userEmergencyContactInfo.getText().toString().trim().equals("")) {
