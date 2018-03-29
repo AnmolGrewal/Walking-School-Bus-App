@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
@@ -38,7 +39,6 @@ public class ViewChildProfileActivity extends AppCompatActivity {
     Button btnEdit;
     Button btnGroup;
     Button btnLocation;
-    Button btnEditGroup;
 
     ProgressBar progressBar;
 
@@ -60,11 +60,11 @@ public class ViewChildProfileActivity extends AppCompatActivity {
         setupProfileDefaultValue();
 
 
-//        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
 
         ProxyBuilder.SimpleCallback<User> getUserByIdCallback = returnedUser -> getUserByIdResponse(returnedUser);
         ProxyBuilder.SimpleCallback<String> onFailureCallback = errorMessage -> onFailureResponse(errorMessage);
-        modelManager.getUserById(ViewChildProfileActivity.this, getUserByIdCallback, userId);
+        modelManager.getUserById(ViewChildProfileActivity.this, getUserByIdCallback, onFailureCallback, userId);
 
 
     }
@@ -163,6 +163,8 @@ public class ViewChildProfileActivity extends AppCompatActivity {
     }
 
     private void getUserByIdResponse(User returnedUser) {
+        progressBar.setVisibility(View.INVISIBLE);
+
         populateTextView(returnedUser);
     }
 
@@ -231,6 +233,11 @@ public class ViewChildProfileActivity extends AppCompatActivity {
     }
 
     private void onFailureResponse(String errorMessage) {
+        progressBar.setVisibility(View.INVISIBLE);
 
+        Toast.makeText(ViewChildProfileActivity.this,
+                "Load user profile file.\n\nError message:\n" + errorMessage,
+                Toast.LENGTH_LONG)
+                .show();
     }
 }

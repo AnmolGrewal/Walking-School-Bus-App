@@ -535,8 +535,16 @@ public class ModelManager {
     public void getUserById(Context context, ProxyBuilder.SimpleCallback<User> callback,long userId) {
         Call<User> caller = proxy.getUserById(userId);
         ProxyBuilder.callProxy(context, caller, callback);
-
     }
+
+    public void getUserById(Context context,
+                            ProxyBuilder.SimpleCallback<User> callback,
+                            ProxyBuilder.SimpleCallback<String> onFailureCallback,
+                            long userId) {
+        Call<User> caller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(context, caller, callback, onFailureCallback);
+    }
+
 
     // this one is for editing local user.
     public void editUser(Context context,
