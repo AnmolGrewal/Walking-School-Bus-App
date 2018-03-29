@@ -369,9 +369,12 @@ public class GroupInformationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        mIsUpload = false;
-        Toast.makeText(GroupInformationActivity.this, "Upload Stopped", Toast.LENGTH_SHORT).show();
-        finish();
+
+        if(mIsUpload) {
+            mIsUpload = false;
+            Toast.makeText(GroupInformationActivity.this, "Upload Stopped", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
 }
