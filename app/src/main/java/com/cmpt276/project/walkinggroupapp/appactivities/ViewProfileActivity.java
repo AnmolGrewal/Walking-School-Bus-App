@@ -85,43 +85,43 @@ public class ViewProfileActivity extends AppCompatActivity {
         if (user.getBirthYear() != null) {
             userBirthYear.setText(user.getBirthYear().toString());
         } else {
-            userBirthYear.setText("");
+            userBirthYear.setText("N/A");
         }
 
         if (user.getAddress() != null) {
             userAddress.setText(user.getAddress());
         } else {
-            userAddress.setText("");
+            userAddress.setText("N/A");
         }
 
         if (user.getCellPhone() != null) {
             userCellPhoneNumber.setText(user.getCellPhone());
         } else {
-            userCellPhoneNumber.setText("");
+            userCellPhoneNumber.setText("N/A");
         }
 
         if (user.getEmergencyContactInfo() != null) {
             userEmergencyContactInfo.setText(user.getEmergencyContactInfo());
         } else {
-            userEmergencyContactInfo.setText("");
+            userEmergencyContactInfo.setText("N/A");
         }
 
         if (user.getGrade() != null) {
             userGrade.setText(user.getGrade());
         } else {
-            userGrade.setText("");
+            userGrade.setText("N/A");
         }
 
         if (user.getHomePhone() != null) {
             userHomePhoneNumber.setText(user.getHomePhone());
         } else {
-            userHomePhoneNumber.setText("");
+            userHomePhoneNumber.setText("N/A");
         }
 
         if (user.getTeacherName() != null) {
             userTeacherName.setText(user.getTeacherName());
         } else {
-            userTeacherName.setText("");
+            userTeacherName.setText("N/A");
         }
     }
 

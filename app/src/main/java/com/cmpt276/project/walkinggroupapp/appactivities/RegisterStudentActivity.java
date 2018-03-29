@@ -82,12 +82,41 @@ public class RegisterStudentActivity extends AppCompatActivity {
                 password1 = intent.getStringExtra(USER_PASS);
                 //Get Birth Month
 
-                address = userAddress.getText().toString().trim();
-                cellPhone = userCellPhoneNumber.getText().toString().trim();
-                homePhone = userHomePhoneNumber.getText().toString().trim();
-                grade = userGrade.getText().toString().trim();
-                teacherName = userTeacherName.getText().toString().trim();
-                emergencyContactInfo = userEmergencyContactInfo.getText().toString().trim();
+                if(userAddress.getText().toString().trim().equals("")) {
+                    address = null;
+                } else {
+                    address = userAddress.getText().toString().trim();
+                }
+
+                if(userCellPhoneNumber.getText().toString().trim().equals("")) {
+                    cellPhone = null;
+                } else {
+                    cellPhone = userCellPhoneNumber.getText().toString().trim();
+                }
+
+                if(userHomePhoneNumber.getText().toString().trim().equals("")) {
+                    homePhone = null;
+                } else {
+                    homePhone = userHomePhoneNumber.getText().toString().trim();
+                }
+
+                if(userGrade.getText().toString().trim().equals("")) {
+                    grade = null;
+                } else {
+                    grade = userGrade.getText().toString().trim();
+                }
+
+                if(userTeacherName.getText().toString().trim().equals("")) {
+                    teacherName = null;
+                } else {
+                    teacherName = userCellPhoneNumber.getText().toString().trim();
+                }
+
+                if(userEmergencyContactInfo.getText().toString().trim().equals("")) {
+                    emergencyContactInfo = null;
+                } else {
+                    emergencyContactInfo = userEmergencyContactInfo.getText().toString().trim();
+                }
                 ProxyBuilder.SimpleCallback<Void> callback = returnedNothing -> registerResponse(returnedNothing);
                 modelManager.register(RegisterStudentActivity.this, callback, name, email, password1,
                         birthYear, birthMonth, address, cellPhone, homePhone, grade, teacherName, emergencyContactInfo);
