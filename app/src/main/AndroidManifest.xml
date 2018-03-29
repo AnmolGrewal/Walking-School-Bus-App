@@ -62,9 +62,10 @@
         <activity android:name=".appactivities.RegisterParentActivity" />
         <activity android:name=".appactivities.RegisterStudentActivity" />
         <activity android:name=".appactivities.MessageActivity" />
-        <activity android:name=".appactivities.ViewChildProfileActivity"></activity>
+        <activity android:name=".appactivities.ViewChildProfileActivity" />
         <activity android:name=".appactivities.EditProfileActivity" />
-        <activity android:name=".appactivities.ViewProfileActivity"></activity>
+        <activity android:name=".appactivities.ViewProfileActivity" />
+        <activity android:name=".appactivities.ViewLocalUserProfileActivity"></activity>
     </application>
 
 </manifest>
