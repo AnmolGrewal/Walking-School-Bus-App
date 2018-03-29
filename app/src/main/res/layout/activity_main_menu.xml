@@ -123,7 +123,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="1"
-        android:text="View messages"
+        android:text="@string/jacky_view_messages_button"
         app:layout_constraintBottom_toBottomOf="@+id/gerry_Parent_Dashboard_Button_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/gerry_Parent_Dashboard_Button_main" />
@@ -133,7 +133,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Unread Messages:"
+        android:text="@string/jacky_unread_messages_text"
         app:layout_constraintBottom_toTopOf="@+id/jacky_message_button"
         app:layout_constraintStart_toEndOf="@+id/jacky_view_groups" />
 

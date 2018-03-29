@@ -87,7 +87,7 @@
     <string name="jacky_send_fragment_hint">Type in a message to send</string>
     <string name="jacky_view_groups_button_text">View Groups</string>
     <string name="jacky_messages_text">Messages:</string>
-    <string name="jacky_send_button_text">Send</string>
+    <string name="jacky_send_button_text">Send Message</string>
     <string name="jacky_list_layout_message_id">Message ID:</string>
     <string name="jacky_list_layout_from_id_number">From ID number:</string>
     <string name="jacky_from_group_text">From Group:</string>
@@ -114,5 +114,8 @@
     <string name="anmol_confirm">CONFIRM</string>
     <string name="anmol_exit">EXIT</string>
     <string name="anmol_view_profile">View Profile</string>
+    <string name="jacky_view_messages_button">View messages</string>
+    <string name="jacky_unread_messages_text">Unread Messages:</string>
+    <string name="jacky_panic_message">Panic Message</string>
 
 </resources>
