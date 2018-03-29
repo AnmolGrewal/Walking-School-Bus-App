@@ -164,12 +164,41 @@ public class EditProfileActivity extends AppCompatActivity {
                     }
                     //Get Birth Month
 
-                    address = userAddress.getText().toString().trim();
-                    cellPhone = userCellPhoneNumber.getText().toString().trim();
-                    homePhone = userHomePhoneNumber.getText().toString().trim();
-                    grade = userGrade.getText().toString().trim();
-                    teacherName = userTeacherName.getText().toString().trim();
-                    emergencyContactInfo = userEmergencyContactInfo.getText().toString().trim();
+                    if(userAddress.getText().toString().trim().equals("")) {
+                        address = null;
+                    } else {
+                        address = userAddress.getText().toString().trim();
+                    }
+
+                    if(userCellPhoneNumber.getText().toString().trim().equals("")) {
+                        cellPhone = null;
+                    } else {
+                        cellPhone = userCellPhoneNumber.getText().toString().trim();
+                    }
+
+                    if(userHomePhoneNumber.getText().toString().trim().equals("")) {
+                        homePhone = null;
+                    } else {
+                        homePhone = userHomePhoneNumber.getText().toString().trim();
+                    }
+
+                    if(userGrade.getText().toString().trim().equals("")) {
+                        grade = null;
+                    } else {
+                        grade = userGrade.getText().toString().trim();
+                    }
+
+                    if(userTeacherName.getText().toString().trim().equals("")) {
+                        teacherName = null;
+                    } else {
+                        teacherName = userCellPhoneNumber.getText().toString().trim();
+                    }
+
+                    if(userEmergencyContactInfo.getText().toString().trim().equals("")) {
+                        emergencyContactInfo = null;
+                    } else {
+                        emergencyContactInfo = userEmergencyContactInfo.getText().toString().trim();
+                    }
                     //TODO: NEED HELP HERE JUSTIN THANKS!
                     ProxyBuilder.SimpleCallback<User> callback = setupNewInformation -> editInformation(setupNewInformation);
                     modelManager.editUserById(EditProfileActivity.this, callback, userId, name, email,
@@ -221,7 +250,5 @@ public class EditProfileActivity extends AppCompatActivity {
     private void editInformation(User monitoredByUsers) {
         Toast.makeText(EditProfileActivity.this,"Account Edited",Toast.LENGTH_SHORT).show();
         finish();
-        Intent intent = MainMenuActivity.makeIntent(EditProfileActivity.this);
-        startActivity(intent);
     }
 }

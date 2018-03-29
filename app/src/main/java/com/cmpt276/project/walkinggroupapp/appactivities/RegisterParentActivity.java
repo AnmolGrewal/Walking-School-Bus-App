@@ -79,12 +79,23 @@ public class RegisterParentActivity extends AppCompatActivity {
                 email = intent.getStringExtra(USER_EMAIL);
                 password1 = intent.getStringExtra(USER_PASS);
                 //Get Birth Month
-                int spinner_pos = userBirthMonth.getSelectedItemPosition();
-                String[] month_values = getResources().getStringArray(R.array.months_values);
-                birthMonth = Integer.valueOf(month_values[spinner_pos]);
-                address = userAddress.getText().toString().trim();
-                cellPhone = userCellPhoneNumber.getText().toString().trim();
-                homePhone = userHomePhoneNumber.getText().toString().trim();
+                if(userAddress.getText().toString().trim().equals("")) {
+                    address = null;
+                } else {
+                    address = userAddress.getText().toString().trim();
+                }
+
+                if(userCellPhoneNumber.getText().toString().trim().equals("")) {
+                    cellPhone = null;
+                } else {
+                    cellPhone = userCellPhoneNumber.getText().toString().trim();
+                }
+
+                if(userHomePhoneNumber.getText().toString().trim().equals("")) {
+                    homePhone = null;
+                } else {
+                    homePhone = userHomePhoneNumber.getText().toString().trim();
+                }
                 grade = null;
                 teacherName = null;
                 emergencyContactInfo = null;
