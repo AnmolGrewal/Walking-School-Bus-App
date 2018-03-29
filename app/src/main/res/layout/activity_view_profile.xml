@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cmpt276.project.walkinggroupapp.appactivities.ViewProfileActivity">
+
+    <EditText
+        android:id="@+id/anmol_emergencyContactInfoUserC4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/anmol_emergencyContactInfoC4"
+        app:layout_constraintTop_toBottomOf="@+id/anmol_emergencyContactInfoC4" />
+
+    <TextView
+        android:id="@+id/anmol_emergencyContactInfoC4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/anmol_emergency_contact_infoText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/anmol_cellPhoneUserC4" />
+
+    <EditText
+        android:id="@+id/anmol_cellPhoneUserC4"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/anmol_cellPhoneC4"
+        app:layout_constraintTop_toBottomOf="@+id/anmol_homePhoneUserC4" />
+
+    <TextView
+        android:id="@+id/anmol_cellPhoneC4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/anmol_cell_phone_numberP"
+        app:layout_constraintBottom_toBottomOf="@+id/anmol_cellPhoneUserC4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/anmol_cellPhoneUserC4" />
+
+    <TextView
+        android:id="@+id/anmol_homePhoneC4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/anmol_home_phone_numberP"
+        app:layout_constraintBottom_toBottomOf="@+id/anmol_homePhoneUserC4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/anmol_homePhoneUserC4" />
+
+    <EditText
+        android:id="@+id/anmol_homePhoneUserC4"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/anmol_homePhoneC4"
+        app:layout_constraintTop_toBottomOf="@+id/anmol_addressUserC4" />
+
+    <TextView
+        android:id="@+id/anmol_addressC4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/anmol_addressP"
+        app:layout_constraintBottom_toBottomOf="@+id/anmol_addressUserC4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/anmol_addressUserC4" />
+
+    <EditText
+        android:id="@+id/anmol_addressUserC4"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPostalAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/anmol_addressC4"
+        app:layout_constraintTop_toBottomOf="@+id/anmol_userTeacherNameC3" />
+
+    <TextView
+        android:id="@+id/anmol_userTeacherName3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/anmol_teacher_s_nameText"
+        app:layout_constraintStart_toStartOf="@+id/anmol_gradeUserC3"
+        app:layout_constraintTop_toBottomOf="@+id/anmol_gradeUserC3" />
+
+    <EditText
+        android:id="@+id/anmol_userTeacherNameC3"
+        android:layout_width="186dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/anmol_userTeacherName3"
+        app:layout_constraintTop_toBottomOf="@+id/anmol_userTeacherName3" />
+
+    <TextView
+        android:id="@+id/anmol_yearBornTextC3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/anmol_year_you_were_born"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/anmol_emailAddressUser" />
+
+    <TextView
+        android:id="@+id/anmol_gradeText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/anmol_gradeText"
+        app:layout_constraintStart_toEndOf="@+id/anmol_yearBornTextC3"
+        app:layout_constraintTop_toBottomOf="@+id/anmol_emailAddressUser" />
+
+    <TextView
+        android:id="@+id/anmol_monthBornTextC3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/anmol_month_you_were_born_inP"
+        app:layout_constraintStart_toStartOf="@+id/anmol_yearBornUserC3"
+        app:layout_constraintTop_toBottomOf="@+id/anmol_yearBornUserC3" />
+
+    <Spinner
+        android:id="@+id/anmol_monthBornUserC3"
+        android:layout_width="175dp"
+        android:layout_height="29dp"
+        app:layout_constraintStart_toStartOf="@+id/anmol_monthBornTextC3"
+        app:layout_constraintTop_toBottomOf="@+id/anmol_monthBornTextC3" />
+
+    <EditText
+        android:id="@+id/anmol_gradeUserC3"
+        android:layout_width="151dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="@+id/anmol_gradeText3"
+        app:layout_constraintTop_toBottomOf="@+id/anmol_gradeText3" />
+
+    <EditText
+        android:id="@+id/anmol_yearBornUserC3"
+        android:layout_width="151dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/anmol_yearBornTextC3"
+        app:layout_constraintTop_toBottomOf="@+id/anmol_yearBornTextC3" />
+
+    <EditText
+        android:id="@+id/anmol_nameUserInput"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:labelFor="@+id/anmol_nameUserInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.186"
+        app:layout_constraintStart_toEndOf="@+id/anmol_nameUser"
+        app:layout_constraintTop_toBottomOf="@+id/anmol_signUpText" />
+
+    <TextView
+        android:id="@+id/anmol_signUpText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/anmol_view_profile"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/anmol_ViewEmailAddress"
+        android:layout_width="110dp"
+        android:layout_height="19dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:labelFor="@+id/anmol_emailAddressUser"
+        android:text="@string/anmol_email_address"
+        app:layout_constraintBottom_toBottomOf="@+id/anmol_emailAddressUser"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/anmol_emailAddressUser" />
+
+    <EditText
+        android:id="@+id/anmol_emailAddressUser"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:labelFor="@+id/anmol_ViewEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/anmol_ViewEmailAddress"
+        app:layout_constraintTop_toBottomOf="@+id/anmol_nameUserInput" />
+
+    <TextView
+        android:id="@+id/anmol_nameUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/anmol_nameRegister"
+        app:layout_constraintBottom_toBottomOf="@+id/anmol_nameUserInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/anmol_nameUserInput" />
+
+</android.support.constraint.ConstraintLayout>

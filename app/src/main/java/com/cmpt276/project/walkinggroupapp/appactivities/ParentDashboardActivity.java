@@ -21,6 +21,7 @@ import java.util.List;
 public class ParentDashboardActivity extends AppCompatActivity {
 
     private Button mViewMapButton;
+    private Button editProfile;
     private ListView mChildrenListView;
 
     private List<User> mChildrenList;
@@ -42,6 +43,18 @@ public class ParentDashboardActivity extends AppCompatActivity {
 
 
         setupViewMapButton();
+        setupEditButton();
+    }
+
+    private void setupEditButton() {
+        editProfile = findViewById(R.id.anmol_editProfile);
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = EditProfileActivity.makeIntent(ParentDashboardActivity.this, mModelManager.getLocalUserId());
+                startActivity(intent);
+            }
+        });
     }
 
 

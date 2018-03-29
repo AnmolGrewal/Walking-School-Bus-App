@@ -151,9 +151,9 @@ public class ModelManager {
 //    }
 
 
-//    public long getUserId() {
-//        return user.getId();
-//    }
+    public long getLocalUserId() {
+        return user.getId();
+    }
 
 
     public void getMonitorsUsers(Context context, ProxyBuilder.SimpleCallback<List<User>> callback) {
@@ -550,7 +550,7 @@ public class ModelManager {
     public void editUser(Context context,
                          ProxyBuilder.SimpleCallback<User> callback,
                          String name, String emailAddress,
-                         int birthYear, int birthMonth,
+                         Integer birthYear, Integer birthMonth,
                          String address, String cellPhone,
                          String homePhone, String grade,
                          String teacherName, String emergencyContactInfo) {
@@ -576,14 +576,14 @@ public class ModelManager {
     }
 
     // this one is for editing user with id (e.g. a child user).
-    public void editChildWithId(Context context,
-                                ProxyBuilder.SimpleCallback<User> callback,
-                                long userId,
-                                String name, String emailAddress, String password,
-                                int birthYear, int birthMonth,
-                                String address, String cellPhone,
-                                String homePhone, String grade,
-                                String teacherName, String emergencyContactInfo) {
+    public void editUserById(Context context,
+                             ProxyBuilder.SimpleCallback<User> callback,
+                             long userId,
+                             String name, String emailAddress,
+                             Integer birthYear, Integer birthMonth,
+                             String address, String cellPhone,
+                             String homePhone, String grade,
+                             String teacherName, String emergencyContactInfo) {
 
         User editedUser = new User();
         editedUser.setName(name);

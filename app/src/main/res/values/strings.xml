@@ -111,5 +111,8 @@
     <string name="justin_location">Location</string>
     <string name="justin_group">Group</string>
     <string name="justin_edit">Edit</string>
+    <string name="anmol_confirm">CONFIRM</string>
+    <string name="anmol_exit">EXIT</string>
+    <string name="anmol_view_profile">View Profile</string>
 
 </resources>
