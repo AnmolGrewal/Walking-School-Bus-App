@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
+import com.cmpt276.project.walkinggroupapp.model.MapState;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
@@ -85,11 +86,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private ModelManager mModelManager;
     private List<WalkingGroup> mWalkingGroups;
     private long mClickedGroupId;
-
     private User mCurrentUserToJoin;
-
     private long mChildUserIdToForce;
     private long mChildUserIdToView;
+
+    private MapState mMapState;
 
 
 
@@ -103,6 +104,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         askPermission();
 
         mModelManager = ModelManager.getInstance();
+
+        mMapState = MapState.getInstance();
 
         extractDataFromIntent();
 
@@ -178,15 +181,39 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+        //create map listener
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+                //hide Join Button
+                mJoinGroupButton.setVisibility(View.INVISIBLE);
+
+                //User trying to select starting or ending point for a new walking group
+                //get the clicked Location Lat and Lng and set it accordingly
+                if(mMapState.getIsSelectingEndLocation()) {
+                    mMapState.setSelectedEndLocation(latLng);
+
+                    finish();
+                }
+                else if(mMapState.getIsSelectingStartLocation()) {
+                    mMapState.setSelectedStartLocation(latLng);
+
+                    finish();
+                }
+
+            }
+        });
 
 
-        //test location of all child
+
+        //View location of all child
         if(mModelManager.getPrivateFieldUser().isViewingAllChild()) {
             //get all the child of this user and display their location marker on map
             getAllChildToView();
         }
 
-        //test location of a child
+        //View location of a child
         if(mModelManager.getPrivateFieldUser().isViewingAChild()) {
 
             //get the User the parent wishes to view and display its location marker on map
@@ -235,18 +262,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 }
             });
 
-            //create map listener
-            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng latLng) {
-                    //place marker
-                    //placeWalkingGroupMarker(latLng);
-
-                    //hide Join Button
-                    mJoinGroupButton.setVisibility(View.INVISIBLE);
-
-                }
-            });
 
 
             //create on camera move listener
@@ -287,6 +302,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             });
 
         }
+
+
 
 
     }
