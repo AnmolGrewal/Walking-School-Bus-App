@@ -154,7 +154,7 @@ public class ViewChildProfileActivity extends AppCompatActivity {
                 user.setIsParent(false);
 
                 //go to map activity
-                Intent intent = new Intent(ViewChildProfileActivity.this, MapActivity.class);
+                Intent intent = MapActivity.makeIntentViewChild(ViewChildProfileActivity.this, userId);
                 startActivity(intent);
 
             }
