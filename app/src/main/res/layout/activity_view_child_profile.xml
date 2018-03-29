@@ -288,15 +288,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/justin_btnEditGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit Group"
-        app:layout_constraintBottom_toTopOf="@+id/justin_btnGroup"
-        app:layout_constraintEnd_toEndOf="@+id/justin_btnGroup"
-        app:layout_constraintStart_toStartOf="@+id/justin_btnGroup" />
-
     <ProgressBar
         android:id="@+id/justin_viewProfileProgressBar"
         style="?android:attr/progressBarStyle"

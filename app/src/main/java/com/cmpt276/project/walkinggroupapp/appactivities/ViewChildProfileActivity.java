@@ -57,7 +57,6 @@ public class ViewChildProfileActivity extends AppCompatActivity {
         setupEditButton();
         setupGroupButton();
         setupLocationButton();
-        setupEditGroupButton();
         setupProfileDefaultValue();
 
 
@@ -134,7 +133,8 @@ public class ViewChildProfileActivity extends AppCompatActivity {
         btnGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = EditMonitoringUserGroupActivity.makeIntent(getApplicationContext(), userId);
+                startActivity(intent);
             }
         });
     }
@@ -142,16 +142,6 @@ public class ViewChildProfileActivity extends AppCompatActivity {
     private void setupLocationButton() {
         btnLocation = findViewById(R.id.justin_btnLocation);
         btnLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-    }
-
-    private void setupEditGroupButton() {
-        btnEditGroup = findViewById(R.id.justin_btnEditGroup);
-        btnEditGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
