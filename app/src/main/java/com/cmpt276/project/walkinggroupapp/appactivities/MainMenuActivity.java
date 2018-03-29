@@ -144,8 +144,16 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //go to Parent Dashboard Activity
-                Intent intent = new Intent(MainMenuActivity.this, ParentDashboardActivity.class);
+                //go to map and show all children location
+                //set properties to let map know what to do
+                User user =  modelManager.getPrivateFieldUser();
+                user.setIsViewingAChild(false);
+                user.setIsJoining(false);
+                user.setIsViewingAllChild(true);
+                user.setIsParent(false);
+
+                //go to map activity
+                Intent intent = new Intent(MainMenuActivity.this, MapActivity.class);
                 startActivity(intent);
             }
         });
