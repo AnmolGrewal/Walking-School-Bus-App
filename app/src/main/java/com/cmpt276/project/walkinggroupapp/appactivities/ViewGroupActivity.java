@@ -2,6 +2,7 @@ package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.cmpt276.project.walkinggroupapp.R;
+import com.cmpt276.project.walkinggroupapp.fragments.sendMessageFragment;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
@@ -58,13 +60,11 @@ public class ViewGroupActivity extends AppCompatActivity {
         ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreMemberOfCallback = groupIdsList -> getIdsOfGroupsYouAreMemberOfResponse(groupIdsList);
         modelManager.getIdsOfGroupsYouAreMemberOf(ViewGroupActivity.this, getIdsOfGroupsYouAreMemberOfCallback);
 
-
 //        populateLeaderList();
 //        populateMemberList();
 
 //        registerLeaderListClick();
 //        registerMemberListClick();
-
 
         setupCreateButton();
         setupJoinButton();
@@ -279,7 +279,7 @@ public class ViewGroupActivity extends AppCompatActivity {
                 Log.i("MyApp", "Pressed Long" + position);
 //                selectedPosition = position;
                 PopupMenu popupMenu = new PopupMenu(ViewGroupActivity.this, viewClicked);
-                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+                popupMenu.getMenuInflater().inflate(R.menu.popup_lead_group_options, popupMenu.getMenu());
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
                     @Override
@@ -291,6 +291,9 @@ public class ViewGroupActivity extends AppCompatActivity {
                                 break;
                             case R.id.delete:
                                 // TODO: delete the group here.
+                                break;
+                            case R.id.jacky_send_message_to_group:
+                                doSend(position);
                                 break;
                         }
                         return true;
@@ -330,6 +333,20 @@ public class ViewGroupActivity extends AppCompatActivity {
         memberOfGroups.clear();
         ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreMemberOfCallback = groupIdsList -> getIdsOfGroupsYouAreMemberOfResponse(groupIdsList);
         modelManager.getIdsOfGroupsYouAreMemberOf(ViewGroupActivity.this, getIdsOfGroupsYouAreMemberOfCallback);
+    }
+
+    private void doSend(int position){
+        WalkingGroup sendGroup = leadsGroups.get(position);
+        FragmentManager manager = getSupportFragmentManager();
+        sendMessageFragment dialog = new sendMessageFragment();
+
+        // Supply index input as an argument.
+        Bundle variables = new Bundle();
+        variables.putBoolean("isToGroup", true);
+        variables.putLong("GroupIdToSendMessage", sendGroup.getId());
+
+        dialog.setArguments(variables);
+        dialog.show(manager, "SendView");
     }
 
 

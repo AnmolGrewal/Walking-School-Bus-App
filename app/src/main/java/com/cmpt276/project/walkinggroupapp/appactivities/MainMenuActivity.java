@@ -276,6 +276,16 @@ public class MainMenuActivity extends AppCompatActivity {
     {
         final ListView list = findViewById(R.id.jacky_monitoring_list);
 
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                long userId = monitorsUsers.get(position).getId();
+
+                Intent intent = ViewChildProfileActivity.makeIntent(MainMenuActivity.this, userId);
+                startActivity(intent);
+            }
+        });
+
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
             @Override
@@ -304,7 +314,6 @@ public class MainMenuActivity extends AppCompatActivity {
                             }
                             return true;
                         }
-
                 });
 
                 popupMenu.show();
@@ -360,7 +369,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private void editUserProfile(int position){
         long targetId = monitorsUsers.get(position).getId();
-        Intent intent = EditOwnProfile.makeIntent(MainMenuActivity.this, targetId);
+        Intent intent = EditProfileActivity.makeIntent(MainMenuActivity.this, targetId);
         startActivity(intent);
     }
 

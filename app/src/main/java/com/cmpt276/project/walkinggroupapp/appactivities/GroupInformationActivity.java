@@ -14,14 +14,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -320,9 +318,9 @@ public class GroupInformationActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // go to EditOwnProfile Activity
+                // go to EditProfileActivity Activity
                 Log.i("MyApp", "Id being send it is: " + mMemberOfGroup.get(position).getId());
-                Intent intent = EditOwnProfile.makeIntent(GroupInformationActivity.this, mMemberOfGroup.get(position).getId(), false);
+                Intent intent = ViewProfileActivity.makeIntent(GroupInformationActivity.this, mMemberOfGroup.get(position).getId());
                 startActivity(intent);
             }
         });

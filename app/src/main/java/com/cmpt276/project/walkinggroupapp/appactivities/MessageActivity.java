@@ -247,7 +247,7 @@ public class MessageActivity extends AppCompatActivity {
 
         // Supply index input as an argument.
         Bundle variables = new Bundle();
-        variables.putBoolean("IsEmergencyMessage", isEmergency);
+        variables.putBoolean("isEmergency", isEmergency);
 
         dialog.setArguments(variables);
         dialog.show(manager, "SendView");
