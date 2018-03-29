@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
+import com.cmpt276.project.walkinggroupapp.model.MapState;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
@@ -22,8 +23,11 @@ import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 public class CreateGroupActivity extends AppCompatActivity {
 
     private Button createBtn;
+    private Button selectStartLocationBtn;
+    private Button selectEndLocationBtn;
 
     private ModelManager modelManager;
+    private MapState mapState;
 
     private EditText startLatEditText, startLngEditText, endLatEditText, endLngEditText, groupDescriptionEditText;
 
@@ -33,9 +37,57 @@ public class CreateGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_group);
 
         modelManager = ModelManager.getInstance();
+        mapState = MapState.getInstance();
 
+        setUpEditText();
+
+        setupSelectStartLocationButton();
+
+        setupSelectEndLocationButton();
 
         setupCreateButton();
+    }
+
+
+    private void setUpEditText() {
+        startLatEditText = findViewById(R.id.jacky_start_latitude);
+        startLngEditText = findViewById(R.id.jacky_start_longitude);
+        endLatEditText = findViewById(R.id.jacky_end_latitude);
+        endLngEditText = findViewById(R.id.jacky_end_longitude);
+        groupDescriptionEditText = findViewById(R.id.jacky_create_group_description_dynamic);
+    }
+
+    private void setupSelectStartLocationButton() {
+        selectStartLocationBtn = findViewById(R.id.gerry_Select_Start_Location_Button_create_group);
+        selectStartLocationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //set to let map know what to do
+                mapState.setIsSelectingStartLocation(true);
+                mapState.setIsSelectingEndLocation(false);
+
+                //go to map activity
+                Intent intent = new Intent(CreateGroupActivity.this, MapActivity.class);
+                startActivity(intent);
+
+            }
+        });
+    }
+
+    private void setupSelectEndLocationButton() {
+        selectEndLocationBtn = findViewById(R.id.gerry_Select_End_Location_Button_create_group);
+        selectEndLocationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //set to let map know what to do
+                mapState.setIsSelectingEndLocation(true);
+                mapState.setIsSelectingStartLocation(false);
+
+                //go to map activity
+                Intent intent = new Intent(CreateGroupActivity.this, MapActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setupCreateButton() {
@@ -44,19 +96,14 @@ public class CreateGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                startLatEditText = findViewById(R.id.jacky_start_latitude);
                 String groupStartLatString = startLatEditText.getText().toString();
 
-                startLngEditText = findViewById(R.id.jacky_start_longitude);
                 String groupStartLonString = startLngEditText.getText().toString();
 
-                endLatEditText = findViewById(R.id.jacky_end_latitude);
                 String groupEndLatString = endLatEditText.getText().toString();
 
-                endLngEditText = findViewById(R.id.jacky_end_longitude);
                 String groupEndLonString = endLngEditText.getText().toString();
 
-                groupDescriptionEditText = findViewById(R.id.jacky_create_group_description_dynamic);
 
                 if(groupEndLatString.equals("")) {
                     Toast.makeText(getApplicationContext(), "Invalid inputs", Toast.LENGTH_LONG).show();
@@ -88,6 +135,14 @@ public class CreateGroupActivity extends AppCompatActivity {
                             groupEndLat, groupEndLng);
 
 
+                    //clear the text for the editTexts
+                    startLatEditText.getText().clear();
+                    startLngEditText.getText().clear();
+                    endLatEditText.getText().clear();
+                    endLngEditText.getText().clear();
+                    groupDescriptionEditText.getText().clear();
+
+
 //                    finish();
                 }
 
@@ -97,6 +152,41 @@ public class CreateGroupActivity extends AppCompatActivity {
         });
 
     }
+
+
+
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        //get data from MapState and put it to the editText
+        if(mapState.getSelectedStartLocation() != null) {
+            double lat = mapState.getSelectedStartLocation().latitude;
+            double lng = mapState.getSelectedStartLocation().longitude;
+            String latString = String.valueOf(lat);
+            String lngString = String.valueOf(lng);
+
+            startLatEditText.setText(latString);
+            startLngEditText.setText(lngString);
+
+        }
+
+        if(mapState.getSelectedEndLocation() != null) {
+            double lat = mapState.getSelectedEndLocation().latitude;
+            double lng = mapState.getSelectedEndLocation().longitude;
+            String latString = String.valueOf(lat);
+            String lngString = String.valueOf(lng);
+
+            endLatEditText.setText(latString);
+            endLngEditText.setText(lngString);
+
+        }
+
+    }
+
+
+
 
     private void createNewGroupResponse(WalkingGroup returnedGroup) {
         finish();

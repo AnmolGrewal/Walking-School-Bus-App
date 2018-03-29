@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="232dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/jacky_create_group_activity_create"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -117,4 +117,24 @@
         app:layout_constraintEnd_toStartOf="@+id/jacky_end_latitude"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/jacky_start_location_static" />
+
+    <Button
+        android:id="@+id/gerry_Select_Start_Location_Button_create_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/gerry_select_start_location_create_group"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/jacky_end_latitude" />
+
+    <Button
+        android:id="@+id/gerry_Select_End_Location_Button_create_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/gerry_select_end_location_create_group"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gerry_Select_Start_Location_Button_create_group" />
 </android.support.constraint.ConstraintLayout>
