@@ -96,5 +96,8 @@
     <string name="jacky_delete_delete_message">Delete</string>
     <string name="jackt_edit_user_popup">Edit User</string>
     <string name="jacky_member_of_group_information">Member of Group:</string>
+    <string name="anmol_confirm">CONFIRM</string>
+    <string name="anmol_exit">EXIT</string>
+    <string name="anmol_view_profile">View Profile</string>
 
 </resources>
