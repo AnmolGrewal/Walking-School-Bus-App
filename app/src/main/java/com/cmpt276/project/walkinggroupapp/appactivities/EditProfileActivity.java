@@ -250,7 +250,5 @@ public class EditProfileActivity extends AppCompatActivity {
     private void editInformation(User monitoredByUsers) {
         Toast.makeText(EditProfileActivity.this,"Account Edited",Toast.LENGTH_SHORT).show();
         finish();
-        Intent intent = MainMenuActivity.makeIntent(EditProfileActivity.this);
-        startActivity(intent);
     }
 }
