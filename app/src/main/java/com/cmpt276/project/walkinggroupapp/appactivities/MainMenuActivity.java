@@ -93,6 +93,7 @@ public class MainMenuActivity extends AppCompatActivity {
     {
         super.onResume();
         // TODO
+        setupNumberOfUnreadMessages();
         ProxyBuilder.SimpleCallback<List<User>> getMonitorsUsersCallback = monitorsUsers -> getMonitorsUsersResponse(monitorsUsers);
         modelManager.getMonitorsUsers(MainMenuActivity.this, getMonitorsUsersCallback);
 
