@@ -64,7 +64,6 @@
         <activity android:name=".appactivities.MessageActivity" />
         <activity android:name=".appactivities.ViewChildProfileActivity"></activity>
         <activity android:name=".appactivities.EditProfileActivity" />
-        <activity android:name=".appactivities.MessageActivity" />
         <activity android:name=".appactivities.ViewProfileActivity"></activity>
     </application>
 
