@@ -47,6 +47,8 @@ public class MainMenuActivity extends AppCompatActivity {
     private Button btnMessage;
     private Button btnParentDashboard;
 
+    private Button btnViewProfileLocal;
+
     private TextView unreadMessageTextView;
 
     private ListView monitorsUsersListView;
@@ -78,6 +80,7 @@ public class MainMenuActivity extends AppCompatActivity {
         ProxyBuilder.SimpleCallback<List<User>> getMonitoredByUsersCallback = monitoredByUsers -> getMonitoredByUsersResponse(monitoredByUsers);
         modelManager.getMonitoredByUsers(MainMenuActivity.this, getMonitoredByUsersCallback);
 
+        setupViewProfileLocalButton();
 
             setupAddNewMonitorsUserButton();
             setupAddNewMonitoredByUserButton();
@@ -87,6 +90,17 @@ public class MainMenuActivity extends AppCompatActivity {
             setupParentDashboardButton();
             setupNumberOfUnreadMessages();
 
+    }
+
+    private void setupViewProfileLocalButton() {
+        btnViewProfileLocal = findViewById(R.id.justin_btnViewProfileLocal);
+        btnViewProfileLocal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = ViewLocalUserProfileActivity.makeIntent(getApplicationContext());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

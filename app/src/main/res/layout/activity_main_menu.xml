@@ -7,6 +7,15 @@
     tools:context="com.cmpt276.project.walkinggroupapp.appactivities.MainMenuActivity">
 
     <Button
+        android:id="@+id/justin_btnViewProfileLocal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/justin_view_profile_local"
+        app:layout_constraintBottom_toTopOf="@+id/jacky_unread_messages"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
         android:id="@+id/jacky_view_groups"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
