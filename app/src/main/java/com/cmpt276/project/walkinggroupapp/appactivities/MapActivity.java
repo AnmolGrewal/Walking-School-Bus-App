@@ -191,12 +191,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                 //User trying to select starting or ending point for a new walking group
                 //get the clicked Location Lat and Lng and set it accordingly
-                if(mMapState.getIsSelectingEndLocation()) {
+                if(mMapState.getCurrentStateEnum() == MapState.CurrentStateEnum.IsSelectingEndLocation) {
                     mMapState.setSelectedEndLocation(latLng);
 
                     finish();
                 }
-                else if(mMapState.getIsSelectingStartLocation()) {
+                else if(mMapState.getCurrentStateEnum() == MapState.CurrentStateEnum.IsSelectingStartLocation) {
                     mMapState.setSelectedStartLocation(latLng);
 
                     finish();
@@ -208,13 +208,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
         //View location of all child
-        if(mModelManager.getPrivateFieldUser().isViewingAllChild()) {
+        if( mMapState.getCurrentStateEnum() == MapState.CurrentStateEnum.IsViewingAllChild ) {
             //get all the child of this user and display their location marker on map
             getAllChildToView();
         }
 
         //View location of a child
-        if(mModelManager.getPrivateFieldUser().isViewingAChild()) {
+        if( mMapState.getCurrentStateEnum() == MapState.CurrentStateEnum.IsViewingAChild ) {
 
             //get the User the parent wishes to view and display its location marker on map
             getUserByIdToView();
@@ -227,7 +227,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
         //parent forcing child to join group or User wanting to join group
-        if(mModelManager.getPrivateFieldUser().isParent() || mModelManager.getPrivateFieldUser().isJoining()) {
+        if(mMapState.getCurrentStateEnum() == MapState.CurrentStateEnum.IsParent || mMapState.getCurrentStateEnum() == MapState.CurrentStateEnum.IsJoining) {
 
 
             //Get the existing walking groups in server
@@ -280,7 +280,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 public void onClick(View v) {
 
                     //"Child" wanting to join group by him/herself
-                    if (mModelManager.getPrivateFieldUser().isJoining()) {
+                    if (mMapState.getCurrentStateEnum() == MapState.CurrentStateEnum.IsJoining) {
                         //Add the group to users list of walking group
                         mCurrentUserToJoin = mModelManager.getPrivateFieldUser();
 
@@ -290,7 +290,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                         mModelManager.addUserToGroup(MapActivity.this, addUserToGroupCallback, mClickedGroupId, mCurrentUserToJoin.getId());
                     }
                     //"Parent" requesting for his/her child
-                    else if (mModelManager.getPrivateFieldUser().isParent()){
+                    else if (mMapState.getCurrentStateEnum() == MapState.CurrentStateEnum.IsParent){
                         //set mCurrentUserToJoin to be the User with the UserId passed by the parent
                         ProxyBuilder.SimpleCallback<User> getUserByIdCallback = serverPassedUser -> getUserByIdToAddResponse(serverPassedUser);
                         mModelManager.getUserById(MapActivity.this, getUserByIdCallback, mChildUserIdToForce);
@@ -752,12 +752,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     //for extracting intent extras made from other Activities--only do this when parent forcing child
     private void extractDataFromIntent() {
 
-        if(mModelManager.getPrivateFieldUser().isParent()) {
+        if(mMapState.getCurrentStateEnum() == MapState.CurrentStateEnum.IsParent) {
 
             Intent intent = getIntent();
             mChildUserIdToForce = intent.getLongExtra(USER_ID_FORCE_CHILD, 0);
         }
-        else if(mModelManager.getPrivateFieldUser().isViewingAChild()) {
+        else if(mMapState.getCurrentStateEnum() == MapState.CurrentStateEnum.IsViewingAChild) {
 
             Intent intent = getIntent();
             mChildUserIdToView = intent.getLongExtra(USER_ID_VIEW_CHILD, 0);

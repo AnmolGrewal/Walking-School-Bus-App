@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
+import com.cmpt276.project.walkinggroupapp.model.MapState;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
@@ -49,12 +50,16 @@ public class EditMonitoringUserGroupActivity extends AppCompatActivity {
 
     private ModelManager modelManager;
 
+    private MapState mapState;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_monitoring_user_profile);
 
         modelManager = ModelManager.getInstance();
+
+        mapState = MapState.getInstance();
 
         extractDataFromIntent();
 
@@ -204,11 +209,9 @@ public class EditMonitoringUserGroupActivity extends AppCompatActivity {
 
                 //Parent forcing child to join group
                 //set properties to let map know what to do
-                User user =  modelManager.getPrivateFieldUser();
-                user.setIsViewingAChild(false);
-                user.setIsJoining(false);
-                user.setIsViewingAllChild(false);
-                user.setIsParent(true);
+                MapState.CurrentStateEnum currentState = MapState.CurrentStateEnum.IsParent;
+                mapState.setCurrentStateEnum(currentState);
+
 
                 //pass in userId of user to be "forced" to join a group
                 Intent intent = MapActivity.makeIntentForceChild(EditMonitoringUserGroupActivity.this, userId);

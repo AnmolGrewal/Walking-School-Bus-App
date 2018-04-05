@@ -17,6 +17,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.cmpt276.project.walkinggroupapp.R;
+import com.cmpt276.project.walkinggroupapp.model.MapState;
 import com.cmpt276.project.walkinggroupapp.model.Message;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
@@ -62,6 +63,8 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private ModelManager modelManager;
 
+    private MapState mapState;
+
 
 
 
@@ -71,6 +74,7 @@ public class MainMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
 
         modelManager = ModelManager.getInstance();
+        mapState = MapState.getInstance();
 
 
         ProxyBuilder.SimpleCallback<List<User>> getMonitorsUsersCallback = monitorsUsers -> getMonitorsUsersResponse(monitorsUsers);
@@ -160,11 +164,9 @@ public class MainMenuActivity extends AppCompatActivity {
 
                 //go to map and show all children location
                 //set properties to let map know what to do
-                User user =  modelManager.getPrivateFieldUser();
-                user.setIsViewingAChild(false);
-                user.setIsJoining(false);
-                user.setIsViewingAllChild(true);
-                user.setIsParent(false);
+                //set to let map know what to do
+                MapState.CurrentStateEnum currentState = MapState.CurrentStateEnum.IsViewingAllChild;
+                mapState.setCurrentStateEnum(currentState);
 
                 //go to map activity
                 Intent intent = new Intent(MainMenuActivity.this, MapActivity.class);
