@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 import com.cmpt276.project.walkinggroupapp.proxy.WGServerProxy;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.security.Policy;
 import java.util.ArrayList;
@@ -77,6 +79,23 @@ public class ModelManager {
         newUser.setTeacherName(teacherName);
         newUser.setEmergencyContactInfo(emergencyContactInfo);
 
+
+        // for gamification
+        newUser.setCurrentPoints(0);
+        newUser.setTotalPointsEarned(0);
+
+        Gamification custom = new Gamification();
+        newUser.setGamification(custom);
+        try {
+            // Convert custom object to a JSON string:
+            String customAsJson = new ObjectMapper().writeValueAsString(custom);
+            // Store JSON string into the user object, which will be sent to server.
+            newUser.setCustomJson(customAsJson);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+
         Call<User> caller = proxy.createNewUser(newUser);
         ProxyBuilder.callProxy(context, caller, returnedUser -> {
             user = returnedUser;
@@ -143,12 +162,6 @@ public class ModelManager {
 //
 //    }
 
-
-
-//    public User getUser() {
-////        updateUser();
-//        return user;
-//    }
 
 
     public long getLocalUserId() {
@@ -524,7 +537,7 @@ public class ModelManager {
 
 
 
-    public void getUser(Context context, ProxyBuilder.SimpleCallback<User> callback) {
+    public void getLocalUser(Context context, ProxyBuilder.SimpleCallback<User> callback) {
         Call<User> caller = proxy.getUserById(user.getId());
         ProxyBuilder.callProxy(context, caller, returnedUser -> {
             user = returnedUser;

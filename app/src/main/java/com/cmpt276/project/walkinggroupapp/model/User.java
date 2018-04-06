@@ -41,7 +41,7 @@ public class User {
     private String customJson;
 
     @JsonIgnore
-    private CustomReward customReward;
+    private Gamification gamification;
 
 
 
@@ -238,5 +238,21 @@ public class User {
 
     public void setCustomJson(String customJson) {
         this.customJson = customJson;
+    }
+
+
+
+    @JsonIgnore
+    public Integer getCurrentAvatar() {
+        return gamification.getCurrentAvatar();
+    }
+
+    @JsonIgnore
+    public List<Integer> getOwnedAvatars() {
+        return gamification.getOwnedAvatars();
+    }
+
+    public void setGamification(Gamification gamification) {
+        this.gamification = gamification;
     }
 }
