@@ -36,6 +36,14 @@ public class User {
 
 
 
+    private Integer currentPoints;
+    private Integer totalPointsEarned;
+    private String customJson;
+
+    @JsonIgnore
+    private CustomReward customReward;
+
+
 
 
     public Long getId() {
@@ -206,5 +214,29 @@ public class User {
                 ", memberOfGroups=" + memberOfGroups +
                 ", leadsGroups=" + leadsGroups +
                 '}';
+    }
+
+    public Integer getCurrentPoints() {
+        return currentPoints;
+    }
+
+    public void setCurrentPoints(Integer currentPoints) {
+        this.currentPoints = currentPoints;
+    }
+
+    public Integer getTotalPointsEarned() {
+        return totalPointsEarned;
+    }
+
+    public void setTotalPointsEarned(Integer totalPointsEarned) {
+        this.totalPointsEarned = totalPointsEarned;
+    }
+
+    public String getCustomJson() {
+        return customJson;
+    }
+
+    public void setCustomJson(String customJson) {
+        this.customJson = customJson;
     }
 }
