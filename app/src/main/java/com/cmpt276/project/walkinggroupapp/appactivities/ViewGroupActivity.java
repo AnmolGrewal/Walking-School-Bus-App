@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.fragments.sendMessageFragment;
+import com.cmpt276.project.walkinggroupapp.model.MapState;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
@@ -45,6 +46,7 @@ public class ViewGroupActivity extends AppCompatActivity {
     private Button joinBtn;
 
     private ModelManager modelManager;
+    private MapState mapState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,8 @@ public class ViewGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_or_view_group);
 
         modelManager = ModelManager.getInstance();
+
+        mapState = MapState.getInstance();
 
 
         ProxyBuilder.SimpleCallback<List<Long>> getIdsOfGroupsYouAreLeadingCallback = groupIdsList -> getIdsOfGroupsYouAreLeadingResponse(groupIdsList);
@@ -138,11 +142,9 @@ public class ViewGroupActivity extends AppCompatActivity {
 
                 //Parent not forcing child to join groups
                 //set properties to let map know what to do
-                User user =  modelManager.getPrivateFieldUser();
-                user.setIsViewingAChild(false);
-                user.setIsJoining(true);
-                user.setIsViewingAllChild(false);
-                user.setIsParent(false);
+                //set to let map know what to do
+                MapState.CurrentStateEnum currentState = MapState.CurrentStateEnum.IsJoining;
+                mapState.setCurrentStateEnum(currentState);
 
                 //go to map activity
                 Intent intentMap = new Intent(ViewGroupActivity.this, MapActivity.class);

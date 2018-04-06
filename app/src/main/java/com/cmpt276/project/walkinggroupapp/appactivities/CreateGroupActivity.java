@@ -63,8 +63,9 @@ public class CreateGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //set to let map know what to do
-                mapState.setIsSelectingStartLocation(true);
-                mapState.setIsSelectingEndLocation(false);
+                //set to let map know what to do
+                MapState.CurrentStateEnum currentState = MapState.CurrentStateEnum.IsSelectingStartLocation;
+                mapState.setCurrentStateEnum(currentState);
 
                 //go to map activity
                 Intent intent = new Intent(CreateGroupActivity.this, MapActivity.class);
@@ -80,8 +81,8 @@ public class CreateGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //set to let map know what to do
-                mapState.setIsSelectingEndLocation(true);
-                mapState.setIsSelectingStartLocation(false);
+                MapState.CurrentStateEnum currentState = MapState.CurrentStateEnum.IsSelectingEndLocation;
+                mapState.setCurrentStateEnum(currentState);
 
                 //go to map activity
                 Intent intent = new Intent(CreateGroupActivity.this, MapActivity.class);

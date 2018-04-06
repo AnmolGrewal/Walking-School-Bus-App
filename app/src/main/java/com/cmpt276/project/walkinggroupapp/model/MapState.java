@@ -20,38 +20,36 @@ public class MapState {
     }
 
 
-    //variables
-    private boolean mIsSelectingStartLocation = false;
-    private boolean mIsSelectingEndLocation = false;
+
+    //enum for a map state
+    public enum CurrentStateEnum {
+        IsSelectingStartLocation, IsSelectingEndLocation, IsParent, IsJoining, IsViewingAllChild, IsViewingAChild
+    }
 
 
+
+    /////Variables
+
+    //variables for storing selected location for start and end destination when creating a group
     private LatLng mSelectedStartLocation;
     private LatLng mSelectedEndLocation;
 
+    //variable for storing current map state
+    private CurrentStateEnum mCurrentStateEnum;
 
 
 
 
-    //Getters and Setters
-    public boolean getIsSelectingStartLocation() { return mIsSelectingStartLocation; }
-
-    public void setIsSelectingStartLocation(boolean selectingLocation) { mIsSelectingStartLocation = selectingLocation; }
-
-
-    public boolean getIsSelectingEndLocation() { return mIsSelectingEndLocation; }
-
-    public void setIsSelectingEndLocation(boolean selectingEndLocation) { mIsSelectingEndLocation = selectingEndLocation; }
-
-
+    /////Getters and Setters
     public LatLng getSelectedStartLocation() { return mSelectedStartLocation; }
-
     public void setSelectedStartLocation(LatLng selectedStartLocation) { mSelectedStartLocation = selectedStartLocation; }
 
-
     public LatLng getSelectedEndLocation() { return mSelectedEndLocation; }
-
     public void setSelectedEndLocation(LatLng selectedEndLocation) { mSelectedEndLocation = selectedEndLocation; }
 
+    public CurrentStateEnum getCurrentStateEnum() { return mCurrentStateEnum; }
+
+    public void setCurrentStateEnum(CurrentStateEnum currentStateEnum) { mCurrentStateEnum = currentStateEnum; }
 
 
 

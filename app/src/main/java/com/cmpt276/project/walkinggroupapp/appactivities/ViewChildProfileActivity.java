@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
+import com.cmpt276.project.walkinggroupapp.model.MapState;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
@@ -20,6 +21,8 @@ public class ViewChildProfileActivity extends AppCompatActivity {
     private static final String USER_ID = "userId";
 
     private ModelManager modelManager;
+
+    private MapState mapState;
 
     long userId;
 
@@ -49,6 +52,7 @@ public class ViewChildProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_child_profile);
 
         modelManager = ModelManager.getInstance();
+        mapState = MapState.getInstance();
 
         getExtra();
         initMonths();
@@ -155,11 +159,9 @@ public class ViewChildProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 //set properties to let map know what to do
-                User user =  modelManager.getPrivateFieldUser();
-                user.setIsViewingAChild(true);
-                user.setIsJoining(false);
-                user.setIsViewingAllChild(false);
-                user.setIsParent(false);
+                //set to let map know what to do
+                MapState.CurrentStateEnum currentState = MapState.CurrentStateEnum.IsViewingAChild;
+                mapState.setCurrentStateEnum(currentState);
 
                 //go to map activity
                 Intent intent = MapActivity.makeIntentViewChild(ViewChildProfileActivity.this, userId);

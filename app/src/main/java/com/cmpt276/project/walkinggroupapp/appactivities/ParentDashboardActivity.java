@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cmpt276.project.walkinggroupapp.R;
+import com.cmpt276.project.walkinggroupapp.model.MapState;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
@@ -27,6 +28,7 @@ public class ParentDashboardActivity extends AppCompatActivity {
     private List<User> mChildrenList;
 
     private ModelManager mModelManager;
+    private  MapState mMapState;
 
 
 
@@ -36,6 +38,7 @@ public class ParentDashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_parent_dashboard);
 
         mModelManager = ModelManager.getInstance();
+        mMapState = MapState.getInstance();
 
         //get the list of all children
         ProxyBuilder.SimpleCallback<List<User>> getMonitorsUsersCallback = serverChildrenList -> getChildrenListResponse(serverChildrenList);
@@ -65,11 +68,9 @@ public class ParentDashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //set properties to let map know what to do
-                User user =  mModelManager.getPrivateFieldUser();
-                user.setIsViewingAChild(false);
-                user.setIsJoining(false);
-                user.setIsViewingAllChild(true);
-                user.setIsParent(false);
+                //set to let map know what to do
+                MapState.CurrentStateEnum currentState = MapState.CurrentStateEnum.IsViewingAllChild;
+                mMapState.setCurrentStateEnum(currentState);
 
                 //go to map activity
                 Intent intent = new Intent(ParentDashboardActivity.this, MapActivity.class);
@@ -133,10 +134,9 @@ public class ParentDashboardActivity extends AppCompatActivity {
 
                 //set properties to let map know what to do
                 User user =  mModelManager.getPrivateFieldUser();
-                user.setIsViewingAChild(true);
-                user.setIsJoining(false);
-                user.setIsViewingAllChild(false);
-                user.setIsParent(false);
+                //set to let map know what to do
+                MapState.CurrentStateEnum currentState = MapState.CurrentStateEnum.IsViewingAChild;
+                mMapState.setCurrentStateEnum(currentState);
 
                 // go to map activity-show the clicked user location
                 Intent intent = MapActivity.makeIntentViewChild(ParentDashboardActivity.this, userId);
