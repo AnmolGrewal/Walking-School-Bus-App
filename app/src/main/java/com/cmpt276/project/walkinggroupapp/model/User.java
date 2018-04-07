@@ -36,6 +36,14 @@ public class User {
 
 
 
+    private Integer currentPoints;
+    private Integer totalPointsEarned;
+    private String customJson;
+
+    @JsonIgnore
+    private Gamification gamification;
+
+
 
 
     public Long getId() {
@@ -206,5 +214,56 @@ public class User {
                 ", memberOfGroups=" + memberOfGroups +
                 ", leadsGroups=" + leadsGroups +
                 '}';
+    }
+
+    public Integer getCurrentPoints() {
+        return currentPoints;
+    }
+
+    public void setCurrentPoints(Integer currentPoints) {
+        this.currentPoints = currentPoints;
+    }
+
+    public Integer getTotalPointsEarned() {
+        return totalPointsEarned;
+    }
+
+    public void setTotalPointsEarned(Integer totalPointsEarned) {
+        this.totalPointsEarned = totalPointsEarned;
+    }
+
+    public String getCustomJson() {
+        return customJson;
+    }
+
+    public void setCustomJson(String customJson) {
+        this.customJson = customJson;
+    }
+
+
+
+    @JsonIgnore
+    public Integer getCurrentAvatar() {
+        return gamification.getCurrentAvatar();
+    }
+
+    @JsonIgnore
+    public List<Integer> getOwnedAvatars() {
+        return gamification.getOwnedAvatars();
+    }
+
+//    @JsonIgnore
+//    public void addNewAvatar(int avatarId) {
+//        gamification.addNewAvatar(avatarId);
+//    }
+
+    @JsonIgnore
+    public void setGamification(Gamification gamification) {
+        this.gamification = gamification;
+    }
+
+    @JsonIgnore
+    public Gamification getGamification() {
+        return gamification;
     }
 }
