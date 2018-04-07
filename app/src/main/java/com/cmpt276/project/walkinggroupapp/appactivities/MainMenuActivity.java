@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -258,6 +259,21 @@ public class MainMenuActivity extends AppCompatActivity {
             TextView makeEmail = itemView.findViewById(R.id.jacky_user_email_dynamic);
             makeEmail.setText(currentUser.getEmail());
 
+            //Icon
+            ImageView setImage = itemView.findViewById(R.id.jacky_user_icon);
+            if(position%5  == 0){
+                setImage.setImageResource(R.drawable.dog_icon);
+            }else if(position%5 == 1){
+                setImage.setImageResource(R.drawable.dinosaur_icon);
+            }else if(position%5 == 2){
+                setImage.setImageResource(R.drawable.cat_icon);
+            }else if(position%5 == 3){
+                setImage.setImageResource(R.drawable.dolphin_icon);
+            }else if(position%5 == 4){
+                setImage.setImageResource(R.drawable.penguin_icon);
+            } else{
+                setImage.setImageResource(R.drawable.read_icon);
+            }
 
             return itemView;
         }
@@ -301,6 +317,22 @@ public class MainMenuActivity extends AppCompatActivity {
             //Email
             TextView makeEmail = itemView.findViewById(R.id.jacky_user_email_dynamic);
             makeEmail.setText(currentUser.getEmail());
+
+            //Icon
+            ImageView setImage = itemView.findViewById(R.id.jacky_user_icon);
+            if(position%5  == 0){
+                setImage.setImageResource(R.drawable.dog_icon);
+            }else if(position%5 == 1){
+                setImage.setImageResource(R.drawable.dinosaur_icon);
+            }else if(position%5 == 2){
+                setImage.setImageResource(R.drawable.cat_icon);
+            }else if(position%5 == 3){
+                setImage.setImageResource(R.drawable.dolphin_icon);
+            }else if(position%5 == 4){
+                setImage.setImageResource(R.drawable.penguin_icon);
+            } else{
+                setImage.setImageResource(R.drawable.read_icon);
+            }
 
             return itemView;
         }
