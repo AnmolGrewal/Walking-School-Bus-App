@@ -714,6 +714,33 @@ public class ModelManager {
 
 
 
+    public void getAllUsers(Context context, ProxyBuilder.SimpleCallback<List<User>> callback) {
+        Call<List<User>> caller = proxy.getAllUsers();
+        ProxyBuilder.callProxy(context, caller, returnedUsersList -> {
+            for (User returnedUser: returnedUsersList) {
+
+                // this if condition is just a guard, it shouldn't get executed unless something else went wrong.
+                if (returnedUser.getCustomJson() == null) {
+                    returnedUser.setCustomJson("{\"currentAvatar\":0,\"ownedAvatars\":[0]}");
+                }
+
+                // Deserialize the custom object from the user:
+                try {
+                    Gamification customObjectFromServer = new ObjectMapper().readValue(returnedUser.getCustomJson(), Gamification.class);
+                    returnedUser.setGamification(customObjectFromServer);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // TODO: sorting or UI code do sort.
+
+            callback.callback(returnedUsersList);
+        });
+    }
+
+
+
     public void getLocalUser(Context context, ProxyBuilder.SimpleCallback<User> callback) {
         Call<User> caller = proxy.getUserById(user.getId());
         ProxyBuilder.callProxy(context, caller, returnedUser -> {
@@ -1054,6 +1081,9 @@ public class ModelManager {
 
 
 
+
+
+    // TODO: we should use the getLocalUserId() instead of using this method.
     //get the private field user
     public User getPrivateFieldUser() {
         return user;
