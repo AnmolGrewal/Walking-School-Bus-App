@@ -223,6 +223,16 @@ public class GroupInformationActivity extends AppCompatActivity {
         if(currentLocation.distanceTo(newLocation) <= DESTINATION_DISTANCE_TOLERANCE ) {
             stopUploadingInTenMinutes();
 
+            //add 100 points + (distanceTravelledMeters/10)
+            float bonusPointsDouble = currentLocation.distanceTo(newLocation);
+            Integer bonusPoints = Math.round(bonusPointsDouble);
+            Integer totalPoints = 100 + bonusPoints;
+
+            ProxyBuilder.SimpleCallback<User> addPointsCallback = serverPassedUser -> addPointsResponse(serverPassedUser);
+            mModelManager.addPoints(GroupInformationActivity.this, addPointsCallback, totalPoints);
+
+
+
             //So only 1 stop command is done once destination is reached
             mIsStoppingInTenMinutes = true;
         }
@@ -346,6 +356,16 @@ public class GroupInformationActivity extends AppCompatActivity {
         mGroupDescription = findViewById(R.id.jacky_group_description_info);
         mGroupDescription.setText(walkingGroup.getGroupDescription());
     }
+
+
+    private void addPointsResponse(User passedUser) {
+        //points added succesfully
+        Log.w(TAG ,  "Points Added successfully to User: " + passedUser.getId());
+    }
+
+
+
+
 
 
     //For creating intents outside of this Activity
