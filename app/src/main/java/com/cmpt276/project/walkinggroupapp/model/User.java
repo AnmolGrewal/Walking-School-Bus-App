@@ -252,7 +252,18 @@ public class User {
         return gamification.getOwnedAvatars();
     }
 
+//    @JsonIgnore
+//    public void addNewAvatar(int avatarId) {
+//        gamification.addNewAvatar(avatarId);
+//    }
+
+    @JsonIgnore
     public void setGamification(Gamification gamification) {
         this.gamification = gamification;
+    }
+
+    @JsonIgnore
+    public Gamification getGamification() {
+        return gamification;
     }
 }

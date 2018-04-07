@@ -714,6 +714,7 @@ public class ModelManager {
 
 
 
+    // this method returns a list of all users sorted by totalPointsEarned (in descending order).
     public void getAllUsers(Context context, ProxyBuilder.SimpleCallback<List<User>> callback) {
         Call<List<User>> caller = proxy.getAllUsers();
         ProxyBuilder.callProxy(context, caller, returnedUsersList -> {
@@ -733,7 +734,12 @@ public class ModelManager {
                 }
             }
 
-            // TODO: sorting or UI code do sort.
+            java.util.Collections.sort(returnedUsersList, new Comparator<User>() {
+                @Override
+                public int compare(User user1, User user2) {
+                    return user2.getTotalPointsEarned() - user1.getTotalPointsEarned();
+                }
+            });
 
             callback.callback(returnedUsersList);
         });
@@ -1078,7 +1084,117 @@ public class ModelManager {
     }
 
 
+    // this method is used to update points.
+    public void addPoints(Context context, ProxyBuilder.SimpleCallback<User> callback, int pointsEarned) {
+        Call<User> getUserCaller = proxy.getUserById(user.getId());
+        ProxyBuilder.callProxy(context, getUserCaller, targetUser -> {
+            int totalPoints = targetUser.getTotalPointsEarned() + pointsEarned;
+            int currentPoints = targetUser.getCurrentPoints() + pointsEarned;
+            targetUser.setTotalPointsEarned(totalPoints);
+            targetUser.setCurrentPoints(currentPoints);
+            Call<User> editUserCaller = proxy.editUserWithId(targetUser.getId(), targetUser);
+            ProxyBuilder.callProxy(context, editUserCaller, returnedUser -> {
+                // Deserialize the custom object from the user:
+                try {
+                    Gamification customObjectFromServer = new ObjectMapper().readValue(returnedUser.getCustomJson(), Gamification.class);
+                    returnedUser.setGamification(customObjectFromServer);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                callback.callback(returnedUser);
+            });
+        });
+    }
 
+    // this method is used to change avatar.
+    public void changeAvatar(Context context, ProxyBuilder.SimpleCallback<User> callback, int avatarId) {
+        Call<User> getUserCaller = proxy.getUserById(user.getId());
+        ProxyBuilder.callProxy(context, getUserCaller, targetUser -> {
+
+                // this if condition is just a guard, it shouldn't get executed unless something else went wrong.
+            if (targetUser.getCustomJson() == null) {
+                targetUser.setCustomJson("{\"currentAvatar\":0,\"ownedAvatars\":[0]}");
+            }
+
+            // Deserialize the custom object from the user:
+            try {
+                Gamification customObjectFromServer = new ObjectMapper().readValue(targetUser.getCustomJson(), Gamification.class);
+
+                // change avatar.
+                customObjectFromServer.changeAvatar(avatarId);
+                targetUser.setGamification(customObjectFromServer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                // Convert custom object to a JSON string:
+                String customAsJson = new ObjectMapper().writeValueAsString(user.getGamification());
+                // Store JSON string into the user object, which will be sent to server.
+                targetUser.setCustomJson(customAsJson);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+
+
+            Call<User> editUserCaller = proxy.editUserWithId(targetUser.getId(), targetUser);
+            ProxyBuilder.callProxy(context, editUserCaller, returnedUser -> {
+                // Deserialize the custom object from the user:
+                try {
+                    Gamification customObjectFromServer = new ObjectMapper().readValue(returnedUser.getCustomJson(), Gamification.class);
+                    returnedUser.setGamification(customObjectFromServer);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                callback.callback(returnedUser);
+            });
+        });
+    }
+
+    // this method is used when user bought new avatar.
+    public void addAvatar(Context context, ProxyBuilder.SimpleCallback<User> callback, int avatarId) {
+        Call<User> getUserCaller = proxy.getUserById(user.getId());
+        ProxyBuilder.callProxy(context, getUserCaller, targetUser -> {
+
+            // this if condition is just a guard, it shouldn't get executed unless something else went wrong.
+            if (targetUser.getCustomJson() == null) {
+                targetUser.setCustomJson("{\"currentAvatar\":0,\"ownedAvatars\":[0]}");
+            }
+
+            // Deserialize the custom object from the user:
+            try {
+                Gamification customObjectFromServer = new ObjectMapper().readValue(targetUser.getCustomJson(), Gamification.class);
+
+                // add new avatar.
+                customObjectFromServer.addNewAvatar(avatarId);
+                targetUser.setGamification(customObjectFromServer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                // Convert custom object to a JSON string:
+                String customAsJson = new ObjectMapper().writeValueAsString(user.getGamification());
+                // Store JSON string into the user object, which will be sent to server.
+                targetUser.setCustomJson(customAsJson);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+
+
+            Call<User> editUserCaller = proxy.editUserWithId(targetUser.getId(), targetUser);
+            ProxyBuilder.callProxy(context, editUserCaller, returnedUser -> {
+                // Deserialize the custom object from the user:
+                try {
+                    Gamification customObjectFromServer = new ObjectMapper().readValue(returnedUser.getCustomJson(), Gamification.class);
+                    returnedUser.setGamification(customObjectFromServer);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                callback.callback(returnedUser);
+            });
+        });
+    }
 
 
 

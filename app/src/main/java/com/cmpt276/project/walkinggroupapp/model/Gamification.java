@@ -34,4 +34,12 @@ public class Gamification {
     public void setOwnedAvatars(List<Integer> ownedAvatars) {
         this.ownedAvatars = ownedAvatars;
     }
+
+    public void addNewAvatar(int avatarId) {
+        ownedAvatars.add(avatarId);
+    }
+
+    public void changeAvatar(int avatarId) {
+        currentAvatar = avatarId;
+    }
 }
