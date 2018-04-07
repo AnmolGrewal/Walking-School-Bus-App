@@ -320,9 +320,17 @@ public class MainMenuActivity extends AppCompatActivity {
 
             //Icon
             ImageView setImage = itemView.findViewById(R.id.jacky_user_icon);
-            if(position  == 1){
-                setImage.setImageResource(R.drawable.temp_pic);
-            }else{
+            if(position%5  == 0){
+                setImage.setImageResource(R.drawable.dog_icon);
+            }else if(position%5 == 1){
+                setImage.setImageResource(R.drawable.dinosaur_icon);
+            }else if(position%5 == 2){
+                setImage.setImageResource(R.drawable.cat_icon);
+            }else if(position%5 == 3){
+                setImage.setImageResource(R.drawable.dolphin_icon);
+            }else if(position%5 == 4){
+                setImage.setImageResource(R.drawable.penguin_icon);
+            } else{
                 setImage.setImageResource(R.drawable.read_icon);
             }
 
