@@ -23,7 +23,7 @@ public class MapState {
 
     //enum for a map state
     public enum CurrentStateEnum {
-        IsSelectingStartLocation, IsSelectingEndLocation, IsParent, IsJoining, IsViewingAllChild, IsViewingAChild
+        IsSelectingStartLocation, IsSelectingEndLocation, IsParent, IsJoining, IsViewingAllChild, IsViewingAChild, IsViewingEndDestination
     }
 
 
@@ -33,6 +33,10 @@ public class MapState {
     //variables for storing selected location for start and end destination when creating a group
     private LatLng mSelectedStartLocation;
     private LatLng mSelectedEndLocation;
+
+
+    //for storing the end destination for selected walking group when uploading location
+    private LatLng mGroupEndDestination;
 
     //variable for storing current map state
     private CurrentStateEnum mCurrentStateEnum;
@@ -47,8 +51,10 @@ public class MapState {
     public LatLng getSelectedEndLocation() { return mSelectedEndLocation; }
     public void setSelectedEndLocation(LatLng selectedEndLocation) { mSelectedEndLocation = selectedEndLocation; }
 
-    public CurrentStateEnum getCurrentStateEnum() { return mCurrentStateEnum; }
+    public LatLng getGroupEndDestination() { return mGroupEndDestination; }
+    public void setGroupEndDestination(LatLng groupEndDestination) { mGroupEndDestination = groupEndDestination; }
 
+    public CurrentStateEnum getCurrentStateEnum() { return mCurrentStateEnum; }
     public void setCurrentStateEnum(CurrentStateEnum currentStateEnum) { mCurrentStateEnum = currentStateEnum; }
 
 
