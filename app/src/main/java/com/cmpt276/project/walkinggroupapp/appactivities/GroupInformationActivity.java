@@ -64,19 +64,27 @@ public class GroupInformationActivity extends AppCompatActivity {
     private Button mStopUploadButton;
     private Button mViewGroupDestinationButton;
 
-    private boolean mIsUpload;
 
-    private Double mLat;
-    private Double mLng;
+    //the current location of the user updated every time the users location changes
+    private Double mLatitudeObtainedFromLocationListener;
+    private Double mLongitudeObtainedFromLocationListener;
 
+    //destination of the selected group by user while uploading
     private double mGroupUploadingLatEnd;
     private double mGroupUploadingLngEnd;
 
-    private boolean mIsStoppingInTenMinutes = false;
-
     private long mCurrentGroupId;
 
+    //initial location of user when he starts uploading
     private LatLng mInitialUserLocationWhenUploading;
+
+
+    private boolean mIsUpload;
+    private boolean mIsStoppingInTenMinutes = false;
+
+
+
+
 
 
     @Override
@@ -152,8 +160,8 @@ public class GroupInformationActivity extends AppCompatActivity {
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                mLat = location.getLatitude();
-                mLng = location.getLongitude();
+                mLatitudeObtainedFromLocationListener = location.getLatitude();
+                mLongitudeObtainedFromLocationListener = location.getLongitude();
             }
 
             @Override
@@ -209,9 +217,9 @@ public class GroupInformationActivity extends AppCompatActivity {
     }
 
     private void getInitialLocation() {
-        if (mLat != null && mLng != null) {
-            mInitialUserLocationWhenUploading = new LatLng(mLat, mLng);
-            Log.w(TAG, "Initial Location: " + mLat + " " + mLng);
+        if (mLatitudeObtainedFromLocationListener != null && mLongitudeObtainedFromLocationListener != null) {
+            mInitialUserLocationWhenUploading = new LatLng(mLatitudeObtainedFromLocationListener, mLongitudeObtainedFromLocationListener);
+            Log.w(TAG, "Initial Location: " + mLatitudeObtainedFromLocationListener + " " + mLongitudeObtainedFromLocationListener);
         }
         //since the app sometimes returns 0,0 since first location gotten from location manager returns null
         else{
@@ -228,12 +236,12 @@ public class GroupInformationActivity extends AppCompatActivity {
 
             GpsLocation currentLocation;
 
-            if (mLat != null && mLng != null) {
-                currentLocation = new GpsLocation(mLat, mLng, timestamp);
+            if (mLatitudeObtainedFromLocationListener != null && mLongitudeObtainedFromLocationListener != null) {
+                currentLocation = new GpsLocation(mLatitudeObtainedFromLocationListener, mLongitudeObtainedFromLocationListener, timestamp);
 
                 if(mInitialUserLocationWhenUploading.latitude == 0 && mInitialUserLocationWhenUploading.longitude == 0) {
-                    mInitialUserLocationWhenUploading = new LatLng(mLat, mLng);
-                    Log.w(TAG, "Re get Initial Location: " + mLat + " " + mLng);
+                    mInitialUserLocationWhenUploading = new LatLng(mLatitudeObtainedFromLocationListener, mLongitudeObtainedFromLocationListener);
+                    Log.w(TAG, "Re get Initial Location: " + mLatitudeObtainedFromLocationListener + " " + mLongitudeObtainedFromLocationListener);
                 }
 
 
@@ -260,9 +268,9 @@ public class GroupInformationActivity extends AppCompatActivity {
         newLocation.setLatitude(gpsLocation.getLat());
         newLocation.setLongitude(gpsLocation.getLng());
 
-        //check if destination is reached -> stop uploading location data
+        //check if destination is reached -> stop uploading location data in 10 min
         if(currentLocation.distanceTo(newLocation) <= DESTINATION_DISTANCE_TOLERANCE ) {
-            stopUploadingInTenMinutes();
+
 
             //add the point once when destination reached
             if(!mIsStoppingInTenMinutes) {
@@ -271,25 +279,33 @@ public class GroupInformationActivity extends AppCompatActivity {
                 initialLocation.setLatitude(mInitialUserLocationWhenUploading.latitude);
                 initialLocation.setLongitude(mInitialUserLocationWhenUploading.longitude);
 
-                //can abuse points by uploading again after reaching destination
+                //prevent getting free points by uploading again after reaching destination
                 if(initialLocation.distanceTo(newLocation) <= DESTINATION_DISTANCE_TOLERANCE) {
-                    Toast.makeText(GroupInformationActivity.this, "NICE TACTIC GETTING FREE POINTS!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GroupInformationActivity.this, "NO POINTS ADDED: ALREADY REACHED DESTINATION BEFORE UPLOADING", Toast.LENGTH_SHORT).show();
+                }
+                else {//add points accordingly
+                    float bonusPointsDouble = initialLocation.distanceTo(newLocation)/10;
+                    Log.w(TAG, "Bonus Points: " + bonusPointsDouble);
+                    Integer bonusPoints = Math.round(bonusPointsDouble);
+
+                    //user can get max 300 points each walk
+                    if(bonusPoints >= 300) {
+                        bonusPoints = 300;
+                    }
+                    Integer totalPoints = 100 + bonusPoints;
+
+                    ProxyBuilder.SimpleCallback<User> addPointsCallback = serverPassedUser -> addPointsResponse(serverPassedUser);
+                    mModelManager.addPoints(GroupInformationActivity.this, addPointsCallback, totalPoints);
+                    Log.w(TAG, "Adding Points: 100 + " + bonusPoints );
                 }
 
 
-                float bonusPointsDouble = initialLocation.distanceTo(newLocation)/10;
-                Log.w(TAG, "Bonus Points: " + bonusPointsDouble);
-                Integer bonusPoints = Math.round(bonusPointsDouble);
-
-                //user can get max 300 points each walk
-                if(bonusPoints >= 300) {
-                    bonusPoints = 300;
+                //stop uploading in 10 minutes
+                //only call this one time after the destination is reached
+                if(!mIsStoppingInTenMinutes) {
+                    stopUploadingInTenMinutes();
                 }
-                Integer totalPoints = 100 + bonusPoints;
 
-                ProxyBuilder.SimpleCallback<User> addPointsCallback = serverPassedUser -> addPointsResponse(serverPassedUser);
-                mModelManager.addPoints(GroupInformationActivity.this, addPointsCallback, totalPoints);
-                Log.w(TAG, "Adding Points: 100 + " + bonusPoints );
             }
 
 
@@ -297,6 +313,7 @@ public class GroupInformationActivity extends AppCompatActivity {
             //So only 1 stop command is done once destination is reached
             mIsStoppingInTenMinutes = true;
         }
+
 
 
         //wait 30 seconds and request for current location again
@@ -331,6 +348,7 @@ public class GroupInformationActivity extends AppCompatActivity {
 
 
     private void stopUploadingInTenMinutes() {
+
         Log.w(TAG, "Destination Reached, stopping upload after 10 minutes");
         Toast.makeText(GroupInformationActivity.this, "Destination Reached, stopping upload after 10 minutes", Toast.LENGTH_SHORT).show();
         //wait 10 minutes then stop uploading location data
@@ -420,7 +438,7 @@ public class GroupInformationActivity extends AppCompatActivity {
 
 
     private void addPointsResponse(User passedUser) {
-        //points added succesfully
+        //points added successfully
         Log.w(TAG ,  "Points Added successfully to User: " + passedUser.getId());
     }
 
