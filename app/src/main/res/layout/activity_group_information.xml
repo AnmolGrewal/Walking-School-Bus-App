@@ -34,20 +34,41 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:gravity="bottom|center">
 
-            <Button
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/gerry_Upload_Location_Button_info"
-                android:text="@string/gerry_upload_location_info"/>
+                android:layout_height="wrap_content">
 
-            <Button
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/gerry_View_Group_Destination_info"
+                    android:text="@string/gerry_view_group_destination_info"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/gerry_Stop_Upload_Button_info"
-                android:text="@string/gerry_stop_upload_info" />
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/gerry_Upload_Location_Button_info"
+                    android:text="@string/gerry_upload_location_info"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/gerry_Stop_Upload_Button_info"
+                    android:text="@string/gerry_stop_upload_info" />
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
     </LinearLayout>
