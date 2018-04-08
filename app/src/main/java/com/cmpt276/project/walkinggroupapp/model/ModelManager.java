@@ -820,9 +820,13 @@ public class ModelManager {
                               ProxyBuilder.SimpleCallback<User> callback,
                               String name, String emailAddress,
                               Integer birthYear, Integer birthMonth,
-                              String address, String cellPhone,
-                              String homePhone, String grade,
-                              String teacherName, String emergencyContactInfo) {
+                              String address,
+                              String cellPhone, String homePhone,
+                              String grade, String teacherName,
+                              String emergencyContactInfo,
+                              Integer currentPoints,
+                              Integer totalPointsEarned,
+                              String customJson) {
 
         User editedUser = new User();
         editedUser.setName(name);
@@ -837,11 +841,14 @@ public class ModelManager {
         editedUser.setEmergencyContactInfo(emergencyContactInfo);
 
 
-        // TODO: this part is incomplete. need to pass in these three args.
-        // for now, it just re-initialize these three fields.
-        editedUser.setCurrentPoints(0);
-        editedUser.setTotalPointsEarned(0);
-        editedUser.setCustomJson("{\"currentAvatar\":0,\"ownedAvatars\":[0]}");
+//        // for now, it just re-initialize these three fields.
+//        editedUser.setCurrentPoints(0);
+//        editedUser.setTotalPointsEarned(0);
+//        editedUser.setCustomJson("{\"currentAvatar\":0,\"ownedAvatars\":[0]}");
+
+        editedUser.setCurrentPoints(currentPoints);
+        editedUser.setTotalPointsEarned(totalPointsEarned);
+        editedUser.setCustomJson(customJson);
 
         Call<User> caller = proxy.editUserWithId(user.getId(), editedUser);
         ProxyBuilder.callProxy(context, caller, returnedUser -> {
@@ -865,9 +872,14 @@ public class ModelManager {
                              long userId,
                              String name, String emailAddress,
                              Integer birthYear, Integer birthMonth,
-                             String address, String cellPhone,
-                             String homePhone, String grade,
-                             String teacherName, String emergencyContactInfo) {
+                             String address,
+                             String cellPhone,
+                             String homePhone,
+                             String grade, String teacherName,
+                             String emergencyContactInfo,
+                             Integer currentPoints,
+                             Integer totalPointsEarned,
+                             String customJson) {
 
         User editedUser = new User();
         editedUser.setName(name);
@@ -881,11 +893,14 @@ public class ModelManager {
         editedUser.setTeacherName(teacherName);
         editedUser.setEmergencyContactInfo(emergencyContactInfo);
 
-        // TODO: this part is incomplete. need to pass in these three args.
-        // for now, it just re-initialize these three fields.
-        editedUser.setCurrentPoints(0);
-        editedUser.setTotalPointsEarned(0);
-        editedUser.setCustomJson("{\"currentAvatar\":0,\"ownedAvatars\":[0]}");
+//        // for now, it just re-initialize these three fields.
+//        editedUser.setCurrentPoints(0);
+//        editedUser.setTotalPointsEarned(0);
+//        editedUser.setCustomJson("{\"currentAvatar\":0,\"ownedAvatars\":[0]}");
+
+        editedUser.setCurrentPoints(currentPoints);
+        editedUser.setTotalPointsEarned(totalPointsEarned);
+        editedUser.setCustomJson(customJson);
 
         Call<User> caller = proxy.editUserWithId(userId, editedUser);
         ProxyBuilder.callProxy(context, caller, returnedUser -> {

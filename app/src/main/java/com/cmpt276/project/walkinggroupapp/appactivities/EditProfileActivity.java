@@ -201,8 +201,18 @@ public class EditProfileActivity extends AppCompatActivity {
                     }
                     //TODO: NEED HELP HERE JUSTIN THANKS!
                     ProxyBuilder.SimpleCallback<User> callback = setupNewInformation -> editInformation(setupNewInformation);
-                    modelManager.editUserById(EditProfileActivity.this, callback, userId, name, email,
-                            birthYear, birthMonth, address, cellPhone, homePhone, grade, teacherName, emergencyContactInfo);
+                    modelManager.editUserById(
+                            EditProfileActivity.this, callback,
+                            userId,
+                            name, email,
+                            birthYear, birthMonth,
+                            address,
+                            cellPhone, homePhone,
+                            grade, teacherName,
+                            emergencyContactInfo,
+                            user.getCurrentPoints(),
+                            user.getTotalPointsEarned(),
+                            user.getCustomJson());
                 } else {
                     Toast.makeText(EditProfileActivity.this, "Please Fill All Fields", Toast.LENGTH_SHORT).show();
                 }
