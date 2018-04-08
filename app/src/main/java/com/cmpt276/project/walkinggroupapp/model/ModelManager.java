@@ -1219,14 +1219,9 @@ public class ModelManager {
         });
     }
 
-    public void changePermissionStatus(Context context, ProxyBuilder.SimpleCallback<Void> callback, Long permissionId, Boolean status){
-        if(status){
-            Call<Void> changePermissionCaller = proxy.changePermissionStatus(permissionId, "\"APPROVED\"");
-            ProxyBuilder.callProxy(context, changePermissionCaller, callback);
-        }else{
-            Call<Void> changePermissionCaller = proxy.changePermissionStatus(permissionId, "\"DENIED\"");
-            ProxyBuilder.callProxy(context, changePermissionCaller, callback);
-        }
+    public void changePermissionStatus(Context context, ProxyBuilder.SimpleCallback<Void> callback, Long permissionId, String status){
+        Call<Void> changePermissionCaller = proxy.changePermissionStatus(permissionId, status);
+        ProxyBuilder.callProxy(context, changePermissionCaller, callback);
     }
 
 
