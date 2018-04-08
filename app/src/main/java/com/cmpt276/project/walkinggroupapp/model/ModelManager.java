@@ -1211,13 +1211,22 @@ public class ModelManager {
         });
     }
 
-    public void getPendingPermissionForUser(Context context,
-                                  ProxyBuilder.SimpleCallback<List<Permission>> callback) {
+    public void getPendingPermissionForUser(Context context, ProxyBuilder.SimpleCallback<List<Permission>> callback) {
         Call<List<Permission>> getPendingPermissionCaller = proxy.getPendingPermissions(user.getId());
         ProxyBuilder.callProxy(context, getPendingPermissionCaller, returnedPermission -> {
             List<Permission> pendingPermissions = returnedPermission;
             callback.callback(pendingPermissions);
         });
+    }
+
+    public void changePermissionStatus(Context context, ProxyBuilder.SimpleCallback<Void> callback, Long permissionId, Boolean status){
+        if(status){
+            Call<Void> changePermissionCaller = proxy.changePermissionStatus(permissionId, "\"APPROVED\"");
+            ProxyBuilder.callProxy(context, changePermissionCaller, callback);
+        }else{
+            Call<Void> changePermissionCaller = proxy.changePermissionStatus(permissionId, "\"DENIED\"");
+            ProxyBuilder.callProxy(context, changePermissionCaller, callback);
+        }
     }
 
 
