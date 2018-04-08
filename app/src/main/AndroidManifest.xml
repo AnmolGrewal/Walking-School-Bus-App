@@ -64,7 +64,8 @@
         <activity android:name=".appactivities.ViewChildProfileActivity" />
         <activity android:name=".appactivities.EditProfileActivity" />
         <activity android:name=".appactivities.ViewProfileActivity" />
-        <activity android:name=".appactivities.ViewLocalUserProfileActivity"></activity>
+        <activity android:name=".appactivities.ViewLocalUserProfileActivity" />
+        <activity android:name=".appactivities.CheckPermissionActivity"></activity>
     </application>
 
 </manifest>

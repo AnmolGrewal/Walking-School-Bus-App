@@ -1,9 +1,12 @@
 package com.cmpt276.project.walkinggroupapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by 21jac_000 on 2018-04-07.
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Permission {
     private Long id;
 
