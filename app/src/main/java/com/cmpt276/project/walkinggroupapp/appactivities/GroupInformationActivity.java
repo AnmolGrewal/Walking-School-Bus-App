@@ -25,10 +25,12 @@ import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.GpsLocation;
+import com.cmpt276.project.walkinggroupapp.model.MapState;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ public class GroupInformationActivity extends AppCompatActivity {
     private List<User> mMemberOfGroup = new ArrayList<>();
 
     private ModelManager mModelManager;
+    private MapState mMapState;
 
     private TextView mGroupDescription;
 
@@ -59,18 +62,29 @@ public class GroupInformationActivity extends AppCompatActivity {
 
     private Button mStartUploadButton;
     private Button mStopUploadButton;
+    private Button mViewGroupDestinationButton;
 
-    private boolean mIsUpload;
 
-    private Double mLat;
-    private Double mLng;
+    //the current location of the user updated every time the users location changes
+    private Double mLatitudeObtainedFromLocationListener;
+    private Double mLongitudeObtainedFromLocationListener;
 
-    private double mGroupUploadingLat;
-    private double mGroupUploadingLng;
-
-    private boolean mIsStoppingInTenMinutes = false;
+    //destination of the selected group by user while uploading
+    private double mGroupUploadingLatEnd;
+    private double mGroupUploadingLngEnd;
 
     private long mCurrentGroupId;
+
+    //initial location of user when he starts uploading
+    private LatLng mInitialUserLocationWhenUploading;
+
+
+    private boolean mIsUpload;
+    private boolean mIsStoppingInTenMinutes = false;
+
+
+
+
 
 
     @Override
@@ -81,6 +95,7 @@ public class GroupInformationActivity extends AppCompatActivity {
         extractDataFromIntent();
 
         mModelManager = ModelManager.getInstance();
+        mMapState = MapState.getInstance();
 
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -107,6 +122,7 @@ public class GroupInformationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //start uploading user current location
                 mIsUpload = true;
+                getInitialLocation();
                 getLastKnownLocation();
                 Toast.makeText(GroupInformationActivity.this, "Started Uploading", Toast.LENGTH_SHORT).show();
             }
@@ -123,14 +139,29 @@ public class GroupInformationActivity extends AppCompatActivity {
             }
 
         });
+
+        mViewGroupDestinationButton = findViewById(R.id.gerry_View_Group_Destination_info);
+        mViewGroupDestinationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //go to map and show group end destination
+                MapState.CurrentStateEnum currentState = MapState.CurrentStateEnum.IsViewingEndDestination;
+                mMapState.setCurrentStateEnum(currentState);
+
+                mMapState.setGroupEndDestination(new LatLng(mGroupUploadingLatEnd, mGroupUploadingLngEnd));
+
+                Intent intent = new Intent(GroupInformationActivity.this, MapActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setupLocationListener() {
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                mLat = location.getLatitude();
-                mLng = location.getLongitude();
+                mLatitudeObtainedFromLocationListener = location.getLatitude();
+                mLongitudeObtainedFromLocationListener = location.getLongitude();
             }
 
             @Override
@@ -185,22 +216,40 @@ public class GroupInformationActivity extends AppCompatActivity {
         }
     }
 
+    private void getInitialLocation() {
+        if (mLatitudeObtainedFromLocationListener != null && mLongitudeObtainedFromLocationListener != null) {
+            mInitialUserLocationWhenUploading = new LatLng(mLatitudeObtainedFromLocationListener, mLongitudeObtainedFromLocationListener);
+            Log.w(TAG, "Initial Location: " + mLatitudeObtainedFromLocationListener + " " + mLongitudeObtainedFromLocationListener);
+        }
+        //since the app sometimes returns 0,0 since first location gotten from location manager returns null
+        else{
+            //if null set it to be 0,0--re get this next time location is updated
+            mInitialUserLocationWhenUploading = new LatLng(0, 0);
+            Log.w(TAG, "Initial Location not found! setting it to be 0,0 for now");
+        }
+    }
+
+
     private void getLastKnownLocation() {
         if(mIsUpload) {
-            Log.w(TAG, "getLocation()1");
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
             GpsLocation currentLocation;
 
-            if (mLat != null && mLng != null) {
-                currentLocation = new GpsLocation(mLat, mLng, timestamp);
+            if (mLatitudeObtainedFromLocationListener != null && mLongitudeObtainedFromLocationListener != null) {
+                currentLocation = new GpsLocation(mLatitudeObtainedFromLocationListener, mLongitudeObtainedFromLocationListener, timestamp);
+
+                if(mInitialUserLocationWhenUploading.latitude == 0 && mInitialUserLocationWhenUploading.longitude == 0) {
+                    mInitialUserLocationWhenUploading = new LatLng(mLatitudeObtainedFromLocationListener, mLongitudeObtainedFromLocationListener);
+                    Log.w(TAG, "Re get Initial Location: " + mLatitudeObtainedFromLocationListener + " " + mLongitudeObtainedFromLocationListener);
+                }
+
+
             } else {
                 currentLocation = new GpsLocation(0.0, 0.0, timestamp);
             }
-            Log.w(TAG, "getLocation()2");
             ProxyBuilder.SimpleCallback<GpsLocation> setLastKnownLocationCallback = serverPassedLocation -> setLastKnownLocationResponse(serverPassedLocation);
             mModelManager.setLastGpsLocation(GroupInformationActivity.this, setLastKnownLocationCallback, mModelManager.getPrivateFieldUser().getId(), currentLocation);
-            Log.w(TAG, "getLocation()3");
         }
 
     }
@@ -211,21 +260,60 @@ public class GroupInformationActivity extends AppCompatActivity {
 
         //current location
         Location currentLocation = new Location("currentLocation");
-        currentLocation.setLatitude(mGroupUploadingLat);
-        currentLocation.setLongitude(mGroupUploadingLng);
+        currentLocation.setLatitude(mGroupUploadingLatEnd);
+        currentLocation.setLongitude(mGroupUploadingLngEnd);
 
         //new location
         Location newLocation = new Location("newLocation");
         newLocation.setLatitude(gpsLocation.getLat());
         newLocation.setLongitude(gpsLocation.getLng());
 
-        //check if destination is reached -> stop uploading location data
+        //check if destination is reached -> stop uploading location data in 10 min
         if(currentLocation.distanceTo(newLocation) <= DESTINATION_DISTANCE_TOLERANCE ) {
-            stopUploadingInTenMinutes();
+
+
+            //add the point once when destination reached
+            if(!mIsStoppingInTenMinutes) {
+                //add 100 points + (distanceTravelledMeters/10)
+                Location initialLocation = new Location("initialLocation");
+                initialLocation.setLatitude(mInitialUserLocationWhenUploading.latitude);
+                initialLocation.setLongitude(mInitialUserLocationWhenUploading.longitude);
+
+                //prevent getting free points by uploading again after reaching destination
+                if(initialLocation.distanceTo(newLocation) <= DESTINATION_DISTANCE_TOLERANCE) {
+                    Toast.makeText(GroupInformationActivity.this, "NO POINTS ADDED: ALREADY REACHED DESTINATION BEFORE UPLOADING", Toast.LENGTH_SHORT).show();
+                }
+                else {//add points accordingly
+                    float bonusPointsDouble = initialLocation.distanceTo(newLocation)/10;
+                    Log.w(TAG, "Bonus Points: " + bonusPointsDouble);
+                    Integer bonusPoints = Math.round(bonusPointsDouble);
+
+                    //user can get max 300 points each walk
+                    if(bonusPoints >= 300) {
+                        bonusPoints = 300;
+                    }
+                    Integer totalPoints = 100 + bonusPoints;
+
+                    ProxyBuilder.SimpleCallback<User> addPointsCallback = serverPassedUser -> addPointsResponse(serverPassedUser);
+                    mModelManager.addPoints(GroupInformationActivity.this, addPointsCallback, totalPoints);
+                    Log.w(TAG, "Adding Points: 100 + " + bonusPoints );
+                }
+
+
+                //stop uploading in 10 minutes
+                //only call this one time after the destination is reached
+                if(!mIsStoppingInTenMinutes) {
+                    stopUploadingInTenMinutes();
+                }
+
+            }
+
+
 
             //So only 1 stop command is done once destination is reached
             mIsStoppingInTenMinutes = true;
         }
+
 
 
         //wait 30 seconds and request for current location again
@@ -250,16 +338,17 @@ public class GroupInformationActivity extends AppCompatActivity {
 
     private void getGroupUploadingDestinationResponse(WalkingGroup walkingGroup) {
 
-       mGroupUploadingLat = walkingGroup.getRouteLatArray()[1];
-       mGroupUploadingLng = walkingGroup.getRouteLngArray()[1];
+       mGroupUploadingLatEnd = walkingGroup.getRouteLatArray()[1];
+       mGroupUploadingLngEnd = walkingGroup.getRouteLngArray()[1];
 
-        Log.w(TAG, "GET GROUP DESTINATION SUCCESS, Received: " + mGroupUploadingLat + " " + mGroupUploadingLng);
+        Log.w(TAG, "GET GROUP DESTINATION SUCCESS, Received: " + mGroupUploadingLatEnd + " " + mGroupUploadingLngEnd);
 
 
     }
 
 
     private void stopUploadingInTenMinutes() {
+
         Log.w(TAG, "Destination Reached, stopping upload after 10 minutes");
         Toast.makeText(GroupInformationActivity.this, "Destination Reached, stopping upload after 10 minutes", Toast.LENGTH_SHORT).show();
         //wait 10 minutes then stop uploading location data
@@ -346,6 +435,16 @@ public class GroupInformationActivity extends AppCompatActivity {
         mGroupDescription = findViewById(R.id.jacky_group_description_info);
         mGroupDescription.setText(walkingGroup.getGroupDescription());
     }
+
+
+    private void addPointsResponse(User passedUser) {
+        //points added successfully
+        Log.w(TAG ,  "Points Added successfully to User: " + passedUser.getId());
+    }
+
+
+
+
 
 
     //For creating intents outside of this Activity

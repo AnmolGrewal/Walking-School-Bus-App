@@ -207,6 +207,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
 
+        //View Group End Destination
+        if( mMapState.getCurrentStateEnum() == MapState.CurrentStateEnum.IsViewingEndDestination) {
+            //show the end destination marker of the selected group when uploading location
+            placeGroupEndDestinationMarker();
+        }
+
         //View location of all child
         if( mMapState.getCurrentStateEnum() == MapState.CurrentStateEnum.IsViewingAllChild ) {
             //get all the child of this user and display their location marker on map
@@ -519,6 +525,22 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         //set the tag of marker to be the user id--use this to differentiate marker during marker click event
         theMarker.setTag("Child Marker");
     }
+
+    //place marker for the end destination of a walking group
+    private void placeGroupEndDestinationMarker() {
+        LatLng location = mMapState.getGroupEndDestination();
+
+        MarkerOptions markerOptions = new MarkerOptions().position(location);
+        String titleStr = getAddressOfMarker(location);
+        markerOptions.title(titleStr);
+        markerOptions.snippet("Latitude: " + mMapState.getGroupEndDestination().latitude + "\n" + "Longitude: " + mMapState.getGroupEndDestination().longitude);
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+        Marker theMarker = mMap.addMarker(markerOptions);
+        //set the tag of marker to be the user id--use this to differentiate marker during marker click event
+        theMarker.setTag("Child Marker");
+    }
+
 
 
 
