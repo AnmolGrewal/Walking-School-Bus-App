@@ -122,5 +122,6 @@
     <string name="jacky_unread_messages_text">Unread Messages:</string>
     <string name="jacky_panic_message">Panic Message</string>
     <string name="justin_view_profile_local">View Profile</string>
+    <string name="anmol_levelText">Level</string>
 
 </resources>
