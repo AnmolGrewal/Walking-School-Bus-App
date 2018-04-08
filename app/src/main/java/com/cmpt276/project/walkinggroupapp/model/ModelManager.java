@@ -1196,6 +1196,15 @@ public class ModelManager {
         });
     }
 
+    public void getPendingPermissionForUser(Context context,
+                                  ProxyBuilder.SimpleCallback<List<Permission>> callback) {
+        Call<List<Permission>> getPendingPermissionCaller = proxy.getPendingPermissions(user.getId());
+        ProxyBuilder.callProxy(context, getPendingPermissionCaller, returnedPermission -> {
+            List<Permission> pendingPermissions = returnedPermission;
+            callback.callback(pendingPermissions);
+        });
+    }
+
 
 
 
