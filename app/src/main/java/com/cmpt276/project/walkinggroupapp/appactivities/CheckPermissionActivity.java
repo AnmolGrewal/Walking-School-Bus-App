@@ -2,6 +2,7 @@ package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,9 +15,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cmpt276.project.walkinggroupapp.R;
+import com.cmpt276.project.walkinggroupapp.fragments.viewPastPermissionFragment;
 import com.cmpt276.project.walkinggroupapp.fragments.viewPermissionFragment;
+import com.cmpt276.project.walkinggroupapp.model.Authorizors;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.Permission;
+import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
 import java.util.ArrayList;
@@ -44,17 +48,8 @@ public class CheckPermissionActivity extends AppCompatActivity {
 
         ProxyBuilder.SimpleCallback<List<Permission>> pastPermissionCallback = pastPermissionList -> getPastPermissionList(pastPermissionList);
         modelManager.getPastPermissionForUser(CheckPermissionActivity.this, pastPermissionCallback);
-    }
 
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        ProxyBuilder.SimpleCallback<List<Permission>> permissionCallback = permissionList -> getPendingPermissionList(permissionList);
-        modelManager.getPendingPermissionForUser(CheckPermissionActivity.this, permissionCallback);
-
-        ProxyBuilder.SimpleCallback<List<Permission>> pastPermissionCallback = pastPermissionList -> getPastPermissionList(pastPermissionList);
-        modelManager.getPastPermissionForUser(CheckPermissionActivity.this, pastPermissionCallback);
+        //setTimer();
     }
 
     private void populatePermissionList() {
@@ -91,7 +86,7 @@ public class CheckPermissionActivity extends AppCompatActivity {
         }
     }
 
-    private void registerReadMessage()                                                                                    //For clicking on list object
+    private void registerPendingPermission()                                                                                    //For clicking on list object
     {
         final ListView list = findViewById(R.id.jacky_permission_list);
 
@@ -110,6 +105,7 @@ public class CheckPermissionActivity extends AppCompatActivity {
         //Configure ListView
         pastPermissionListView = findViewById(R.id.jacky_past_permissions);
         pastPermissionListView.setAdapter(adapter);
+
     }
 
     private class pastPermissionAdapter extends ArrayAdapter<Permission> {
@@ -139,6 +135,20 @@ public class CheckPermissionActivity extends AppCompatActivity {
         }
     }
 
+    private void registerPastPermissionItemClick()                                                                                    //For clicking on list object
+    {
+        final ListView list = findViewById(R.id.jacky_past_permissions);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                Permission permission = pastPermissionList.get(position);
+
+                fragmentShowPastPermission(permission);
+            }
+        });
+    }
+
 
     private void fragmentToDisplayPendingPermission(Permission permission)
     {
@@ -152,24 +162,86 @@ public class CheckPermissionActivity extends AppCompatActivity {
 
         dialog.setArguments(variables);
         dialog.show(manager, "MyApp");
+
+
+    }
+
+    private void fragmentShowPastPermission(Permission permission){
+        List<Authorizors> listOfAuthorizors = permission.getAuthorizors();
+
+        ProxyBuilder.SimpleCallback<User> getUserByIdCallback = user -> startPastPermissionDialog(permission, user);
+        modelManager.getUserById(CheckPermissionActivity.this, getUserByIdCallback, listOfAuthorizors.get(1).getWhoApprovedOrDenied().getId());
+
+
+
     }
 
     private void getPendingPermissionList(List<Permission> permissions){
-        permissionList.clear();
-        permissionList = permissions;
-        Log.i("MyApp", "The size is: " + permissionList.size());
-        populatePermissionList();
-        registerReadMessage();
+
+        if(permissionList.size() == permissions.size())
+        {
+           //setTimer();
+        }else {
+            permissionList.clear();
+            permissionList = permissions;
+            Log.i("MyApp", "The size is: " + permissionList.size());
+            populatePermissionList();
+            registerPendingPermission();
+        }
     }
 
     private void getPastPermissionList(List<Permission> permissions){
-        pastPermissionList.clear();
-        pastPermissionList = permissions;
-        Log.i("MyApp", "The past list is: " + pastPermissionList.size());
-        populatePastPermissionList();
+
+        if(pastPermissionList.size() == permissions.size()){
+           //setTimer();
+        }else{
+            pastPermissionList.clear();
+            pastPermissionList = permissions;
+            Log.i("MyApp", "The past list is: " + pastPermissionList.size());
+            populatePastPermissionList();
+            registerPastPermissionItemClick();
+        }
+    }
+
+    private void setTimer(){
+        Log.i("MyApp", "In SetTimer");
+        //wait 1 seconds and request for new messages -> from garry's code
+        Handler handler = new Handler();
+        int delay = 10000; //milliseconds
+
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                ProxyBuilder.SimpleCallback<List<Permission>> permissionCallback = permissionList -> getPendingPermissionList(permissionList);
+                modelManager.getPendingPermissionForUser(CheckPermissionActivity.this, permissionCallback);
+
+                ProxyBuilder.SimpleCallback<List<Permission>> pastPermissionCallback = pastPermissionList -> getPastPermissionList(pastPermissionList);
+                modelManager.getPastPermissionForUser(CheckPermissionActivity.this, pastPermissionCallback);
+            }
+        }, delay);
     }
 
     public static Intent makeIntent(Context context){
         return new Intent(context, CheckPermissionActivity.class);
     }
+
+    private void startPastPermissionDialog(Permission permission, User user){
+
+        FragmentManager manager = getSupportFragmentManager();
+        viewPastPermissionFragment  dialog = new viewPastPermissionFragment();
+
+        List<Authorizors> listOfAuthorizors = permission.getAuthorizors();
+
+        //Get variables to display
+        Bundle variables = new Bundle();
+        variables.putString("MessageForPastPermission", permission.getMessage());
+        //Since only one group of authorize exists we can just pass in the first one
+        variables.putString("StatusOfPermission", listOfAuthorizors.get(1).getStatus());
+        variables.putLong("UserIdWhoAuthorized", listOfAuthorizors.get(1).getWhoApprovedOrDenied().getId());
+        variables.putString("UserEmailWhoAuthorized", user.getEmail());
+        variables.putString("UserNameWhoAuthorized", user.getName());
+
+        dialog.setArguments(variables);
+        dialog.show(manager, "MyApp");
+    }
+
 }
