@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -58,7 +59,7 @@ public class MainMenuActivity extends AppCompatActivity {
     private List<User> monitorsUsers;
     private List<User> monitoredByUsers;
 
-
+    private ImageButton leaderBoardButton;
 
 
 
@@ -93,7 +94,19 @@ public class MainMenuActivity extends AppCompatActivity {
             setupMessageButton();
             setupParentDashboardButton();
             setupNumberOfUnreadMessages();
+            setupLeaderBoard();
 
+    }
+
+    private void setupLeaderBoard() {
+        leaderBoardButton = findViewById(R.id.anmol_leaderBoardButton);
+        leaderBoardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = LeaderBoardActivity.makeIntent(MainMenuActivity.this);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setupViewProfileLocalButton() {
