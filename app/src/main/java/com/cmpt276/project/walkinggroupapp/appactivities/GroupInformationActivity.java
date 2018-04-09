@@ -75,8 +75,8 @@ public class GroupInformationActivity extends AppCompatActivity {
 
     private long mCurrentGroupId;
 
-    //initial location of user when he starts uploading
-    private LatLng mInitialUserLocationWhenUploading;
+    //initial location of user when he starts uploading, set to (0,0) initially
+    private LatLng mInitialUserLocationWhenUploading = new LatLng(0,0);
 
 
     private boolean mIsUpload;
@@ -128,8 +128,8 @@ public class GroupInformationActivity extends AppCompatActivity {
                 }
                 else {
                     mIsUpload = true;
-                    getInitialLocation();
                     getLastKnownLocation();
+                    getInitialLocation();
                     Toast.makeText(GroupInformationActivity.this, "Started Uploading", Toast.LENGTH_SHORT).show();
                 }
             }

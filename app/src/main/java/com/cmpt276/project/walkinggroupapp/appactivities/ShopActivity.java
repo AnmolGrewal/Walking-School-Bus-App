@@ -93,9 +93,9 @@ public class ShopActivity extends AppCompatActivity {
 
     private void populateAvatarList() {
         //get all the list of current avatars in drawable--set their price(all 500 for now)
-        mAvatarList.add(new Avatar(R.drawable.dog_icon,500));
-        mAvatarList.add(new Avatar(R.drawable.cat_icon,500));
-        mAvatarList.add(new Avatar(R.drawable.dinosaur_icon,500));
+        mAvatarList.add(new Avatar(R.drawable.dog_icon,100));
+        mAvatarList.add(new Avatar(R.drawable.cat_icon,100));
+        mAvatarList.add(new Avatar(R.drawable.dinosaur_icon,100));
         mAvatarList.add(new Avatar(R.drawable.dolphin_icon,500));
         mAvatarList.add(new Avatar(R.drawable.penguin_icon,500));
 
@@ -189,7 +189,16 @@ public class ShopActivity extends AppCompatActivity {
                         {
                             case R.id.gerry_Buy_popup_shop:
                                 //buy icon then refresh the entire activity
-                                addNewUserOwnedAvatar(mNotOwnedAvatars.get(position).getId());
+                                //check first if user has enough points
+                                if( mCurrentUser.getCurrentPoints() >= mNotOwnedAvatars.get(position).getPrice())
+                                {
+                                    //user has enough points
+                                    addNewUserOwnedAvatar(mNotOwnedAvatars.get(position).getId(), mNotOwnedAvatars.get(position).getPrice());
+                                }
+                                else {
+                                    Toast.makeText(ShopActivity.this, "Not Enough Points", Toast.LENGTH_SHORT).show();
+                                }
+
                                 break;
                             case R.id.gerry_Cancel_popup_shop:
                                 //cancel clicked, do nothing
@@ -209,15 +218,15 @@ public class ShopActivity extends AppCompatActivity {
 
 
 
-    private void addNewUserOwnedAvatar(int avatarId) {
+    private void addNewUserOwnedAvatar(int avatarId, int avatarPrice) {
 
         ProxyBuilder.SimpleCallback<User> addNewUserOwnedAvatarCallback = serverPassedUser -> addNewUserOwnedAvatarResponse(serverPassedUser);
-        mModelManager.addAvatar(ShopActivity.this,addNewUserOwnedAvatarCallback,avatarId);
+        mModelManager.buyAvatar(ShopActivity.this,addNewUserOwnedAvatarCallback,avatarId,avatarPrice);
     }
 
     private void addNewUserOwnedAvatarResponse(User passedUser) {
 
-        Toast.makeText(ShopActivity.this, "Icon bought - restarting activity", Toast.LENGTH_SHORT).show();
+        Toast.makeText(ShopActivity.this, "Icon bought", Toast.LENGTH_SHORT).show();
         restartActivity();
     }
 
