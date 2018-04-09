@@ -121,10 +121,17 @@ public class GroupInformationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //start uploading user current location
-                mIsUpload = true;
-                getInitialLocation();
-                getLastKnownLocation();
-                Toast.makeText(GroupInformationActivity.this, "Started Uploading", Toast.LENGTH_SHORT).show();
+
+                //Since timer already started when this button is clicked don't start new timer when button is clicked again
+                if(mIsUpload) {
+                    Toast.makeText(GroupInformationActivity.this, "Already Uploading", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    mIsUpload = true;
+                    getInitialLocation();
+                    getLastKnownLocation();
+                    Toast.makeText(GroupInformationActivity.this, "Started Uploading", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

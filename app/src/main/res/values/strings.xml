@@ -20,6 +20,8 @@
     <string name="gerry_view_group_destination_info">View Destination</string>
     <string name="gerry_apikey">D71A0AC3-1AD3-42BE-87C1-83345D63B4D9</string>
     <string name="gerry_logout_main">Logout</string>
+    <string name="gerry_shop_main">SHOP</string>
+    <string name="gerry_view_collections_shop">View Collection / Set Avatar</string>
     <string name="jacky_enter_user_id_hint">Enter User ID</string>
     <string name="jacky_enter_email">Enter User Email</string>
     <string name="jacky_cancel_popup">Cancel</string>
