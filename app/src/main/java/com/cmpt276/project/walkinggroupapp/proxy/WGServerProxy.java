@@ -145,6 +145,9 @@ public interface WGServerProxy {
     Call<User> changeMessageStatus(@Path("messageId") long messageId, @Path("userId") long userId, @Body boolean isRead);
 
 
+//    @GET("/permissions/{id}")
+//    Call<Permission> getPermissionById(@Path("id") long permissionId);
+
 
 
     /**
