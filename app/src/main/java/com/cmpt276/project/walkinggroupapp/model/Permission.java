@@ -2,6 +2,9 @@ package com.cmpt276.project.walkinggroupapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by 21jac_000 on 2018-04-07.
  */
@@ -18,6 +21,8 @@ public class Permission {
     private User userB;
 
     private WalkingGroup groupG;
+
+    private List<Authorizors> authorizors = new ArrayList<>();
 
     public Long getId(){
         return id;
@@ -47,6 +52,10 @@ public class Permission {
         return groupG;
     }
 
+    public List<Authorizors> getAuthorizors(){
+        return authorizors;
+    }
+
     public void setId(Long id){
         this.id = id;
     }
@@ -73,6 +82,10 @@ public class Permission {
 
     public void setGroupG(WalkingGroup groupG){
         this.groupG = groupG;
+    }
+
+    public void setAuthorizors(List<Authorizors> authorizors){
+        this.authorizors = authorizors;
     }
 
 }
