@@ -1222,6 +1222,21 @@ public class ModelManager {
         });
     }
 
+    public void getPastPermissionForUser(Context context, ProxyBuilder.SimpleCallback<List<Permission>> callback){
+        Call<List<Permission>> getPastPermissionCaller = proxy.getPastPermissions(user.getId());
+        ProxyBuilder.callProxy(context, getPastPermissionCaller, returnedPermission -> {
+            Permission permission;
+            for(int i = returnedPermission.size() - 1; i >= 0; i--){
+                permission = returnedPermission.get(i);
+                if(permission.getStatus().equals("PENDING")){
+                    returnedPermission.remove(i);
+                }
+            }
+            callback.callback(returnedPermission);
+        });
+
+    }
+
     public void changePermissionStatus(Context context, ProxyBuilder.SimpleCallback<Void> callback, Long permissionId, String status){
         Call<Void> changePermissionCaller = proxy.changePermissionStatus(permissionId, status);
         ProxyBuilder.callProxy(context, changePermissionCaller, callback);

@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cmpt276.project.walkinggroupapp.R;
-import com.cmpt276.project.walkinggroupapp.fragments.viewMessageFragment;
 import com.cmpt276.project.walkinggroupapp.fragments.viewPermissionFragment;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.Permission;
@@ -25,9 +24,13 @@ import java.util.List;
 
 public class CheckPermissionActivity extends AppCompatActivity {
 
-    ListView permissionListView;
-    List<Permission> permissionList = new ArrayList<>();
-    ModelManager modelManager;
+    private ListView permissionListView;
+    private ListView pastPermissionListView;
+
+    private List<Permission> permissionList = new ArrayList<>();
+    private List<Permission> pastPermissionList = new ArrayList<>();
+
+    private ModelManager modelManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +39,25 @@ public class CheckPermissionActivity extends AppCompatActivity {
 
         modelManager = ModelManager.getInstance();
 
-        ProxyBuilder.SimpleCallback<List<Permission>> permissionCallback = PermissionList -> getPermissionList(PermissionList);
+        ProxyBuilder.SimpleCallback<List<Permission>> permissionCallback = permissionList -> getPendingPermissionList(permissionList);
         modelManager.getPendingPermissionForUser(CheckPermissionActivity.this, permissionCallback);
+
+        ProxyBuilder.SimpleCallback<List<Permission>> pastPermissionCallback = pastPermissionList -> getPastPermissionList(pastPermissionList);
+        modelManager.getPastPermissionForUser(CheckPermissionActivity.this, pastPermissionCallback);
     }
 
-    private void populateMessageList() {
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        ProxyBuilder.SimpleCallback<List<Permission>> permissionCallback = permissionList -> getPendingPermissionList(permissionList);
+        modelManager.getPendingPermissionForUser(CheckPermissionActivity.this, permissionCallback);
+
+        ProxyBuilder.SimpleCallback<List<Permission>> pastPermissionCallback = pastPermissionList -> getPastPermissionList(pastPermissionList);
+        modelManager.getPastPermissionForUser(CheckPermissionActivity.this, pastPermissionCallback);
+    }
+
+    private void populatePermissionList() {
         ArrayAdapter<Permission> adapter = new CheckPermissionActivity.permissionAdapter();
         //Configure ListView
         permissionListView = findViewById(R.id.jacky_permission_list);
@@ -66,6 +83,9 @@ public class CheckPermissionActivity extends AppCompatActivity {
             TextView setMessage = itemView.findViewById(R.id.jacky_permission_message);
             setMessage.setText(permission.getMessage());
 
+            TextView setStatus = itemView.findViewById(R.id.jacky_status_message);
+            setStatus.setText(permission.getStatus());
+
 
             return itemView;
         }
@@ -80,12 +100,47 @@ public class CheckPermissionActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 Permission permission = permissionList.get(position);
 
-                respondToPermissions(permission);
+                fragmentToDisplayPendingPermission(permission);
             }
         });
     }
 
-    private void respondToPermissions(Permission permission)
+    private void populatePastPermissionList() {
+        ArrayAdapter<Permission> adapter = new CheckPermissionActivity.pastPermissionAdapter();
+        //Configure ListView
+        pastPermissionListView = findViewById(R.id.jacky_past_permissions);
+        pastPermissionListView.setAdapter(adapter);
+    }
+
+    private class pastPermissionAdapter extends ArrayAdapter<Permission> {
+        public pastPermissionAdapter() {
+            super(CheckPermissionActivity.this, R.layout.permission_list_layout, pastPermissionList);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            //Find a permission to add
+            Permission permission = pastPermissionList.get(position);
+
+            //Make sure We are given a view
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = getLayoutInflater().inflate(R.layout.permission_list_layout, parent, false);
+            }
+
+            TextView setMessage = itemView.findViewById(R.id.jacky_permission_message);
+            setMessage.setText(permission.getMessage());
+
+            TextView setStatus = itemView.findViewById(R.id.jacky_status_message);
+            setStatus.setText(permission.getStatus());
+
+
+            return itemView;
+        }
+    }
+
+
+    private void fragmentToDisplayPendingPermission(Permission permission)
     {
         FragmentManager manager = getSupportFragmentManager();
         viewPermissionFragment dialog = new viewPermissionFragment();
@@ -99,12 +154,19 @@ public class CheckPermissionActivity extends AppCompatActivity {
         dialog.show(manager, "MyApp");
     }
 
-    private void getPermissionList(List<Permission> permissions){
+    private void getPendingPermissionList(List<Permission> permissions){
         permissionList.clear();
         permissionList = permissions;
         Log.i("MyApp", "The size is: " + permissionList.size());
-        populateMessageList();
+        populatePermissionList();
         registerReadMessage();
+    }
+
+    private void getPastPermissionList(List<Permission> permissions){
+        pastPermissionList.clear();
+        pastPermissionList = permissions;
+        Log.i("MyApp", "The past list is: " + pastPermissionList.size());
+        populatePastPermissionList();
     }
 
     public static Intent makeIntent(Context context){
