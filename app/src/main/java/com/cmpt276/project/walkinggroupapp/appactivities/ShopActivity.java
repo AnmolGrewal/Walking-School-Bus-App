@@ -107,15 +107,20 @@ public class ShopActivity extends AppCompatActivity {
         mLevelProgressBar= findViewById(R.id.gerry_Level_ProgressBar_shop);
 
 
+
         int totalPoints = mCurrentUser.getTotalPointsEarned();
 
-        double currentLevel = totalPoints / 500;
-        int displayCurrentLevel =  (int)currentLevel + 1;
-        String levelString = "Level " + displayCurrentLevel;
+        //show the users current level
+        //each level is 500 points
+        int currentLevelInt = totalPoints / 500;   // java "/" user integer division which throw away remainder
+        String levelString = "Level " + currentLevelInt;
         mLevelTextView.setText(levelString);
-        double levelBarDisplay = currentLevel % 500;
-        int percentageLevel = (int)(levelBarDisplay % 100);
-        mLevelProgressBar.setProgress(percentageLevel);
+
+        //show the percentage progress in the progress bar
+        int remainderCurrentLevelInt = totalPoints % 500;
+        Double remainderCurrentLevelDouble = (double)(remainderCurrentLevelInt);
+        Double progressPercent = (remainderCurrentLevelDouble/500) * 100;
+        mLevelProgressBar.setProgress(progressPercent.intValue());
 
     }
 
