@@ -38,6 +38,8 @@ public class ViewLocalUserProfileActivity extends AppCompatActivity {
 
     ProgressBar progressBar;
 
+    ProgressBar levelBar;
+    TextView levelInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,21 @@ public class ViewLocalUserProfileActivity extends AppCompatActivity {
         ProxyBuilder.SimpleCallback<User> getUserByIdCallback = returnedUser -> getUserByIdResponse(returnedUser);
         ProxyBuilder.SimpleCallback<String> onFailureCallback = errorMessage -> onFailureResponse(errorMessage);
         modelManager.getUserById(ViewLocalUserProfileActivity.this, getUserByIdCallback, onFailureCallback, modelManager.getLocalUserId());
+    }
+
+    private void setupLevel(User returnedUser) {
+        levelBar = findViewById(R.id.anmol_levelBar);
+        levelInfo = findViewById(R.id.anmol_currentLvlTxt);
+
+        if (returnedUser.getTotalPointsEarned() != null) {
+            int totalPoints = returnedUser.getTotalPointsEarned();
+            double currentLevel = totalPoints / 500;
+            int displayCurrentLevel =  (int)currentLevel + 1;
+            levelInfo.setText("Level " + displayCurrentLevel);
+            double levelBarDisplay = currentLevel % 500;
+            int percentageLevel = (int)(levelBarDisplay % 100);
+            levelBar.setProgress(percentageLevel);
+        }
     }
 
     @Override
@@ -140,6 +157,7 @@ public class ViewLocalUserProfileActivity extends AppCompatActivity {
         progressBar.setVisibility(View.INVISIBLE);
 
         populateTextView(returnedUser);
+        setupLevel(returnedUser);
     }
 
     private void populateTextView(User returnedUser) {
@@ -203,7 +221,6 @@ public class ViewLocalUserProfileActivity extends AppCompatActivity {
         } else {
             txtEmergency.setText("N/A");
         }
-
     }
 
     private void onFailureResponse(String errorMessage) {

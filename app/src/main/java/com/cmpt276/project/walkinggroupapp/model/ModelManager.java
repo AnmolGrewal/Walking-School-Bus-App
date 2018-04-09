@@ -1167,7 +1167,7 @@ public class ModelManager {
     }
 
     // this method is used when user bought new avatar.
-    public void addAvatar(Context context, ProxyBuilder.SimpleCallback<User> callback, int avatarId) {
+    public void buyAvatar(Context context, ProxyBuilder.SimpleCallback<User> callback, int avatarId, int price) {
         Call<User> getUserCaller = proxy.getUserById(user.getId());
         ProxyBuilder.callProxy(context, getUserCaller, targetUser -> {
 
@@ -1183,6 +1183,9 @@ public class ModelManager {
                 // add new avatar.
                 customObjectFromServer.addNewAvatar(avatarId);
                 targetUser.setGamification(customObjectFromServer);
+                int currentPoints = targetUser.getCurrentPoints();
+                currentPoints = currentPoints - price;
+                targetUser.setCurrentPoints(currentPoints);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -1223,6 +1226,7 @@ public class ModelManager {
         Call<Void> changePermissionCaller = proxy.changePermissionStatus(permissionId, status);
         ProxyBuilder.callProxy(context, changePermissionCaller, callback);
     }
+
 
 
 
