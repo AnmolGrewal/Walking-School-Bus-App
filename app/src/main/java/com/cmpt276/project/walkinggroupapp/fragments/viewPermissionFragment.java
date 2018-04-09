@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.appactivities.CheckPermissionActivity;
@@ -19,9 +20,9 @@ import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 import java.util.List;
 
 /***
- * Fragment used to display sent messages to user
+ * Fragment used to display permission request from a user
  *
- * It creates a small dialog box to allow the user to see the message that was sent to them
+ * It creates a small dialog box to allow the user to select approve of deny
  */
 
 public class viewPermissionFragment extends AppCompatDialogFragment
@@ -68,6 +69,7 @@ public class viewPermissionFragment extends AppCompatDialogFragment
     private void approvePermission(){
         ProxyBuilder.SimpleCallback<Void> permissionCallback = response -> changePermissionResponse(response);
         modelManager.changePermissionStatus(getActivity(), permissionCallback, permissionID, "APPROVED");
+
     }
 
     private void denyPermission(){
