@@ -13,7 +13,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="1"
-        android:text="Message:"
+        android:text="@string/jacky_check_permission_message"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,7 +24,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="1"
-        android:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/jacky_static_permission_message"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Status:"
+        android:text="@string/jacky_check_permission_status"
         app:layout_constraintEnd_toEndOf="@+id/jacky_static_permission_message"
         app:layout_constraintTop_toBottomOf="@+id/jacky_permission_message" />
 
@@ -43,7 +42,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Stat"
         app:layout_constraintStart_toEndOf="@+id/jacky_static_permission_message"
         app:layout_constraintTop_toBottomOf="@+id/jacky_permission_message" />
 </android.support.constraint.ConstraintLayout>
