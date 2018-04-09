@@ -41,6 +41,7 @@ public class ShopActivity extends AppCompatActivity {
     private TextView mLevelTextView;
     private TextView mCurrentPointsTextView;
     private ProgressBar mLevelProgressBar;
+    private ImageView mCurrentAvatarImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +71,11 @@ public class ShopActivity extends AppCompatActivity {
         mCurrentUser = passedUser;
 
         //setup views/buttons after updated user obtained
-        setupShopListView();
         setupViewCollectionButton();
         setupNameTextView();
         setupCurrentPointsTextView();
         setupLevelTextViewAndProgress();
+        setupCurrentAvatarImageView();
 
         populateAvatarList();
 
@@ -141,7 +142,8 @@ public class ShopActivity extends AppCompatActivity {
 
             //fill the view
             ImageView imageView = itemView.findViewById(R.id.gerry_Avatar_ImageView_shop_layout);
-            imageView.setImageResource(R.drawable.cat_icon);
+            int id = currentAvatar.getId();
+            imageView.setImageResource(id);
 
 
             //show the price
@@ -177,9 +179,6 @@ public class ShopActivity extends AppCompatActivity {
     }
 
 
-    private void setupShopListView() {
-
-    }
 
 
     private void setupNameTextView() {
@@ -214,6 +213,21 @@ public class ShopActivity extends AppCompatActivity {
         Double remainderCurrentLevelDouble = (double)(remainderCurrentLevelInt);
         Double progressPercent = (remainderCurrentLevelDouble/500) * 100;
         mLevelProgressBar.setProgress(progressPercent.intValue());
+
+    }
+
+
+    private void setupCurrentAvatarImageView() {
+        mCurrentAvatarImageView = findViewById(R.id.gerry_Avatar_ImageView_shop);
+
+        //if user has default
+        if(mCurrentUser.getCurrentAvatar() == 0) {
+            mCurrentAvatarImageView.setImageResource(R.drawable.temp_pic);
+        }
+        else {
+            mCurrentAvatarImageView.setImageResource(mCurrentUser.getCurrentAvatar());
+        }
+
 
     }
 
