@@ -1121,6 +1121,8 @@ public class ModelManager {
         });
     }
 
+    //method for subtracting current points from user--when user buys an icon
+
     // this method is used to change avatar.
     public void changeAvatar(Context context, ProxyBuilder.SimpleCallback<User> callback, int avatarId) {
         Call<User> getUserCaller = proxy.getUserById(user.getId());

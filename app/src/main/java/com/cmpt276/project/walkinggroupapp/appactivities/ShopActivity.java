@@ -4,14 +4,18 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmpt276.project.walkinggroupapp.R;
 import com.cmpt276.project.walkinggroupapp.model.Avatar;
@@ -82,6 +86,7 @@ public class ShopActivity extends AppCompatActivity {
         getNotOwnedAvatars();
 
         populateAvatarShopListView();
+        registerShopListViewItemClick();
 
     }
 
@@ -100,6 +105,8 @@ public class ShopActivity extends AppCompatActivity {
     private void getNotOwnedAvatars() {
         List<Integer> userOwnedAvatars = mCurrentUser.getOwnedAvatars();
 
+        boolean ownedAllAvatar = true;
+
         for(int i = 0; i < mAvatarList.size(); i++) {
             boolean matchFound = false;
             for(int j = 0; j < userOwnedAvatars.size(); j++){
@@ -111,8 +118,13 @@ public class ShopActivity extends AppCompatActivity {
 
             //no match found, ith avatar from AvatarList is still not owned by user
             if(!matchFound) {
+                ownedAllAvatar = false;
                 mNotOwnedAvatars.add(mAvatarList.get(i));
             }
+        }
+
+        if(ownedAllAvatar) {
+            Toast.makeText(ShopActivity.this, "All Icons Already Owned", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -141,6 +153,7 @@ public class ShopActivity extends AppCompatActivity {
             Avatar currentAvatar = mNotOwnedAvatars.get(position);
 
             //fill the view
+            //show the icon
             ImageView imageView = itemView.findViewById(R.id.gerry_Avatar_ImageView_shop_layout);
             int id = currentAvatar.getId();
             imageView.setImageResource(id);
@@ -156,12 +169,57 @@ public class ShopActivity extends AppCompatActivity {
 
     }
 
+    //when icons on the shop are clicked -- let user buy them
+    private void registerShopListViewItemClick()                                                                                    //For clicking on list object
+    {
+        final ListView list = findViewById(R.id.gerry_Shop_ListView_shop);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                // allow user to buy the icon
+                PopupMenu popupMenu = new PopupMenu(ShopActivity.this, viewClicked);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_shop, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {          //Code from https://www.youtube.com/watch?v=LXUDqGaToe0
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        switch(menuItem.getItemId())
+                        {
+                            case R.id.gerry_Buy_popup_shop:
+                                //buy icon then refresh the entire activity
+                                addNewUserOwnedAvatar(mNotOwnedAvatars.get(position).getId());
+                                break;
+                            case R.id.gerry_Cancel_popup_shop:
+                                //cancel clicked, do nothing
+                                break;
+                        }
+                        return true;
+                    }
+                });
+
+                popupMenu.show();
+
+            }
+        });
+
+    }
 
 
 
 
+    private void addNewUserOwnedAvatar(int avatarId) {
 
+        ProxyBuilder.SimpleCallback<User> addNewUserOwnedAvatarCallback = serverPassedUser -> addNewUserOwnedAvatarResponse(serverPassedUser);
+        mModelManager.addAvatar(ShopActivity.this,addNewUserOwnedAvatarCallback,avatarId);
+    }
 
+    private void addNewUserOwnedAvatarResponse(User passedUser) {
+
+        Toast.makeText(ShopActivity.this, "Icon bought - restarting activity", Toast.LENGTH_SHORT).show();
+        restartActivity();
+    }
 
 
     private void setupViewCollectionButton() {
@@ -171,14 +229,10 @@ public class ShopActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //go to viewCollection Activity
-                Intent intent = new Intent(ShopActivity.this, ViewCollectionActivity.class);
-                startActivity(intent);
             }
         });
 
     }
-
-
 
 
     private void setupNameTextView() {

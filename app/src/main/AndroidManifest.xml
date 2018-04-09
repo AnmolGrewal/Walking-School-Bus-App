@@ -66,7 +66,6 @@
         <activity android:name=".appactivities.ViewProfileActivity" />
         <activity android:name=".appactivities.ViewLocalUserProfileActivity" />
         <activity android:name=".appactivities.ShopActivity" />
-        <activity android:name=".appactivities.ViewCollectionActivity"></activity>
     </application>
 
 </manifest>

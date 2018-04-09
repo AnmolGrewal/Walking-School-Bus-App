@@ -22,6 +22,8 @@
     <string name="gerry_logout_main">Logout</string>
     <string name="gerry_shop_main">SHOP</string>
     <string name="gerry_view_collections_shop">View Collection / Set Avatar</string>
+    <string name="gerry_buy_popup_shop">Buy</string>
+    <string name="gerry_cancel_popup_shop">Cancel</string>
     <string name="jacky_enter_user_id_hint">Enter User ID</string>
     <string name="jacky_enter_email">Enter User Email</string>
     <string name="jacky_cancel_popup">Cancel</string>
