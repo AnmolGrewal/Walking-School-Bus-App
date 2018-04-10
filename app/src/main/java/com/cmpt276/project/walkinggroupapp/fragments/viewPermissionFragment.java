@@ -50,9 +50,11 @@ public class viewPermissionFragment extends AppCompatDialogFragment
                 switch(i){
                     case DialogInterface.BUTTON_POSITIVE:
                         approvePermission();
+                        getActivity().onBackPressed();
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         denyPermission();
+                        getActivity().onBackPressed();
                         break;
                 }
             }

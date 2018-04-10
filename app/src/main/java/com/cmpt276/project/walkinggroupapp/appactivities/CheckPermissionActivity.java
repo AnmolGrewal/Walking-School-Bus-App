@@ -36,6 +36,8 @@ public class CheckPermissionActivity extends AppCompatActivity {
 
     private ModelManager modelManager;
 
+    private Handler handler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,37 +170,27 @@ public class CheckPermissionActivity extends AppCompatActivity {
     }
 
     private void getPendingPermissionList(List<Permission> permissions){
-
-        if(permissionList.size() == permissions.size())
-        {
-           //setTimer();
-        }else {
-            permissionList.clear();
-            permissionList = permissions;
-            Log.i("MyApp", "The size is: " + permissionList.size());
-            populatePermissionList();
-            registerPendingPermission();
-        }
+        permissionList.clear();
+        permissionList = permissions;
+        Log.i("MyApp", "The size is: " + permissionList.size());
+        //setTimer();
+        populatePermissionList();
+        registerPendingPermission();
     }
 
     private void getPastPermissionList(List<Permission> permissions){
-
-        if(pastPermissionList.size() == permissions.size()){
-           //setTimer();
-        }else{
-            pastPermissionList.clear();
-            pastPermissionList = permissions;
-            Log.i("MyApp", "The past list is: " + pastPermissionList.size());
-            populatePastPermissionList();
-            registerPastPermissionItemClick();
-        }
+        pastPermissionList.clear();
+        pastPermissionList = permissions;
+        Log.i("MyApp", "The past list is: " + pastPermissionList.size());
+        //setTimer();
+        populatePastPermissionList();
+        registerPastPermissionItemClick();
     }
 
     private void setTimer(){
         Log.i("MyApp", "In SetTimer");
-        //wait 1 seconds and request for new messages -> from garry's code
-        Handler handler = new Handler();
-        int delay = 10000; //milliseconds
+        //wait 15 seconds and request for new messages -> from garry's code
+        int delay = 5000; //milliseconds
 
         handler.postDelayed(new Runnable(){
             public void run(){
@@ -207,8 +199,11 @@ public class CheckPermissionActivity extends AppCompatActivity {
 
                 ProxyBuilder.SimpleCallback<List<Permission>> pastPermissionCallback = pastPermissionList -> getPastPermissionList(pastPermissionList);
                 modelManager.getPastPermissionForUser(CheckPermissionActivity.this, pastPermissionCallback);
+
+
             }
         }, delay);
+
     }
 
     public static Intent makeIntent(Context context){
