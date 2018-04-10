@@ -40,7 +40,6 @@ public class ViewLocalUserProfileActivity extends AppCompatActivity {
 
     ProgressBar levelBar;
     TextView levelInfo;
-    Button viewCollection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,24 +56,12 @@ public class ViewLocalUserProfileActivity extends AppCompatActivity {
         setupEditButton();
 
         setupProfileDefaultValue();
-        setupViewCollectionButton();
 
         progressBar.setVisibility(View.VISIBLE);
 
         ProxyBuilder.SimpleCallback<User> getUserByIdCallback = returnedUser -> getUserByIdResponse(returnedUser);
         ProxyBuilder.SimpleCallback<String> onFailureCallback = errorMessage -> onFailureResponse(errorMessage);
         modelManager.getUserById(ViewLocalUserProfileActivity.this, getUserByIdCallback, onFailureCallback, modelManager.getLocalUserId());
-    }
-
-    private void setupViewCollectionButton() {
-        viewCollection = findViewById(R.id.anmol_viewCollection);
-        viewCollection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = ViewCollectionActivity.makeIntent(ViewLocalUserProfileActivity.this);
-                startActivity(intent);
-            }
-        });
     }
 
     private void setupLevel(User returnedUser) {

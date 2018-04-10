@@ -56,11 +56,7 @@ public class ShopActivity extends AppCompatActivity {
 
         //get the updated user from server first before setting up buttons/list views etc.
         getUpdatedUser();
-
-
     }
-
-
 
     private void getUpdatedUser() {
 
@@ -238,6 +234,8 @@ public class ShopActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //go to viewCollection Activity
+                Intent intent = ViewCollectionActivity.makeIntent(ShopActivity.this);
+                startActivity(intent);
             }
         });
 
