@@ -299,7 +299,7 @@ public class ShopActivity extends AppCompatActivity {
         finish();
         startActivity(getIntent());
     }
-//Change Avatar
+    //Change Avatar
     @Override
     protected void onResume() {
         super.onResume();
