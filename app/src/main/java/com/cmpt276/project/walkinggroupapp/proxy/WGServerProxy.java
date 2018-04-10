@@ -149,15 +149,15 @@ public interface WGServerProxy {
     @GET("/permissions?statusForUser=PENDING")
     Call<List<Permission>> getPendingPermissions(@Query("userId") long userId);
 
-    @GET("/permissions?")
+    @GET("/permissions")
     Call<List<Permission>> getPastPermissions(@Query("userId") long userId);
 
     @POST("/permissions/{id}")
     Call<Void> changePermissionStatus(@Path("id") long permissionId, @Body String status);
 
 
-//    @GET("/permissions/{id}")
-//    Call<Permission> getPermissionById(@Path("id") long permissionId);
+    @GET("/permissions/{id}")
+    Call<Permission> getPermissionById(@Path("id") long permissionId);
 
 
 

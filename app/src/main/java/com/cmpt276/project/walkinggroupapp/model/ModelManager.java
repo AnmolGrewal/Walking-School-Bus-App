@@ -1245,12 +1245,12 @@ public class ModelManager {
 
 
 
-//    public void getPermissionById(Context context,
-//                                  ProxyBuilder.SimpleCallback<Permission> callback,
-//                                  long permissionId) {
-//        Call<Permission> caller = proxy.getPermissionById(permissionId);
-//        ProxyBuilder.callProxy(context, caller, callback);
-//    }
+    public void getPermissionById(Context context,
+                                  ProxyBuilder.SimpleCallback<Permission> callback,
+                                  long permissionId) {
+        Call<Permission> caller = proxy.getPermissionById(permissionId);
+        ProxyBuilder.callProxy(context, caller, callback);
+    }
 
 
 

@@ -19,7 +19,7 @@ import com.cmpt276.project.walkinggroupapp.R;
 
 public class viewPastPermissionFragment extends AppCompatDialogFragment
 {
-    private String message;
+    /*private String message;
     private String status;
     private String email;
     private String name;
@@ -79,6 +79,6 @@ public class viewPastPermissionFragment extends AppCompatDialogFragment
                 .setView(v)
                 .setPositiveButton("Done", listener)
                 .create();
-    }
+    }*/
 
 }
