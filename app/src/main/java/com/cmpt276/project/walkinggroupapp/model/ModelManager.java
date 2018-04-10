@@ -1122,6 +1122,8 @@ public class ModelManager {
         });
     }
 
+    //method for subtracting current points from user--when user buys an icon
+
     // this method is used to change avatar.
     public void changeAvatar(Context context, ProxyBuilder.SimpleCallback<User> callback, int avatarId) {
         Call<User> getUserCaller = proxy.getUserById(user.getId());
@@ -1193,7 +1195,7 @@ public class ModelManager {
 
             try {
                 // Convert custom object to a JSON string:
-                String customAsJson = new ObjectMapper().writeValueAsString(user.getGamification());
+                String customAsJson = new ObjectMapper().writeValueAsString(targetUser.getGamification());
                 // Store JSON string into the user object, which will be sent to server.
                 targetUser.setCustomJson(customAsJson);
             } catch (JsonProcessingException e) {

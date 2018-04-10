@@ -71,12 +71,19 @@ public class ViewLocalUserProfileActivity extends AppCompatActivity {
 
         if (returnedUser.getTotalPointsEarned() != null) {
             int totalPoints = returnedUser.getTotalPointsEarned();
-            double currentLevel = totalPoints / 500;
-            int displayCurrentLevel =  (int)currentLevel + 1;
-            levelInfo.setText("Level " + displayCurrentLevel);
-            double levelBarDisplay = currentLevel % 500;
-            int percentageLevel = (int)(levelBarDisplay % 100);
-            levelBar.setProgress(percentageLevel);
+
+            //show the users current level
+            //each level is 500 points
+            int currentLevelInt = totalPoints / 500;   // java "/" user integer division which throw away remainder
+            String levelString = "Level " + currentLevelInt;
+            levelInfo.setText(levelString);
+
+            //show the percentage progress in the progress bar
+            int remainderCurrentLevelInt = totalPoints % 500;
+            Double remainderCurrentLevelDouble = (double)(remainderCurrentLevelInt);
+            Double progressPercent = (remainderCurrentLevelDouble/500) * 100;
+            levelBar.setProgress(progressPercent.intValue());
+
         }
     }
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/gerry_Buy_popup_shop"
+        android:title="@string/gerry_buy_popup_shop"/>
+
+    <item android:id="@+id/gerry_Cancel_popup_shop"
+        android:title="@string/gerry_cancel_popup_shop"/>
+
+</menu>

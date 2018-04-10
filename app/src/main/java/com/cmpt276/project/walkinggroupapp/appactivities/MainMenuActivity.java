@@ -48,6 +48,7 @@ public class MainMenuActivity extends AppCompatActivity {
     private Button btnViewGroup;
     private Button btnMessage;
     private Button btnParentDashboard;
+    private Button btnShop;
     private Button btnPermission;
 
     private Button btnViewProfileLocal;
@@ -95,6 +96,7 @@ public class MainMenuActivity extends AppCompatActivity {
             setupMessageButton();
             setupParentDashboardButton();
             setupNumberOfUnreadMessages();
+            setupShopButton();
             setupLeaderBoard();
             setupPermissionButton();
 
@@ -141,6 +143,18 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = MessageActivity.makeIntent(MainMenuActivity.this);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private  void setupShopButton() {
+        btnShop = findViewById(R.id.gerry_Shop_Button_main);
+        btnShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //go to shop activity
+                Intent intent = new Intent(MainMenuActivity.this, ShopActivity.class);
                 startActivity(intent);
             }
         });
