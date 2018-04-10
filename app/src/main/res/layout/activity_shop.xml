@@ -8,23 +8,27 @@
 
     <TextView
         android:id="@+id/gerry_Name_TextView_shop"
-        android:layout_width="241dp"
+        android:layout_width="0dp"
         android:layout_height="25dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/gerry_Avatar_ImageView_shop"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/gerry_Level_ProgressBar_shop"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="209dp"
+        android:layout_width="0dp"
         android:layout_height="19dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/gerry_Avatar_ImageView_shop"
+        app:layout_constraintTop_toBottomOf="@+id/gerry_Level_TextView_shop" />
 
     <ImageView
         android:id="@+id/gerry_Avatar_ImageView_shop"
@@ -38,52 +42,66 @@
 
     <TextView
         android:id="@+id/gerry_Level_TextView_shop"
-        android:layout_width="241dp"
+        android:layout_width="0dp"
         android:layout_height="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/gerry_Avatar_ImageView_shop"
+        app:layout_constraintTop_toBottomOf="@+id/gerry_Name_TextView_shop" />
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="79dp"
-        android:layout_height="21dp"
-        android:layout_marginEnd="152dp"
-        android:layout_marginTop="176dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="@string/gerry_shop_main"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gerry_CurrentPoints_TextView_shop" />
 
     <Button
         android:id="@+id/gerry_ViewCollection_Button_shop"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginTop="8dp"
         android:text="@string/gerry_view_collections_shop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gerry_Shop_ListView_shop" />
 
     <ListView
         android:id="@+id/gerry_Shop_ListView_shop"
-        android:layout_width="361dp"
+        android:layout_width="0dp"
         android:layout_height="252dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/gerry_CurrentPoints_TextView_shop"
-        android:layout_width="243dp"
+        android:layout_width="200dp"
         android:layout_height="31dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="132dp"
+        android:layout_marginTop="16dp"
         android:gravity="start"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/gerry_Avatar_ImageView_shop" />
+
+    <Button
+        android:id="@+id/justin_btnAddPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/justin_add_points"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

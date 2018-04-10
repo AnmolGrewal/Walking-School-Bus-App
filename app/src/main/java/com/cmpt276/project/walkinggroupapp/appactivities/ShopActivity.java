@@ -1,7 +1,6 @@
 package com.cmpt276.project.walkinggroupapp.appactivities;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -47,6 +46,8 @@ public class ShopActivity extends AppCompatActivity {
     private ProgressBar mLevelProgressBar;
     private ImageView mCurrentAvatarImageView;
 
+    private Button addPointsButton;
+
     private ModelManager modelManager;
 
     @Override
@@ -78,6 +79,8 @@ public class ShopActivity extends AppCompatActivity {
         setupCurrentPointsTextView();
         setupLevelTextViewAndProgress();
         setupCurrentAvatarImageView();
+
+        setupAddPointsButton();
 
         populateAvatarList();
 
@@ -243,6 +246,23 @@ public class ShopActivity extends AppCompatActivity {
 
     }
 
+    private void setupAddPointsButton() {
+        addPointsButton = findViewById(R.id.justin_btnAddPoints);
+        addPointsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ProxyBuilder.SimpleCallback<User> callback = returnedUser -> addPointsResponse(returnedUser);
+                modelManager.addPoints(ShopActivity.this, callback, 500);
+            }
+        });
+    }
+
+    private void addPointsResponse(User returnedUser) {
+        mCurrentUser = returnedUser;
+        setupCurrentPointsTextView();
+        Toast.makeText(ShopActivity.this, "Added 500 points.", Toast.LENGTH_SHORT).show();
+    }
+
 
     private void setupNameTextView() {
         mNameTextView = findViewById(R.id.gerry_Name_TextView_shop);
@@ -309,6 +329,12 @@ public class ShopActivity extends AppCompatActivity {
     }
 
     private void getUserInformationCallBack(User returnedUser) {
-        mCurrentAvatarImageView.setImageResource(returnedUser.getCurrentAvatar());
+        mCurrentAvatarImageView = findViewById(R.id.gerry_Avatar_ImageView_shop);
+        if(returnedUser.getCurrentAvatar() != null && returnedUser.getCurrentAvatar() != 0) {
+            mCurrentAvatarImageView.setImageResource(returnedUser.getCurrentAvatar());
+        } else {
+            mCurrentAvatarImageView.setImageResource(R.drawable.temp_pic);
+        }
     }
+
 }
