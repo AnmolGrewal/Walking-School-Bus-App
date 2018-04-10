@@ -3,6 +3,7 @@ package com.cmpt276.project.walkinggroupapp.model;
 import android.content.Context;
 import android.util.Log;
 
+import com.cmpt276.project.walkinggroupapp.appactivities.ViewPermissionActivity;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 import com.cmpt276.project.walkinggroupapp.proxy.WGServerProxy;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -1243,6 +1244,13 @@ public class ModelManager {
     }
 
 
+
+//    public void getPermissionById(Context context,
+//                                  ProxyBuilder.SimpleCallback<Permission> callback,
+//                                  long permissionId) {
+//        Call<Permission> caller = proxy.getPermissionById(permissionId);
+//        ProxyBuilder.callProxy(context, caller, callback);
+//    }
 
 
 

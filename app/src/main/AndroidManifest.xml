@@ -67,6 +67,7 @@
         <activity android:name=".appactivities.ViewLocalUserProfileActivity" />
         <activity android:name=".appactivities.LeaderBoardActivity"></activity>
         <activity android:name=".appactivities.CheckPermissionActivity"></activity>
+        <activity android:name=".appactivities.ViewPermissionActivity"></activity>
     </application>
 
 </manifest>
