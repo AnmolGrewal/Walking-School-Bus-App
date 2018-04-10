@@ -144,7 +144,8 @@ public class CheckPermissionActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 Permission permission = pastPermissionList.get(position);
 
-                fragmentShowPastPermission(permission);
+                Intent intent = ViewPermissionActivity.makeIntent(CheckPermissionActivity.this, permission.getId());
+                startActivity(intent);
             }
         });
     }
@@ -162,16 +163,6 @@ public class CheckPermissionActivity extends AppCompatActivity {
 
         dialog.setArguments(variables);
         dialog.show(manager, "MyApp");
-
-
-    }
-
-    private void fragmentShowPastPermission(Permission permission){
-        List<Authorizors> listOfAuthorizors = permission.getAuthorizors();
-
-        ProxyBuilder.SimpleCallback<User> getUserByIdCallback = user -> startPastPermissionDialog(permission, user);
-        modelManager.getUserById(CheckPermissionActivity.this, getUserByIdCallback, listOfAuthorizors.get(1).getWhoApprovedOrDenied().getId());
-
 
 
     }
@@ -222,26 +213,6 @@ public class CheckPermissionActivity extends AppCompatActivity {
 
     public static Intent makeIntent(Context context){
         return new Intent(context, CheckPermissionActivity.class);
-    }
-
-    private void startPastPermissionDialog(Permission permission, User user){
-
-        FragmentManager manager = getSupportFragmentManager();
-        viewPastPermissionFragment  dialog = new viewPastPermissionFragment();
-
-        List<Authorizors> listOfAuthorizors = permission.getAuthorizors();
-
-        //Get variables to display
-        Bundle variables = new Bundle();
-        variables.putString("MessageForPastPermission", permission.getMessage());
-        //Since only one group of authorize exists we can just pass in the first one
-        variables.putString("StatusOfPermission", listOfAuthorizors.get(1).getStatus());
-        variables.putLong("UserIdWhoAuthorized", listOfAuthorizors.get(1).getWhoApprovedOrDenied().getId());
-        variables.putString("UserEmailWhoAuthorized", user.getEmail());
-        variables.putString("UserNameWhoAuthorized", user.getName());
-
-        dialog.setArguments(variables);
-        dialog.show(manager, "MyApp");
     }
 
 }
