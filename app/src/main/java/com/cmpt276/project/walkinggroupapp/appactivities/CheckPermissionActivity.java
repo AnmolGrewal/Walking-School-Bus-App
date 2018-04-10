@@ -15,12 +15,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cmpt276.project.walkinggroupapp.R;
-import com.cmpt276.project.walkinggroupapp.fragments.viewPastPermissionFragment;
 import com.cmpt276.project.walkinggroupapp.fragments.viewPermissionFragment;
-import com.cmpt276.project.walkinggroupapp.model.Authorizors;
 import com.cmpt276.project.walkinggroupapp.model.ModelManager;
 import com.cmpt276.project.walkinggroupapp.model.Permission;
-import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 
 import java.util.ArrayList;
