@@ -137,5 +137,6 @@
     <string name="jacky_check_permission_status">Status:</string>
     <string name="anmol_view_collection">View Collection</string>
     <string name="anmol_collection">Collection</string>
+    <string name="justin_add_points">Add Points</string>
 
 </resources>
