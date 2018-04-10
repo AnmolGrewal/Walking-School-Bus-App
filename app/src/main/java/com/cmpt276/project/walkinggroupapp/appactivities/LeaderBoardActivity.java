@@ -78,10 +78,13 @@ public class LeaderBoardActivity extends AppCompatActivity {
             //Icon
             ImageView setImage = itemView.findViewById(R.id.jacky_user_icon);
             if(position == 0){
+                setImage.setVisibility(View.VISIBLE);
                 setImage.setImageResource(R.drawable.goldcup);
             }else if(position == 1){
+                setImage.setVisibility(View.VISIBLE);
                 setImage.setImageResource(R.drawable.silvercup);
             }else if(position == 2){
+                setImage.setVisibility(View.VISIBLE);
                 setImage.setImageResource(R.drawable.bronzecup);
             }else {
                 setImage.setImageResource(R.drawable.dolphin_icon);

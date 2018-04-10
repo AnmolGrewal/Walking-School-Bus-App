@@ -135,5 +135,7 @@
     <string name="jacky_permissions_user_id">User ID:</string>
     <string name="jacky_check_permission_message">Message:</string>
     <string name="jacky_check_permission_status">Status:</string>
+    <string name="anmol_view_collection">View Collection</string>
+    <string name="anmol_collection">Collection</string>
 
 </resources>

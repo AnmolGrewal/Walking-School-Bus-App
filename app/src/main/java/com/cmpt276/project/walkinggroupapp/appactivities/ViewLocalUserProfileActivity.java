@@ -57,7 +57,6 @@ public class ViewLocalUserProfileActivity extends AppCompatActivity {
 
         setupProfileDefaultValue();
 
-
         progressBar.setVisibility(View.VISIBLE);
 
         ProxyBuilder.SimpleCallback<User> getUserByIdCallback = returnedUser -> getUserByIdResponse(returnedUser);
