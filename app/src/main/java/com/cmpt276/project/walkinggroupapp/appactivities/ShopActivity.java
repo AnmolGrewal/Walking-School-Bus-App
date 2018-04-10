@@ -47,6 +47,8 @@ public class ShopActivity extends AppCompatActivity {
     private ProgressBar mLevelProgressBar;
     private ImageView mCurrentAvatarImageView;
 
+    private ModelManager modelManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -298,5 +300,15 @@ public class ShopActivity extends AppCompatActivity {
         startActivity(getIntent());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        modelManager = ModelManager.getInstance();
+        ProxyBuilder.SimpleCallback<User> getUserInformationCallBack = returnedUser -> getUserInformationCallBack(returnedUser);
+        modelManager.getUserById(ShopActivity.this, getUserInformationCallBack, modelManager.getLocalUserId());
+    }
 
+    private void getUserInformationCallBack(User returnedUser) {
+        mCurrentAvatarImageView.setImageResource(returnedUser.getCurrentAvatar());
+    }
 }
