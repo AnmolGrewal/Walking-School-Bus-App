@@ -309,6 +309,11 @@ public class ShopActivity extends AppCompatActivity {
     }
 
     private void getUserInformationCallBack(User returnedUser) {
-        mCurrentAvatarImageView.setImageResource(returnedUser.getCurrentAvatar());
+        mCurrentAvatarImageView = findViewById(R.id.gerry_Avatar_ImageView_shop);
+        if(returnedUser.getCurrentAvatar() != null && returnedUser.getCurrentAvatar() != 0) {
+            mCurrentAvatarImageView.setImageResource(returnedUser.getCurrentAvatar());
+        } else {
+            mCurrentAvatarImageView.setImageResource(R.drawable.temp_pic);
+        }
     }
 }
