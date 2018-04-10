@@ -47,6 +47,8 @@ public class ShopActivity extends AppCompatActivity {
     private ProgressBar mLevelProgressBar;
     private ImageView mCurrentAvatarImageView;
 
+    private ModelManager modelManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,11 +58,7 @@ public class ShopActivity extends AppCompatActivity {
 
         //get the updated user from server first before setting up buttons/list views etc.
         getUpdatedUser();
-
-
     }
-
-
 
     private void getUpdatedUser() {
 
@@ -238,6 +236,8 @@ public class ShopActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //go to viewCollection Activity
+                Intent intent = ViewCollectionActivity.makeIntent(ShopActivity.this);
+                startActivity(intent);
             }
         });
 
@@ -299,6 +299,16 @@ public class ShopActivity extends AppCompatActivity {
         finish();
         startActivity(getIntent());
     }
+//Change Avatar
+    @Override
+    protected void onResume() {
+        super.onResume();
+        modelManager = ModelManager.getInstance();
+        ProxyBuilder.SimpleCallback<User> getUserInformationCallBack = returnedUser -> getUserInformationCallBack(returnedUser);
+        modelManager.getUserById(ShopActivity.this, getUserInformationCallBack, modelManager.getLocalUserId());
+    }
 
-
+    private void getUserInformationCallBack(User returnedUser) {
+        mCurrentAvatarImageView.setImageResource(returnedUser.getCurrentAvatar());
+    }
 }

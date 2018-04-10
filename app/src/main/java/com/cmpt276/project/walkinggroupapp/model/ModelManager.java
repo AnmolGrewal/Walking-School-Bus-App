@@ -1146,7 +1146,7 @@ public class ModelManager {
 
             try {
                 // Convert custom object to a JSON string:
-                String customAsJson = new ObjectMapper().writeValueAsString(user.getGamification());
+                String customAsJson = new ObjectMapper().writeValueAsString(targetUser.getGamification());
                 // Store JSON string into the user object, which will be sent to server.
                 targetUser.setCustomJson(customAsJson);
             } catch (JsonProcessingException e) {
