@@ -27,3 +27,6 @@ The leaderboard has gold,bronze,silver cup for 1,2,3 respectively.
 You can access the leaderboard by clicking on the leaderboard image on the Main Menu.
 
 Permissions work based on Permissions button
+
+Please note due to the testing feature of added Points we decided not to update the level of the
+user on clicking the button unless of course the activity is reloaded.
