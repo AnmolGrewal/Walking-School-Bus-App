@@ -123,5 +123,7 @@
     <string name="jacky_panic_message">Panic Message</string>
     <string name="justin_view_profile_local">View Profile</string>
     <string name="anmol_levelText">Level</string>
+    <string name="anmol_view_collection">View Collection</string>
+    <string name="anmol_collection">Collection</string>
 
 </resources>
