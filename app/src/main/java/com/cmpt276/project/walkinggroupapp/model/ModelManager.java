@@ -3,6 +3,7 @@ package com.cmpt276.project.walkinggroupapp.model;
 import android.content.Context;
 import android.util.Log;
 
+import com.cmpt276.project.walkinggroupapp.appactivities.ViewPermissionActivity;
 import com.cmpt276.project.walkinggroupapp.proxy.ProxyBuilder;
 import com.cmpt276.project.walkinggroupapp.proxy.WGServerProxy;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -1216,7 +1217,42 @@ public class ModelManager {
         });
     }
 
+    public void getPendingPermissionForUser(Context context, ProxyBuilder.SimpleCallback<List<Permission>> callback) {
+        Call<List<Permission>> getPendingPermissionCaller = proxy.getPendingPermissions(user.getId());
+        ProxyBuilder.callProxy(context, getPendingPermissionCaller, returnedPermission -> {
+            List<Permission> pendingPermissions = returnedPermission;
+            callback.callback(pendingPermissions);
+        });
+    }
 
+    public void getPastPermissionForUser(Context context, ProxyBuilder.SimpleCallback<List<Permission>> callback){
+        Call<List<Permission>> getPastPermissionCaller = proxy.getPastPermissions(user.getId());
+        ProxyBuilder.callProxy(context, getPastPermissionCaller, returnedPermission -> {
+            Permission permission;
+            for(int i = returnedPermission.size() - 1; i >= 0; i--){
+                permission = returnedPermission.get(i);
+                if(permission.getStatus().equals("PENDING")){
+                    returnedPermission.remove(i);
+                }
+            }
+            callback.callback(returnedPermission);
+        });
+
+    }
+
+    public void changePermissionStatus(Context context, ProxyBuilder.SimpleCallback<Void> callback, Long permissionId, String status){
+        Call<Void> changePermissionCaller = proxy.changePermissionStatus(permissionId, status);
+        ProxyBuilder.callProxy(context, changePermissionCaller, callback);
+    }
+
+
+
+    public void getPermissionById(Context context,
+                                  ProxyBuilder.SimpleCallback<Permission> callback,
+                                  long permissionId) {
+        Call<Permission> caller = proxy.getPermissionById(permissionId);
+        ProxyBuilder.callProxy(context, caller, callback);
+    }
 
 
 

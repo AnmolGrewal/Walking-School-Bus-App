@@ -68,6 +68,8 @@
         <activity android:name=".appactivities.LeaderBoardActivity" />
         <activity android:name=".appactivities.ViewCollectionActivity"></activity>
         <activity android:name=".appactivities.ShopActivity" />
+        <activity android:name=".appactivities.CheckPermissionActivity"></activity>
+        <activity android:name=".appactivities.ViewPermissionActivity"></activity>
     </application>
 
 </manifest>

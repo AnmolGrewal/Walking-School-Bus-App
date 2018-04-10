@@ -49,6 +49,7 @@ public class MainMenuActivity extends AppCompatActivity {
     private Button btnMessage;
     private Button btnParentDashboard;
     private Button btnShop;
+    private Button btnPermission;
 
     private Button btnViewProfileLocal;
 
@@ -97,6 +98,7 @@ public class MainMenuActivity extends AppCompatActivity {
             setupNumberOfUnreadMessages();
             setupShopButton();
             setupLeaderBoard();
+            setupPermissionButton();
 
     }
 
@@ -241,6 +243,17 @@ public class MainMenuActivity extends AppCompatActivity {
         unreadMessageTextView = findViewById(R.id.jacky_number_of_unread);
         ProxyBuilder.SimpleCallback<List<Message>> getUnreadMessagesCallback = unreadMessageList -> getUnreadMessagesResponse(unreadMessageList);
         modelManager.getUnreadMessagesForUser(MainMenuActivity.this, getUnreadMessagesCallback);
+    }
+
+    private void setupPermissionButton(){
+        btnPermission = findViewById(R.id.jacky_permission_button);
+        btnPermission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = CheckPermissionActivity.makeIntent(getApplicationContext());
+                startActivity(intent);
+            }
+        });
     }
 
     private void getUnreadMessagesResponse(List<Message> unreadMessageList){

@@ -275,6 +275,7 @@ public class ProxyBuilder {
             // Add Token
             if (token != null) {
                 builder.header("Authorization", token);
+                builder.header("permissions-enabled", "true");
             }
             Request modifiedRequest = builder.build();
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cmpt276.project.walkinggroupapp.model.GpsLocation;
 import com.cmpt276.project.walkinggroupapp.model.Message;
+import com.cmpt276.project.walkinggroupapp.model.Permission;
 import com.cmpt276.project.walkinggroupapp.model.User;
 import com.cmpt276.project.walkinggroupapp.model.WalkingGroup;
 
@@ -144,6 +145,19 @@ public interface WGServerProxy {
     @POST("/messages/{messageId}/readby/{userId}")
     Call<User> changeMessageStatus(@Path("messageId") long messageId, @Path("userId") long userId, @Body boolean isRead);
 
+
+    @GET("/permissions?statusForUser=PENDING")
+    Call<List<Permission>> getPendingPermissions(@Query("userId") long userId);
+
+    @GET("/permissions")
+    Call<List<Permission>> getPastPermissions(@Query("userId") long userId);
+
+    @POST("/permissions/{id}")
+    Call<Void> changePermissionStatus(@Path("id") long permissionId, @Body String status);
+
+
+    @GET("/permissions/{id}")
+    Call<Permission> getPermissionById(@Path("id") long permissionId);
 
 
 
